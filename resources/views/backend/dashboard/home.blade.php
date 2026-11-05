@@ -64,7 +64,7 @@
         <div class="d-flex flex-column gap-2">
           @foreach($operationalAlerts as $alert)
             <div class="card p-3">
-              <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2.5">
+              <div class="d-flex flex-column flex-sm-row justify-content-between align-items-stretch align-items-sm-center gap-2">
                 <div class="d-flex align-items-center gap-2.5">
                   <div class="dash-alert-indicator {{ $alert['badge_class'] ?? 'bg-amber-subtle' }}">
                     <i class="bi {{ $alert['icon'] ?? 'bi-info-circle' }}"></i>
@@ -74,7 +74,7 @@
                     <div class="fs-8 text-muted">{{ $alert['subtitle'] }}</div>
                   </div>
                 </div>
-                <a href="{{ $alert['action_url'] }}" class="btn btn-xs btn-light border align-self-end align-self-sm-center px-2.5 py-1.5">
+                <a href="{{ $alert['action_url'] }}" class="btn btn-xs btn-light border px-2.5 py-1.5 text-center flex-shrink-0 mt-1 mt-sm-0">
                   <span>{{ $alert['action_label'] }}</span>
                   <i class="bi bi-arrow-right ms-1"></i>
                 </a>

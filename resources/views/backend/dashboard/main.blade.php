@@ -523,6 +523,15 @@
     </script>
     <!--end::OverlayScrollbars Configure-->
 
+    <script>
+      // Mobile Drawer overlay tap-to-close handler
+      document.addEventListener('click', function(e) {
+        if (e.target && (e.target.classList.contains('sidebar-overlay') || e.target.closest('.sidebar-overlay'))) {
+          document.body.classList.remove('sidebar-open');
+        }
+      });
+    </script>
+
     <!-- Summernote JS -->
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 
