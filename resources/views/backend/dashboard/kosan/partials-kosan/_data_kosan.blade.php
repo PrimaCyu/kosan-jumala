@@ -187,14 +187,18 @@
                                     <label for="select_wilayah_edit_{{ $item->id }}" class="form-label fw-semibold">
                                         Wilayah (Bali) <span class="text-danger">*</span>
                                     </label>
-                                    <select name="wilayah" id="select_wilayah_edit_{{ $item->id }}" class="form-select select-wilayah-edit" required>
+                                    <select name="wilayah" id="select_wilayah_edit_{{ $item->id }}" class="form-select select-wilayah-edit" data-current-value="{{ $item->wilayah }}" required>
                                         <option value="" disabled>-- Pilih Kab / Kota (Bali) --</option>
                                         @php
                                             $baliRegencies = ['Denpasar', 'Badung', 'Gianyar', 'Tabanan', 'Buleleng', 'Karangasem', 'Klungkung', 'Bangli', 'Jembrana'];
+                                            $currentWilayah = old('wilayah', $item->wilayah);
                                         @endphp
                                         @foreach($baliRegencies as $reg)
-                                            <option value="{{ $reg }}" {{ (old('wilayah', $item->wilayah) == $reg) ? 'selected' : '' }}>{{ $reg }}</option>
+                                            <option value="{{ $reg }}" {{ strcasecmp((string)$currentWilayah, (string)$reg) === 0 ? 'selected' : '' }}>{{ $reg }}</option>
                                         @endforeach
+                                        @if(!empty($currentWilayah) && !in_array($currentWilayah, $baliRegencies))
+                                            <option value="{{ $currentWilayah }}" selected>{{ $currentWilayah }}</option>
+                                        @endif
                                     </select>
                                 </div>
 
@@ -215,8 +219,27 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label for="edit_tersedia_{{ $item->id }}" class="form-label">Jumlah Kamar Tersedia</label>
-                                    <input type="number" name="tersedia" id="edit_tersedia_{{ $item->id }}" class="form-control" value="{{ old('tersedia', $item->tersedia) }}" min="0" placeholder="0">
+                                    @if($item->productKamarKosan && $item->productKamarKosan->count() > 0)
+                                        <label class="form-label mb-1">
+                                            Kamar Tersedia <span class="badge bg-success-subtle text-success fs-8">Otomatis Terintegrasi</span>
+                                        </label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control bg-light" value="{{ $item->tersedia }} Kosong (dari {{ $item->total_rooms_count }} Unit Kamar)" readonly disabled>
+                                            <a href="{{ route('admin.product.kosan.kamar.index', $item->id) }}" class="btn btn-outline-primary fs-8" title="Kelola Unit Kamar">
+                                                <i class="bi bi-door-open me-1"></i>Kelola Kamar
+                                            </a>
+                                        </div>
+                                        <div class="form-text fs-8 text-muted">
+                                            <i class="bi bi-info-circle me-1 text-primary"></i>Dihitung otomatis: Total kamar fisik dikurangi kamar yang dihuni penyewa. Untuk menambah kapasitas, silakan tambah unit di <strong>Kelola Kamar</strong>.
+                                        </div>
+                                    @else
+                                        <label for="edit_tersedia_{{ $item->id }}" class="form-label mb-1">Kapasitas Kamar Tersedia</label>
+                                        <div class="input-group">
+                                            <input type="number" name="tersedia" id="edit_tersedia_{{ $item->id }}" class="form-control" value="{{ old('tersedia', $item->tersedia) }}" min="0" placeholder="0">
+                                            <span class="input-group-text bg-light text-muted fs-8">Unit</span>
+                                        </div>
+                                        <div class="form-text fs-8 text-muted">Kapasitas awal sebelum unit kamar didaftarkan di Kelola Kamar.</div>
+                                    @endif
                                 </div>
 
                                 <div class="col-md-6">

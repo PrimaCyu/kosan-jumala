@@ -75,52 +75,6 @@
         }
     }
 
-    // Fetch Data Wilayah Bali dari API Wilayah Indonesia (Kode Provinsi Bali = 51)
-    document.addEventListener("DOMContentLoaded", function() {
-        const selectTambah = document.getElementById('select_wilayah_tambah');
-        const selectEdits = document.querySelectorAll('.select-wilayah-edit');
-
-        fetch('https://www.emsifa.com/api-wilayah-indonesia/api/regencies/51.json')
-            .then(response => response.json())
-            .then(regencies => {
-                let optionsHtml = '<option value="" selected disabled>-- Pilih Kab / Kota (Bali) --</option>';
-                regencies.forEach(reg => {
-                    let formattedName = reg.name.replace(/KABUPATEN |KOTA /gi, '').trim();
-                    formattedName = formattedName.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
-                    optionsHtml += `<option value="${formattedName}">${formattedName}</option>`;
-                });
-
-                if (selectTambah) {
-                    selectTambah.innerHTML = optionsHtml;
-                }
-
-                selectEdits.forEach(selectEdit => {
-                    const currentValue = selectEdit.getAttribute('data-current-value');
-                    selectEdit.innerHTML = optionsHtml;
-                    if (currentValue) {
-                        selectEdit.value = currentValue;
-                    }
-                });
-            })
-            .catch(err => {
-                console.error('Gagal mengambil API Wilayah Bali:', err);
-                const fallbackHtml = `
-                    <option value="" disabled>Gagal load API. Pilih Manual:</option>
-                    <option value="Badung">Badung</option>
-                    <option value="Denpasar">Denpasar</option>
-                    <option value="Gianyar">Gianyar</option>
-                    <option value="Tabanan">Tabanan</option>
-                    <option value="Buleleng">Buleleng</option>
-                    <option value="Karangasem">Karangasem</option>
-                    <option value="Klungkung">Klungkung</option>
-                    <option value="Bangli">Bangli</option>
-                    <option value="Jembrana">Jembrana</option>
-                `;
-                if (selectTambah) selectTambah.innerHTML = fallbackHtml;
-                selectEdits.forEach(s => s.innerHTML = fallbackHtml);
-            });
-    });
-
     // Live Search AJAX untuk Tabel Kosan
     document.addEventListener("DOMContentLoaded", function() {
         const isSuperAdmin = {{ Auth::user()->isSuperAdmin() ? 'true' : 'false' }};

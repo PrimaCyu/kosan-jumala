@@ -93,7 +93,7 @@
                         <div class="col-md-5">
                             <div class="card border p-3 h-100 rounded-3 bg-body-tertiary">
                                 <label for="tersedia" class="form-label fs-8 fw-semibold mb-1">
-                                    Kapasitas Unit Awal <span class="text-danger">*</span>
+                                    Estimasi Total Kamar (Awal) <span class="text-danger">*</span>
                                 </label>
                                 <div class="input-group">
                                     <input type="number"
@@ -107,7 +107,7 @@
                                     <span class="input-group-text bg-transparent text-muted fs-8">Unit</span>
                                 </div>
                                 <div class="form-text fs-8 text-muted mt-2">
-                                    <i class="bi bi-info-circle me-1 text-primary"></i>Kapasitas awal. Jumlah kamar kosong akan otomatis tersinkron saat Anda mendaftarkan unit kamar.
+                                    <i class="bi bi-info-circle me-1 text-primary"></i>Perkiraan awal. Anda bebas menambah berapa pun unit kamar di menu <strong>Kelola Kamar</strong>. Sistem akan otomatis menghitung ketersediaan riilnya.
                                 </div>
                             </div>
                         </div>

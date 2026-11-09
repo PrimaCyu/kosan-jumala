@@ -325,10 +325,12 @@
           </div>
         </div>
 
-        <!-- Featured Image Detail -->
-        <div class="mt-6 relative rounded-2xl overflow-hidden shadow-lg h-[260px] sm:h-[430px] bg-[#EADFD6] group">
-          <img src="{{ $imgUrl }}" alt="{{ $artikel->title }}" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.025]">
-          <div class="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#3B2314]/40 to-transparent pointer-events-none"></div>
+        <!-- Featured Image Detail (Natural Responsive Aspect without Harsh Crop) -->
+        <div class="mt-6 relative rounded-2xl overflow-hidden shadow-lg bg-[#3B2314]/5 flex items-center justify-center max-h-[460px] group">
+          <!-- Ambient blurred backdrop for non-standard image ratios -->
+          <div class="absolute inset-0 bg-cover bg-center filter blur-xl opacity-25 scale-110" style="background-image: url('{{ $imgUrl }}')"></div>
+          <img src="{{ $imgUrl }}" alt="{{ $artikel->title }}" loading="lazy" class="relative z-10 w-full max-h-[460px] object-contain sm:object-cover sm:h-[420px] transition-transform duration-700 group-hover:scale-[1.015]">
+          <div class="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#3B2314]/25 to-transparent pointer-events-none z-20"></div>
         </div>
 
         <!-- MOBILE ACCORDION DAFTAR ISI (Khusus Layar HP / Tablet) -->

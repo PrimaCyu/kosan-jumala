@@ -468,9 +468,9 @@
                     </div>
 
                     <!-- Gambar Sampul -->
-                    <div class="col-12">
+                    <div class="col-md-7">
                         <label for="image_tambah" class="form-label fw-bold fs-8 text-body-emphasis">
-                            Gambar Sampul / Banner <span class="text-muted fw-normal">(Opsional, Format JPG/PNG/WEBP, Maks. 5MB)</span>
+                            Gambar Sampul / Banner <span class="text-muted fw-normal">(Format JPG/PNG/WEBP, Maks. 5MB)</span>
                         </label>
                         <input
                             type="file"
@@ -486,6 +486,18 @@
                                 <i class="bi bi-x"></i>
                             </button>
                         </div>
+                    </div>
+
+                    <!-- Jumlah Views Awal -->
+                    <div class="col-md-5">
+                        <label for="view_tambah" class="form-label fw-bold fs-8 text-body-emphasis">
+                            Jumlah Views / Pembaca Awal <span class="text-muted fw-normal">(Opsional)</span>
+                        </label>
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text bg-light text-muted"><i class="bi bi-eye"></i></span>
+                            <input type="number" name="view" id="view_tambah" class="form-control" min="0" value="0" placeholder="0">
+                        </div>
+                        <div class="form-text fs-9 text-muted">Bisa diisi jika artikel sudah memiliki pembaca sebelumnya.</div>
                     </div>
 
                     <!-- Tips Menulis Artikel Singkat -->
@@ -568,7 +580,7 @@
                     </div>
 
                     <!-- Gambar Sampul -->
-                    <div class="col-12">
+                    <div class="col-md-7">
                         <label for="image_edit" class="form-label fw-bold fs-8 text-body-emphasis">
                             Ganti Gambar Sampul <span class="text-muted fw-normal">(Biarkan kosong jika tidak diubah, Maks. 5MB)</span>
                         </label>
@@ -586,6 +598,18 @@
                             <small class="d-block text-muted fs-9 mb-1" id="labelPreviewEdit">Gambar Sampul Saat Ini:</small>
                             <img id="imagePreviewEdit" src="#" alt="Preview" class="rounded-2 border shadow-sm" style="max-height: 130px; object-fit: cover;">
                         </div>
+                    </div>
+
+                    <!-- Edit Jumlah Views / Pembaca -->
+                    <div class="col-md-5">
+                        <label for="view_edit" class="form-label fw-bold fs-8 text-body-emphasis">
+                            Jumlah Views / Pembaca <span class="text-muted fw-normal">(Dapat diedit)</span>
+                        </label>
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text bg-light text-muted"><i class="bi bi-eye"></i></span>
+                            <input type="number" name="view" id="view_edit" class="form-control" min="0" value="0" placeholder="0">
+                        </div>
+                        <div class="form-text fs-9 text-muted">Sesuaikan angka pembaca artikel ini jika diperlukan.</div>
                     </div>
 
                     <!-- Tips Menulis Artikel Singkat -->
@@ -655,6 +679,7 @@
             image: {!! json_encode($a->image) !!},
             image_url: {!! json_encode($a->image_url) !!},
             deskripsi: {!! json_encode($a->deskripsi) !!},
+            view: {{ (int) $a->view }},
             update_url: {!! json_encode(route('admin.artikel.update', $a->id)) !!},
             delete_url: {!! json_encode(route('admin.artikel.delete', $a->id)) !!},
             detail_url: {!! json_encode(route('news.detail', $a->slug)) !!}
@@ -900,6 +925,10 @@
         const titleInput = document.getElementById('title_edit');
         titleInput.value = artikel.title;
         updateSlugPreview(artikel.title, 'slug-preview-edit');
+
+        // Populate view count
+        const viewInput = document.getElementById('view_edit');
+        if (viewInput) viewInput.value = artikel.view || 0;
 
         // Reset file input
         const fileInput = document.getElementById('image_edit');

@@ -407,6 +407,34 @@ Aplikasi kini dapat diakses melalui browser:
 
 ---
 
+### 8. Otomasi Kedaluwarsa Booking (Cron Job & Task Scheduling)
+
+Sistem telah dilengkapi dengan Laravel Scheduler otomatis untuk menangani pembatalan reservasi yang tidak kunjung diverifikasi atau dibayar melewati batas waktu (default: **2 jam**):
+* **Fungsi**: Membatalkan pesanan berstatus *pending* kedaluwarsa, menandainya sebagai `reject` dengan catatan audit, mengosongkan status kamar agar penyewa lain bisa segera memesan, serta memperbarui cache ketersediaan publik secara *real-time*.
+* **File Scheduler**: [`routes/console.php`](file:///c:/laragon/www/kosan-main/routes/console.php)
+* **File Command**: [`app/Console/Commands/ExpirePendingBookings.php`](file:///c:/laragon/www/kosan-main/app/Console/Commands/ExpirePendingBookings.php)
+
+#### A. Menjalankan Secara Manual / Pengujian di Local:
+```bash
+# Uji coba langsung command pembersihan (default batas 2 jam):
+php artisan kosan:expire-pending
+
+# Uji coba dengan parameter jam kustom (misal batas 1 jam):
+php artisan kosan:expire-pending --hours=1
+
+# Menjalankan worker scheduler di terminal lokal:
+php artisan schedule:work
+```
+
+#### B. Konfigurasi di Server Produksi (cPanel / Linux VPS):
+Cukup daftarkan satu baris Crontab induk Laravel berikut:
+```bash
+* * * * * cd /path-ke-folder-proyek && php artisan schedule:run >> /dev/null 2>&1
+```
+> **Catatan**: Laravel scheduler otomatis mengeksekusi `kosan:expire-pending` setiap 10 menit tanpa tumpang tindih (*without overlapping*) dan berjalan di latar belakang (*in background*).
+
+---
+
 ## 🧪 Verifikasi Pengujian Otomatis (Automated Testing)
 
 Sistem telah dilengkapi dengan automated test suite berbasis PHPUnit / Pest untuk menjamin keamanan dan keandalan fitur sebelum siap rilis.
@@ -443,6 +471,12 @@ Hasil verifikasi:
   ✓ cannot delete room with active occupant
   ✓ approving booking auto rejects colliding pending bookings
   ✓ expire pending command cleans stale bookings
+  ✓ kamar creation auto creates annual price and multi room generator
+  ✓ artikel view can be set and updated
+  ✓ kosan wilayah is preserved on update
+
+   PASS  Tests\Feature\ExampleTest
+  ✓ the application returns a successful response
 
    PASS  Tests\Feature\PaymentMethodManagementTest
   ✓ super admin can view payment methods page
@@ -458,7 +492,7 @@ Hasil verifikasi:
   ✓ super admin can create update and delete sosial media
   ✓ frontend reflects sosial media in footer and navbar
 
-Tests:    29 passed (109 assertions)
+Tests:    32 passed (122 assertions)
 Status:   100% PASS
 ```
 

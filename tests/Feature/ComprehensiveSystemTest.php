@@ -390,4 +390,86 @@ class ComprehensiveSystemTest extends TestCase
         $this->assertStringContainsString('otomatis kedaluwarsa', $staleBooking->rejection_reason);
         $this->assertEquals('pending', $freshBooking->status);
     }
+
+    /**
+     * 10. Test Kamar Creation Auto-Creates Annual Rate & Multi-Room Generator
+     */
+    public function test_kamar_creation_auto_creates_annual_price_and_multi_room_generator(): void
+    {
+        $this->actingAs($this->superAdmin);
+
+        // 1. Single room without price_tahun specified: auto-creates 12x monthly price
+        $response = $this->post(route('admin.product.kosan.kamar.insert', $this->kosanA->id), [
+            'room'        => 'Kamar Single 1',
+            'price_bulan' => 1250000,
+            'price_tahun' => '', // Left empty!
+        ]);
+        $response->assertSessionHas('success');
+
+        $kamar = ProductKamarKosan::where('room', 'Kamar Single 1')->first();
+        $this->assertNotNull($kamar);
+        $monthly = PriceKamar::where('product_kamar_kosan_id', $kamar->id)->where('kategori', 'bulan')->first();
+        $yearly = PriceKamar::where('product_kamar_kosan_id', $kamar->id)->where('kategori', 'tahun')->first();
+        $this->assertEquals(1250000, (float)$monthly->price);
+        $this->assertEquals(1250000 * 12, (float)$yearly->price);
+
+        // 2. Multi-room generator: creates 3 rooms with prefix "Kamar 20", starting at 1
+        $responseGen = $this->post(route('admin.product.kosan.kamar.insert', $this->kosanA->id), [
+            'is_multiple_rooms'  => 1,
+            'room_prefix'        => 'Unit ',
+            'room_start_number'  => 301,
+            'room_quantity'      => 3,
+            'price_bulan'        => 750000,
+        ]);
+        $responseGen->assertSessionHas('success');
+
+        $this->assertDatabaseHas('product_kamar_kosans', ['room' => 'Unit 301']);
+        $this->assertDatabaseHas('product_kamar_kosans', ['room' => 'Unit 302']);
+        $this->assertDatabaseHas('product_kamar_kosans', ['room' => 'Unit 303']);
+    }
+
+    /**
+     * 11. Test Artikel View Count Can Be Set and Updated
+     */
+    public function test_artikel_view_can_be_set_and_updated(): void
+    {
+        $this->actingAs($this->superAdmin);
+
+        $artikel = \App\Models\Artikel::create([
+            'title'     => 'Tips Memilih Kosan Murah',
+            'slug'      => 'tips-memilih-kosan-murah',
+            'deskripsi' => '<p>Konten artikel lengkap dan mendalam...</p>',
+            'view'      => 150,
+        ]);
+
+        $this->assertEquals(150, $artikel->view);
+
+        // Update view count
+        $response = $this->put(route('admin.artikel.update', $artikel->id), [
+            'title'     => 'Tips Memilih Kosan Murah Update',
+            'deskripsi' => '<p>Konten artikel baru yang telah diperbarui...</p>',
+            'view'      => 325,
+        ]);
+        $response->assertSessionHas('success');
+
+        $artikel->refresh();
+        $this->assertEquals(325, $artikel->view);
+    }
+
+    /**
+     * 12. Test Kosan Wilayah is Preserved on Update
+     */
+    public function test_kosan_wilayah_is_preserved_on_update(): void
+    {
+        $this->actingAs($this->superAdmin);
+
+        $response = $this->put(route('admin.product.kosan.update', $this->kosanA->id), [
+            'title'   => 'Kos Sakura Indah Updated',
+            'wilayah' => 'Badung',
+        ]);
+        $response->assertSessionHas('success');
+
+        $this->kosanA->refresh();
+        $this->assertEquals('Badung', $this->kosanA->wilayah);
+    }
 }

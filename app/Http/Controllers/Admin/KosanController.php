@@ -234,9 +234,9 @@ class KosanController extends Controller
             'slug'        => $this->generateUniqueSlug($request->title, $productKosan->id),
             'description' => Artikel::sanitizeHtml($description),
             'fasilitas'   => $fasilitas ?? '',
-            'wilayah'     => $request->wilayah ?? 'Bali',
-            'tersedia'    => $request->tersedia ?? 0,
-            'view'        => $request->view ?? 0,
+            'wilayah'     => $request->filled('wilayah') ? $request->wilayah : ($productKosan->wilayah ?: 'Bali'),
+            'tersedia'    => $productKosan->productKamarKosan()->count() > 0 ? $productKosan->tersedia : ($request->tersedia ?? 0),
+            'view'        => $request->view ?? ($productKosan->view ?? 0),
             'gmaps'       => $request->gmaps ?? $request->google_maps
         ];
 

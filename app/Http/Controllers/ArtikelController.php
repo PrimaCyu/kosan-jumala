@@ -125,6 +125,7 @@ class ArtikelController extends Controller
             'title'     => 'required|string|max:255',
             'image'     => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'deskripsi' => 'required|string|min:10',
+            'view'      => 'nullable|integer|min:0',
         ], [
             'title.required'     => 'Judul artikel wajib diisi.',
             'title.max'          => 'Judul artikel maksimal 255 karakter.',
@@ -145,7 +146,7 @@ class ArtikelController extends Controller
             'slug'      => $this->generateUniqueSlug($request->title),
             'image'     => $imagePath,
             'deskripsi' => Artikel::sanitizeHtml($request->deskripsi),
-            'view'      => 0,
+            'view'      => max(0, (int) $request->input('view', 0)),
         ]);
 
         Cache::forget('home_latest_artikels');
@@ -159,6 +160,7 @@ class ArtikelController extends Controller
             'title'     => 'required|string|max:255',
             'image'     => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'deskripsi' => 'required|string|min:10',
+            'view'      => 'nullable|integer|min:0',
         ], [
             'title.required'     => 'Judul artikel wajib diisi.',
             'title.max'          => 'Judul artikel maksimal 255 karakter.',
@@ -185,6 +187,7 @@ class ArtikelController extends Controller
             'slug'      => $newSlug,
             'image'     => $imagePath,
             'deskripsi' => Artikel::sanitizeHtml($request->deskripsi),
+            'view'      => $request->has('view') ? max(0, (int)$request->input('view')) : $artikel->view,
         ]);
 
         Cache::forget("artikel_detail_{$oldSlug}");

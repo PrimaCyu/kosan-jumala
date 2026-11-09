@@ -33,9 +33,9 @@
                                     <label class="form-label fs-8 fw-semibold mb-1">Tarif Bulanan (Rp) <span class="text-danger">*</span></label>
                                     <div class="input-group">
                                         <span class="input-group-text bg-white text-muted fs-8">Rp</span>
-                                        <input type="number" name="price_bulan" id="edit_price_bulan_{{ $item->id }}" class="form-control fw-semibold edit-price-bulan" data-kamar-id="{{ $item->id }}" value="{{ $item->monthly_price ? $item->monthly_price->price : '' }}" placeholder="Contoh: 1500000" min="0" step="10000" required>
+                                        <input type="number" name="price_bulan" id="edit_price_bulan_{{ $item->id }}" class="form-control fw-semibold edit-price-bulan" data-kamar-id="{{ $item->id }}" value="{{ $item->monthly_price ? $item->monthly_price->price : '' }}" placeholder="Contoh: 1500000" min="0" step="1" required>
                                     </div>
-                                    <div class="form-text fs-8 text-muted">Tarif pokok sewa per bulan.</div>
+                                    <div class="form-text fs-8 text-muted">Bisa diisi angka berapa pun (misal: 15000, 25000, 1500000).</div>
                                 </div>
                                 <div class="col-md-5">
                                     <label class="form-label fs-8 fw-semibold mb-1">Diskon Promo Kamar (%)</label>
@@ -71,12 +71,17 @@
                                 </div>
 
                                 <div class="col-12">
-                                    <label class="form-label fs-8 fw-semibold mb-1">Tarif Tahunan (Rp) <span class="text-muted fw-normal">(Opsional)</span></label>
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <label class="form-label fs-8 fw-semibold mb-0">Tarif Tahunan (Rp) <span class="text-muted fw-normal">(Otomatis 12 × Bulanan jika kosong)</span></label>
+                                        <button type="button" class="btn btn-link btn-xs p-0 text-decoration-none fs-8 text-primary btn-sync-yearly-edit" data-target="edit_price_tahun_{{ $item->id }}" data-source="edit_price_bulan_{{ $item->id }}">
+                                            <i class="bi bi-magic me-1"></i>Hitung 12 × Bulanan
+                                        </button>
+                                    </div>
                                     <div class="input-group">
                                         <span class="input-group-text bg-white text-muted fs-8">Rp</span>
-                                        <input type="number" name="price_tahun" class="form-control" value="{{ $item->yearly_price ? $item->yearly_price->price : '' }}" placeholder="Contoh: 16500000" min="0" step="100000">
+                                        <input type="number" name="price_tahun" id="edit_price_tahun_{{ $item->id }}" class="form-control" value="{{ $item->yearly_price ? $item->yearly_price->price : '' }}" placeholder="Otomatis 12 × bulanan" min="0" step="1">
                                     </div>
-                                    <div class="form-text fs-8 text-muted">Dapat dikosongkan jika tidak ada paket tahunan.</div>
+                                    <div class="form-text fs-8 text-muted">Dapat dikosongkan jika ingin otomatis mengikuti 12 × tarif bulanan.</div>
                                 </div>
                             </div>
                         </div>

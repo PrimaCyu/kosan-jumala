@@ -363,7 +363,7 @@
                     height: 150,
                     toolbar: [
                         ['style', ['style']],
-                        ['font', ['bold', 'underline', 'clear']],
+                        ['font', ['bold', 'italic', 'underline', 'clear']],
                         ['color', ['color']],
                         ['para', ['ul', 'ol', 'paragraph']],
                         ['table', ['table']],
@@ -382,10 +382,63 @@
             });
         });
 
+        // Sinkronisasi Multi-Unit Room Generator
+        function updateRoomGenerationPreview() {
+            const toggle = document.getElementById('toggleGenerateMultipleRooms');
+            const options = document.getElementById('multipleRoomsOptions');
+            const singleWrap = document.getElementById('wrapSingleRoomName');
+            const singleInput = document.getElementById('inputSingleRoom');
+            const preview = document.getElementById('previewRoomGeneration');
+            if (!toggle || !options) return;
+
+            if (toggle.checked) {
+                options.classList.remove('d-none');
+                if (singleWrap) singleWrap.classList.add('d-none');
+                if (singleInput) singleInput.removeAttribute('required');
+
+                const prefix = document.getElementById('room_prefix')?.value || 'Kamar ';
+                const start = parseInt(document.getElementById('room_start_number')?.value) || 101;
+                const qty = Math.min(50, Math.max(1, parseInt(document.getElementById('room_quantity')?.value) || 1));
+
+                const list = [];
+                for (let i = 0; i < Math.min(5, qty); i++) {
+                    list.push(prefix + (start + i));
+                }
+                if (qty > 5) {
+                    list.push(`... s/d ${prefix + (start + qty - 1)} (${qty} kamar total)`);
+                }
+                if (preview) preview.textContent = list.join(', ');
+            } else {
+                options.classList.add('d-none');
+                if (singleWrap) singleWrap.classList.remove('d-none');
+                if (singleInput) singleInput.setAttribute('required', 'required');
+            }
+        }
+
+        document.addEventListener('change', function(e) {
+            if (e.target && e.target.id === 'toggleGenerateMultipleRooms') {
+                updateRoomGenerationPreview();
+            }
+        });
+
+        document.addEventListener('input', function(e) {
+            if (['room_prefix', 'room_start_number', 'room_quantity'].includes(e.target.id)) {
+                updateRoomGenerationPreview();
+            }
+        });
+
         function updateAddPricePreview() {
             const rawVal = parseFloat(document.getElementById('add_price_bulan')?.value) || 0;
             const discVal = parseFloat(document.getElementById('add_cumulative_discount')?.value) || 0;
             const netDisplay = document.getElementById('addPriceNetDisplay');
+            const yearlyInput = document.getElementById('add_price_tahun');
+
+            // Auto-fill tarif tahunan jika belum diisi manual
+            if (yearlyInput && rawVal > 0 && (!yearlyInput.value || yearlyInput.dataset.autoSynced === 'true')) {
+                yearlyInput.value = Math.round(rawVal * 12);
+                yearlyInput.dataset.autoSynced = 'true';
+            }
+
             if (!netDisplay) return;
 
             if (rawVal <= 0) {
@@ -453,6 +506,29 @@
         });
 
         document.addEventListener('click', function(e) {
+            const btnSyncYearly = e.target.closest('#btnSyncYearlyPrice');
+            if (btnSyncYearly) {
+                const monthly = parseFloat(document.getElementById('add_price_bulan')?.value) || 0;
+                const yearlyInput = document.getElementById('add_price_tahun');
+                if (yearlyInput && monthly > 0) {
+                    yearlyInput.value = Math.round(monthly * 12);
+                    yearlyInput.dataset.autoSynced = 'false';
+                }
+                return;
+            }
+
+            const btnSyncEdit = e.target.closest('.btn-sync-yearly-edit');
+            if (btnSyncEdit) {
+                const targetId = btnSyncEdit.getAttribute('data-target');
+                const sourceId = btnSyncEdit.getAttribute('data-source');
+                const sourceVal = parseFloat(document.getElementById(sourceId)?.value) || 0;
+                const targetInput = document.getElementById(targetId);
+                if (targetInput && sourceVal > 0) {
+                    targetInput.value = Math.round(sourceVal * 12);
+                }
+                return;
+            }
+
             const btnAddKmrRow = e.target.closest('.btn-add-kamar-row');
             if (btnAddKmrRow) {
                 const container = document.getElementById('kamarInputContainer');
@@ -468,25 +544,32 @@
 
                     div.innerHTML = `
                         <div class="row g-3 align-items-center">
-                            <div class="col-md-5">
+                            <div class="col-md-4">
                                 <label class="form-label fs-8 fw-semibold mb-1">Nama / Tipe Kamar <span class="text-danger">*</span></label>
                                 <input type="text" name="dataKamar[${index}][room]" class="form-control" placeholder="Contoh: Kamar 102" required>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label class="form-label fs-8 fw-semibold mb-1">Tarif Bulanan (Rp) <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light text-muted fs-8">Rp</span>
-                                    <input type="number" name="dataKamar[${index}][price_bulan]" class="form-control fw-semibold" placeholder="1500000" min="0" step="10000" required>
+                                    <input type="number" name="dataKamar[${index}][price_bulan]" class="form-control fw-semibold" placeholder="1500000" min="0" step="1" required>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label fs-8 fw-semibold mb-1">Tarif Tahunan (Rp)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light text-muted fs-8">Rp</span>
+                                    <input type="number" name="dataKamar[${index}][price_tahun]" class="form-control" placeholder="12x bulanan" min="0" step="1">
                                 </div>
                             </div>
                             <div class="col-md-2">
-                                <label class="form-label fs-8 fw-semibold mb-1">Diskon (%)</label>
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <label class="form-label fs-8 fw-semibold mb-1">Diskon (%)</label>
+                                    <button type="button" class="btn btn-xs btn-outline-danger btn-remove-kamar-row p-1 mb-1" title="Hapus Baris">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
                                 ${discKamarField}
-                            </div>
-                            <div class="col-md-1 text-end align-self-end">
-                                <button type="button" class="btn btn-sm btn-outline-danger btn-remove-kamar-row w-100" title="Hapus Baris">
-                                    <i class="bi bi-trash"></i>
-                                </button>
                             </div>
                             <div class="col-12">
                                 <label class="form-label fs-8 fw-semibold mb-1">Deskripsi Singkat</label>
