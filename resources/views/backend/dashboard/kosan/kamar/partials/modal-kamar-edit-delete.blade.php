@@ -145,6 +145,14 @@
                             </div>
                         @endif
                     </div>
+
+                    <div class="col-12">
+                        @include('backend.dashboard.kosan.partials-kosan._video_input', [
+                            'uid' => 'kamar_edit_' . $item->id,
+                            'model' => $item,
+                            'contextLabel' => 'Unit Kamar',
+                        ])
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">

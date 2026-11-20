@@ -26,7 +26,7 @@
                         <h6 class="fw-bold mb-0 fs-7">Identitas & Wilayah Properti</h6>
                     </div>
                     <div class="row g-3">
-                        <div class="col-md-7">
+                        <div class="col-12">
                             <label for="title" class="form-label fs-8 fw-semibold mb-1">
                                 Nama Kos / Judul Properti <span class="text-danger">*</span>
                             </label>
@@ -42,22 +42,13 @@
                             @enderror
                         </div>
 
-                        <div class="col-md-5">
-                            <label for="select_wilayah_tambah" class="form-label fs-8 fw-semibold mb-1">
-                                Wilayah (Bali) <span class="text-danger">*</span>
-                            </label>
-                            <select name="wilayah" id="select_wilayah_tambah" class="form-select @error('wilayah') is-invalid @enderror" required>
-                                <option value="" disabled {{ old('wilayah') ? '' : 'selected' }}>-- Pilih Kab / Kota --</option>
-                                @php
-                                    $baliRegencies = ['Denpasar', 'Badung', 'Gianyar', 'Tabanan', 'Buleleng', 'Karangasem', 'Klungkung', 'Bangli', 'Jembrana'];
-                                @endphp
-                                @foreach($baliRegencies as $reg)
-                                    <option value="{{ $reg }}" {{ old('wilayah') == $reg ? 'selected' : '' }}>{{ $reg }}</option>
-                                @endforeach
-                            </select>
-                            @error('wilayah')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                        <!-- Dependent Dropdown Wilayah Indonesia: Provinsi -> Kab/Kota -> Kecamatan -->
+                        <div class="col-12">
+                            @include('backend.dashboard.kosan.partials-kosan._wilayah_dependent_select', [
+                                'prefix' => 'tambah',
+                                'provinces' => $provinces ?? \App\Service\WilayahService::getProvinces(),
+                                'item' => null,
+                            ])
                         </div>
 
                         <div class="col-12">
@@ -142,6 +133,15 @@
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <!-- Video Properti Kosan (Upload / Link) -->
+                <div class="mb-4">
+                    @include('backend.dashboard.kosan.partials-kosan._video_input', [
+                        'uid' => 'kosan_tambah',
+                        'model' => null,
+                        'contextLabel' => 'Properti Kosan',
+                    ])
                 </div>
 
                 <hr class="my-3 opacity-25">

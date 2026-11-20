@@ -259,8 +259,9 @@
     }
 
     // Human-friendly location text for badges & subheaders
-    $displayLocation = !empty($detectedPlace) ? ($detectedPlace . ' (' . ($kosan->wilayah ?? 'Bali') . ')') : ($kosan->wilayah ?? 'Lokasi Terdaftar');
-    $displayLocationShort = !empty($detectedPlace) ? $detectedPlace : ($kosan->wilayah ?? 'Bali');
+    $kosFullLocation = $kosan->full_location;
+    $displayLocation = !empty($detectedPlace) ? ($detectedPlace . ' (' . $kosFullLocation . ')') : $kosFullLocation;
+    $displayLocationShort = !empty($detectedPlace) ? $detectedPlace : ($kosan->kabupaten ?: ($kosan->wilayah ?? 'Indonesia'));
 
     $iconMap = [
         'Wi-Fi / Internet' => 'fa-wifi',
@@ -387,6 +388,17 @@
             >
             <div class="absolute inset-0 bg-gradient-to-t from-[#3B2314]/80 via-[#3B2314]/20 to-transparent pointer-events-none"></div>
 
+            @if($kosan->has_video)
+              <button
+                type="button"
+                onclick="event.stopPropagation(); scrollToSection('video-tour')"
+                class="absolute top-4 right-4 sm:top-5 sm:right-5 z-10 inline-flex items-center gap-2 px-3.5 py-2 bg-[#E60049] hover:bg-[#3B2314] text-white rounded-full text-[11px] font-black shadow-lg transition-all active:scale-95"
+              >
+                <i class="fa-solid fa-play text-[10px]"></i>
+                <span>Tonton Video Tour</span>
+              </button>
+            @endif
+
             <div class="absolute left-4 bottom-4 sm:left-6 sm:bottom-6 right-4 sm:right-6 flex items-end justify-between gap-4 text-white">
               <div>
                 <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-[#E60049] rounded-full text-[10px] font-black uppercase tracking-wider shadow-md">
@@ -505,6 +517,13 @@
                 Deskripsi
               </button>
 
+              @if($kosan->has_video)
+              <button type="button" onclick="scrollToSection('video-tour', this)" class="tab-button px-3 sm:px-3.5 py-2.5 rounded-xl text-[#F8EBDD] hover:bg-white/10 text-[10px] sm:text-xs font-extrabold whitespace-nowrap transition-all flex items-center gap-1.5">
+                <i class="fa-solid fa-play text-[#F3A833] text-[9px]"></i>
+                <span>Video</span>
+              </button>
+              @endif
+
               <button type="button" onclick="scrollToSection('fasilitas', this)" class="tab-button px-3 sm:px-3.5 py-2.5 rounded-xl text-[#F8EBDD] hover:bg-white/10 text-[10px] sm:text-xs font-extrabold whitespace-nowrap transition-all">
                 Fasilitas
               </button>
@@ -553,6 +572,18 @@
 
       </div>
     </section>
+
+    <!-- 6.05 VIDEO TOUR PROPERTI KOSAN -->
+    @if($kosan->has_video)
+    <section id="video-tour" class="reveal">
+      @include('frontend.partials._video_player', [
+        'videoEmbed' => $kosan->video_embed,
+        'eyebrow'    => 'Video Tour Properti',
+        'heading'    => 'Tur Video ' . $kosan->title,
+        'subtitle'   => 'Lihat suasana asli gedung, fasilitas umum, dan lingkungan sekitar properti kos ini.',
+      ])
+    </section>
+    @endif
 
     <!-- 6.1 FASILITAS SECTION -->
     <section id="fasilitas" class="reveal">
@@ -827,13 +858,21 @@
                   @endif
                 </div>
 
-                <!-- Total Photo Badge -->
-                @if($imgCount > 0)
-                  <div class="absolute bottom-3 right-3 px-2 py-0.5 bg-[#24150D]/80 backdrop-blur-sm text-white rounded-lg text-[9px] font-bold flex items-center gap-1">
-                    <i class="fa-solid fa-camera text-[8px]"></i>
-                    <span>{{ $imgCount }} Foto</span>
-                  </div>
-                @endif
+                <!-- Total Photo & Video Badges -->
+                <div class="absolute bottom-3 right-3 flex items-center gap-1.5">
+                  @if($kamarItem->has_video)
+                    <span class="px-2 py-0.5 bg-[#E60049]/95 backdrop-blur-sm text-white rounded-lg text-[9px] font-black flex items-center gap-1 shadow">
+                      <i class="fa-solid fa-play text-[7px]"></i>
+                      <span>Video</span>
+                    </span>
+                  @endif
+                  @if($imgCount > 0)
+                    <div class="px-2 py-0.5 bg-[#24150D]/80 backdrop-blur-sm text-white rounded-lg text-[9px] font-bold flex items-center gap-1">
+                      <i class="fa-solid fa-camera text-[8px]"></i>
+                      <span>{{ $imgCount }} Foto</span>
+                    </div>
+                  @endif
+                </div>
               </div>
 
               <div class="sm:col-span-3 p-5 flex flex-col justify-between">

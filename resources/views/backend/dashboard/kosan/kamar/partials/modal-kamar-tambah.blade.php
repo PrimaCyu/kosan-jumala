@@ -170,6 +170,17 @@
 
                 <hr class="my-3 opacity-25">
 
+                <!-- Bagian 3.5: Video Unit Kamar (Upload / Link) -->
+                <div class="mb-4">
+                    @include('backend.dashboard.kosan.partials-kosan._video_input', [
+                        'uid' => 'kamar_tambah',
+                        'model' => null,
+                        'contextLabel' => 'Unit Kamar',
+                    ])
+                </div>
+
+                <hr class="my-3 opacity-25">
+
                 <!-- Bagian 4: Fasilitas Dalam Kamar -->
                 <div class="mb-4">
                     <h6 class="fw-bold mb-3 fs-7 text-dark">

@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasVideoMedia;
+use App\Service\WilayahService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ProductKosan extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasVideoMedia;
     protected $fillable =
     [
         'title',
@@ -15,9 +17,17 @@ class ProductKosan extends Model
         'description',
         'fasilitas',
         'wilayah',
+        'provinsi_id',
+        'provinsi',
+        'kabupaten_id',
+        'kabupaten',
+        'kecamatan_id',
+        'kecamatan',
         'view',
         'tersedia',
-        'gmaps'
+        'gmaps',
+        'video_path',
+        'video_url',
     ];
 
     protected static function boot(){
@@ -130,5 +140,17 @@ class ProductKosan extends Model
         $total = $this->total_rooms_count;
         if ($total === 0) return 0.0;
         return round(($this->occupied_rooms_count / $total) * 100, 1);
+    }
+
+    /**
+     * Accessor alamat wilayah lengkap (Kecamatan, Kabupaten/Kota, Provinsi) dengan fallback ke wilayah lama.
+     */
+    public function getFullLocationAttribute(): string
+    {
+        $composed = WilayahService::composeWilayahLabel($this->kecamatan, $this->kabupaten, $this->provinsi);
+        if ($composed !== '') {
+            return $composed;
+        }
+        return $this->wilayah ?: 'Indonesia';
     }
 }

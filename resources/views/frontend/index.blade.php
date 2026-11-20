@@ -417,9 +417,14 @@
                         <div class="bg-white rounded-[2rem] border border-[#E9DDD2] shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col sm:flex-row">
                             <div class="sm:w-5/12 relative h-56 sm:h-auto overflow-hidden bg-[#EDE4DC] shrink-0">
                                 <img src="{{ $kosImgUrl }}" alt="{{ $kos->title }}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                                <span class="absolute top-3 left-3 px-3 py-1 bg-[#3B2314]/90 text-white rounded-full text-[10px] font-black">
-                                    {{ $kos->wilayah ?? 'Bali' }}
+                                <span class="absolute top-3 left-3 px-3 py-1 bg-[#3B2314]/90 text-white rounded-full text-[10px] font-black max-w-[75%] truncate">
+                                    {{ $kos->kabupaten ?: ($kos->wilayah ?? 'Indonesia') }}
                                 </span>
+                                @if($kos->has_video)
+                                    <span class="absolute bottom-3 right-3 px-2.5 py-1 bg-[#E60049]/95 text-white rounded-full text-[10px] font-black flex items-center gap-1 shadow">
+                                        <i class="fa-solid fa-play text-[8px]"></i> Video
+                                    </span>
+                                @endif
                             </div>
                             <div class="p-6 flex-1 flex flex-col justify-between">
                                 <div>
@@ -433,9 +438,9 @@
                                         {{ strip_tags($kos->description ?? 'Properti hunian kos nyaman dengan fasilitas unggulan dan lokasi aman.') }}
                                     </p>
                                 </div>
-                                <div class="pt-4 mt-4 border-t border-[#E9DDD2] flex items-center justify-between">
-                                    <span class="text-[11px] text-[#8E7B6D] font-bold">
-                                        <i class="fa-solid fa-location-dot text-[#E60049] mr-1"></i> {{ $kos->wilayah }}
+                                <div class="pt-4 mt-4 border-t border-[#E9DDD2] flex items-center justify-between gap-2">
+                                    <span class="text-[11px] text-[#8E7B6D] font-bold truncate" title="{{ $kos->full_location }}">
+                                        <i class="fa-solid fa-location-dot text-[#E60049] mr-1"></i> {{ $kos->full_location }}
                                     </span>
                                     <a href="{{ route('kosan.detail', $kos->slug) }}" class="px-4 py-2 bg-[#3B2314] hover:bg-[#E60049] text-white text-xs font-black rounded-xl transition-all active:scale-95 flex items-center gap-1.5" aria-label="Lihat kos {{ $kos->title }}">
                                         <span>Lihat Kos</span>
@@ -554,10 +559,15 @@
                                         <i class="fa-solid fa-eye text-[#E60049]"></i> {{ number_format($kamar->views ?? 0) }}
                                     </div>
 
-                                    <div class="absolute bottom-3 left-3 right-3 flex justify-between items-center">
-                                        <span class="inline-block bg-[#F3A833] text-[#3B2314] text-[10px] font-black px-3 py-1 rounded-full shadow">
+                                    <div class="absolute bottom-3 left-3 right-3 flex justify-between items-center gap-2">
+                                        <span class="inline-block bg-[#F3A833] text-[#3B2314] text-[10px] font-black px-3 py-1 rounded-full shadow truncate">
                                             <i class="fa-solid fa-location-dot mr-1"></i> {{ $wilayahNama }}
                                         </span>
+                                        @if($kamar->has_video)
+                                            <span class="inline-flex items-center gap-1 bg-[#E60049]/95 text-white text-[10px] font-black px-2.5 py-1 rounded-full shadow shrink-0">
+                                                <i class="fa-solid fa-play text-[8px]"></i> Video
+                                            </span>
+                                        @endif
                                     </div>
                                 </div>
 

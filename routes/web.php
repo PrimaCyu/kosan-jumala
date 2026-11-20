@@ -13,6 +13,7 @@ use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\SosialMediaController;
 use App\Http\Controllers\TamuBookingController;
 use App\Http\Controllers\TestimoniController;
+use App\Http\Controllers\WilayahController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -44,6 +45,17 @@ Route::get('/booking/success/{token}', [TamuBookingController::class, 'bookingSu
 Route::get('/booking/download-invoice/{token}', [TamuBookingController::class, 'downloadInvoice'])->name('booking.download.invoice');
 
 Route::get('/check-date/kamar/{id}', [HomeController::class, 'checkDateKamar'])->name('check.date.kamar');
+
+/*
+|--------------------------------------------------------------------------
+| Wilayah Indonesia Dependent Dropdown API (Provinsi -> Kab/Kota -> Kecamatan)
+|--------------------------------------------------------------------------
+*/
+Route::prefix('/api/wilayah')->controller(WilayahController::class)->name('api.wilayah.')->group(function () {
+    Route::get('/provinces', 'provinces')->name('provinces');
+    Route::get('/regencies/{provinceId}', 'regencies')->name('regencies');
+    Route::get('/districts/{regencyId}', 'districts')->name('districts');
+});
 
 /*
 |--------------------------------------------------------------------------

@@ -134,6 +134,9 @@ class KamarKosanController extends Controller
                 'price_tahun'         => 'nullable|numeric|min:0',
                 'cumulative_discount' => 'nullable|numeric|min:0|max:100',
                 'description'         => 'nullable|string',
+                'video_mode'          => 'nullable|in:link,upload',
+                'video_url'           => 'nullable|url|max:1000',
+                'video_file'          => 'nullable|file|mimes:mp4,webm,mov,ogg,ogv|max:51200',
                 'image'               => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
                 'images'              => 'nullable|array',
                 'images.*'            => 'image|mimes:jpeg,png,jpg,webp|max:5120',
@@ -141,6 +144,9 @@ class KamarKosanController extends Controller
                 'room.required'        => 'Nama atau nomor kamar wajib diisi.',
                 'price_bulan.required' => 'Tarif sewa bulanan wajib ditentukan saat membuat kamar.',
                 'price_bulan.numeric'  => 'Tarif sewa bulanan harus berupa angka.',
+                'video_url.url'        => 'Link video kamar harus berupa URL yang valid (diawali https:// atau http://).',
+                'video_file.mimes'     => 'Format file video kamar harus MP4, WebM, MOV, atau OGG.',
+                'video_file.max'       => 'Ukuran file video kamar maksimal 50 MB.',
             ]);
 
             $isSuperAdmin = auth()->user()->isSuperAdmin();
@@ -176,6 +182,15 @@ class KamarKosanController extends Controller
                     $uploadedImagePaths[] = $request->file('image')->store('kosan/kamar', 'public');
                 }
 
+                // Upload video kamar sekali (jika ada) atau ambil link video
+                $videoPath = null;
+                $videoUrl = null;
+                if ($request->hasFile('video_file') && $request->file('video_file')->isValid()) {
+                    $videoPath = $request->file('video_file')->store('kosan/kamar/video', 'public');
+                } elseif ($request->filled('video_url')) {
+                    $videoUrl = trim((string) $request->input('video_url'));
+                }
+
                 for ($i = 0; $i < $quantity; $i++) {
                     $roomName = $isMultiple
                         ? ($prefix . ($startNum + $i))
@@ -187,6 +202,8 @@ class KamarKosanController extends Controller
                         'description'         => Artikel::sanitizeHtml($request->input('description')),
                         'fasilitas'           => $fasilitas,
                         'cumulative_discount' => $discountVal,
+                        'video_path'          => $videoPath,
+                        'video_url'           => $videoUrl,
                         'views'               => 0,
                     ]);
 
@@ -307,6 +324,10 @@ class KamarKosanController extends Controller
             'cumulative_discount' => 'nullable|numeric|min:0|max:100',
             'description'         => 'nullable|string',
             'views'               => 'nullable|integer|min:0',
+            'video_mode'          => 'nullable|in:link,upload',
+            'video_url'           => 'nullable|url|max:1000',
+            'video_file'          => 'nullable|file|mimes:mp4,webm,mov,ogg,ogv|max:51200',
+            'remove_video'        => 'nullable|boolean',
             'image'               => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
             'images'              => 'nullable|array',
             'images.*'            => 'image|mimes:jpeg,png,jpg,webp|max:5120',
@@ -314,6 +335,9 @@ class KamarKosanController extends Controller
             'room.required'        => 'Nama kamar wajib diisi.',
             'price_bulan.required' => 'Tarif sewa bulanan wajib ditentukan.',
             'price_bulan.numeric'  => 'Tarif sewa bulanan harus berupa angka.',
+            'video_url.url'        => 'Link video kamar harus berupa URL yang valid (diawali https:// atau http://).',
+            'video_file.mimes'     => 'Format file video kamar harus MP4, WebM, MOV, atau OGG.',
+            'video_file.max'       => 'Ukuran file video kamar maksimal 50 MB.',
         ]);
 
         $isSuperAdmin = auth()->user()->isSuperAdmin();
@@ -324,12 +348,46 @@ class KamarKosanController extends Controller
 
         $discountVal = $isSuperAdmin ? (float)$request->input('cumulative_discount', 0) : ($kamar_kosan->cumulative_discount ?? 0);
 
-        DB::transaction(function () use ($kamar_kosan, $request, $fasilitas, $discountVal) {
+        // Resolusi video kamar (aman terhadap multi-kamar yang berbagi file video yang sama)
+        $oldVideoPath = $kamar_kosan->video_path;
+        $newVideoPath = $oldVideoPath;
+        $newVideoUrl  = $kamar_kosan->video_url;
+        $deleteOldFile = false;
+
+        if ($request->boolean('remove_video')) {
+            $newVideoPath = null;
+            $newVideoUrl  = null;
+            $deleteOldFile = !empty($oldVideoPath);
+        } elseif ($request->hasFile('video_file') && $request->file('video_file')->isValid()) {
+            $newVideoPath = $request->file('video_file')->store('kosan/kamar/video', 'public');
+            $newVideoUrl  = null;
+            $deleteOldFile = !empty($oldVideoPath);
+        } else {
+            $videoMode = $request->input('video_mode');
+            $rawVideoUrl = trim((string) $request->input('video_url', ''));
+            if ($videoMode === 'link') {
+                if ($rawVideoUrl !== '') {
+                    $newVideoPath = null;
+                    $newVideoUrl  = $rawVideoUrl;
+                    $deleteOldFile = !empty($oldVideoPath);
+                } elseif (!$oldVideoPath) {
+                    $newVideoUrl = null;
+                }
+            } elseif ($videoMode !== 'upload' && $rawVideoUrl !== '') {
+                $newVideoPath = null;
+                $newVideoUrl  = $rawVideoUrl;
+                $deleteOldFile = !empty($oldVideoPath);
+            }
+        }
+
+        DB::transaction(function () use ($kamar_kosan, $request, $fasilitas, $discountVal, $newVideoPath, $newVideoUrl) {
             $kamar_kosan->update([
                 'room'                => $request->input('room'),
                 'cumulative_discount' => $discountVal,
                 'description'         => Artikel::sanitizeHtml($request->input('description')),
                 'fasilitas'           => $fasilitas,
+                'video_path'          => $newVideoPath,
+                'video_url'           => $newVideoUrl,
                 'views'               => $request->input('views', $kamar_kosan->views ?? 0),
             ]);
 
@@ -384,10 +442,21 @@ class KamarKosanController extends Controller
             }
         });
 
+        if ($deleteOldFile && $oldVideoPath) {
+            $stillReferenced = ProductKamarKosan::withTrashed()
+                ->where('id', '!=', $kamar_kosan->id)
+                ->where('video_path', $oldVideoPath)
+                ->exists();
+            if (!$stillReferenced && Storage::disk('public')->exists($oldVideoPath)) {
+                Storage::disk('public')->delete($oldVideoPath);
+            }
+        }
+
         $kosan = ProductKosan::find($product_kosan);
         if ($kosan) {
             $kosan->syncAvailableCount();
             \Illuminate\Support\Facades\Cache::forget('home_kamar_list');
+            \Illuminate\Support\Facades\Cache::forget('home_kosan_list');
             \Illuminate\Support\Facades\Cache::forget("kosan_detail_{$kosan->slug}");
         }
 

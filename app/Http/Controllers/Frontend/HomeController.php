@@ -8,6 +8,7 @@ use App\Models\PaymentMethod;
 use App\Models\ProductKamarKosan;
 use App\Models\ProductKosan;
 use App\Models\Testimoni;
+use App\Service\WilayahService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
@@ -62,6 +63,9 @@ class HomeController extends Controller
             $query->where(function($q) use ($search) {
                 $q->whereRaw('LOWER(title) LIKE ?', ["%{$search}%"])
                   ->orWhereRaw('LOWER(wilayah) LIKE ?', ["%{$search}%"])
+                  ->orWhereRaw('LOWER(provinsi) LIKE ?', ["%{$search}%"])
+                  ->orWhereRaw('LOWER(kabupaten) LIKE ?', ["%{$search}%"])
+                  ->orWhereRaw('LOWER(kecamatan) LIKE ?', ["%{$search}%"])
                   ->orWhereRaw('LOWER(fasilitas) LIKE ?', ["%{$search}%"])
                   ->orWhereHas('productKamarKosan', function($sub) use ($search) {
                       $sub->whereRaw('LOWER(room) LIKE ?', ["%{$search}%"])
@@ -70,8 +74,54 @@ class HomeController extends Controller
             });
         }
 
+        if ($request->filled('provinsi_id')) {
+            $provId = $request->input('provinsi_id');
+            $provObj = WilayahService::findProvince($provId);
+            $query->where(function ($q) use ($provId, $provObj) {
+                $q->where('provinsi_id', $provId);
+                if ($provObj) {
+                    $name = $this->escapeLike(strtolower($provObj['name']));
+                    $q->orWhereRaw('LOWER(provinsi) LIKE ?', ["%{$name}%"])
+                      ->orWhereRaw('LOWER(wilayah) LIKE ?', ["%{$name}%"]);
+                }
+            });
+        }
+
+        if ($request->filled('kabupaten_id')) {
+            $kabId = $request->input('kabupaten_id');
+            $kabObj = WilayahService::findRegency($kabId);
+            $query->where(function ($q) use ($kabId, $kabObj) {
+                $q->where('kabupaten_id', $kabId);
+                if ($kabObj) {
+                    $short = strtolower(trim(preg_replace('/^(kabupaten|kota)\s+/i', '', $kabObj['name'])));
+                    $escaped = $this->escapeLike($short);
+                    $q->orWhereRaw('LOWER(kabupaten) LIKE ?', ["%{$escaped}%"])
+                      ->orWhereRaw('LOWER(wilayah) LIKE ?', ["%{$escaped}%"]);
+                }
+            });
+        }
+
+        if ($request->filled('kecamatan_id')) {
+            $kecId = $request->input('kecamatan_id');
+            $kecObj = WilayahService::findDistrict($kecId);
+            $query->where(function ($q) use ($kecId, $kecObj) {
+                $q->where('kecamatan_id', $kecId);
+                if ($kecObj) {
+                    $escaped = $this->escapeLike(strtolower($kecObj['name']));
+                    $q->orWhereRaw('LOWER(kecamatan) LIKE ?', ["%{$escaped}%"])
+                      ->orWhereRaw('LOWER(wilayah) LIKE ?', ["%{$escaped}%"]);
+                }
+            });
+        }
+
         if ($request->has('wilayah') && $request->wilayah != 'semua' && !empty($request->wilayah)) {
-            $query->where('wilayah', $request->wilayah);
+            $wSearch = $this->escapeLike(strtolower($request->wilayah));
+            $query->where(function ($q) use ($wSearch) {
+                $q->whereRaw('LOWER(wilayah) LIKE ?', ["%{$wSearch}%"])
+                  ->orWhereRaw('LOWER(provinsi) LIKE ?', ["%{$wSearch}%"])
+                  ->orWhereRaw('LOWER(kabupaten) LIKE ?', ["%{$wSearch}%"])
+                  ->orWhereRaw('LOWER(kecamatan) LIKE ?', ["%{$wSearch}%"]);
+            });
         }
 
         if ($request->filled('price_min') || $request->filled('price_max')) {
@@ -108,7 +158,8 @@ class HomeController extends Controller
         }
 
         $kosanList = $query->orderByDesc('created_at')->paginate(9)->withQueryString();
-        return view('frontend.kosan.kos', compact('kosanList'));
+        $provinces = WilayahService::getProvinces();
+        return view('frontend.kosan.kos', compact('kosanList', 'provinces'));
     }
 
     public function kosanDetail($slug)

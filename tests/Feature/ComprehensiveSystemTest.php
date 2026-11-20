@@ -472,4 +472,189 @@ class ComprehensiveSystemTest extends TestCase
         $this->kosanA->refresh();
         $this->assertEquals('Badung', $this->kosanA->wilayah);
     }
+
+    /**
+     * 13. Test Dependent Wilayah Indonesia API (Provinsi -> Kabupaten/Kota -> Kecamatan)
+     */
+    public function test_wilayah_indonesia_dependent_dropdown_api_returns_full_hierarchy(): void
+    {
+        // 1. Provinces (38 provinces in Indonesia)
+        $resProv = $this->getJson(route('api.wilayah.provinces'));
+        $resProv->assertStatus(200);
+        $provinces = $resProv->json();
+        $this->assertGreaterThanOrEqual(38, count($provinces));
+        $this->assertTrue(collect($provinces)->contains(fn($p) => $p['id'] === '51' && $p['name'] === 'Bali'));
+
+        // 2. Regencies for Bali (51)
+        $resReg = $this->getJson(route('api.wilayah.regencies', '51'));
+        $resReg->assertStatus(200);
+        $regencies = $resReg->json();
+        $this->assertCount(9, $regencies);
+        $this->assertTrue(collect($regencies)->contains(fn($r) => $r['id'] === '51.03' && $r['name'] === 'Kabupaten Badung'));
+
+        // 3. Districts for Kabupaten Badung (51.03)
+        $resDist = $this->getJson(route('api.wilayah.districts', '51.03'));
+        $resDist->assertStatus(200);
+        $districts = $resDist->json();
+        $this->assertNotEmpty($districts);
+        $this->assertTrue(collect($districts)->contains(fn($d) => $d['id'] === '51.03.05' && $d['name'] === 'Kuta Selatan'));
+    }
+
+    /**
+     * 14. Test Kosan Create, Update, Display & Filter with Dependent Wilayah & Video (Link & Upload)
+     */
+    public function test_kosan_dependent_wilayah_and_video_link_upload_lifecycle(): void
+    {
+        $this->actingAs($this->superAdmin);
+
+        // 1. Create Kosan with Provinsi -> Kabupaten -> Kecamatan AND YouTube link
+        $response = $this->post(route('admin.product.kosan.insert'), [
+            'title'        => 'Kos Jimbaran Hills',
+            'provinsi_id'  => '51',
+            'kabupaten_id' => '51.03',
+            'kecamatan_id' => '51.03.05',
+            'tersedia'     => 4,
+            'video_mode'   => 'link',
+            'video_url'    => 'https://youtu.be/dQw4w9WgXcQ',
+        ]);
+        $response->assertSessionHas('success');
+
+        $kosan = ProductKosan::where('title', 'Kos Jimbaran Hills')->first();
+        $this->assertNotNull($kosan);
+        $this->assertEquals('51', $kosan->provinsi_id);
+        $this->assertEquals('Bali', $kosan->provinsi);
+        $this->assertEquals('51.03', $kosan->kabupaten_id);
+        $this->assertEquals('Kabupaten Badung', $kosan->kabupaten);
+        $this->assertEquals('51.03.05', $kosan->kecamatan_id);
+        $this->assertEquals('Kuta Selatan', $kosan->kecamatan);
+        $this->assertEquals('Kec. Kuta Selatan, Kabupaten Badung, Bali', $kosan->wilayah);
+        $this->assertTrue($kosan->has_video);
+        $this->assertEquals('https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0', $kosan->video_embed['src']);
+
+        // Verify frontend detail page displays both structured location and YouTube embed
+        $detailRes = $this->get(route('kosan.detail', $kosan->slug));
+        $detailRes->assertStatus(200);
+        $detailRes->assertSee('Kec. Kuta Selatan, Kabupaten Badung, Bali');
+        $detailRes->assertSee('https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0');
+
+        // Verify frontend kosan index dependent filter works
+        $filterRes = $this->get(route('kosan.index', [
+            'provinsi_id'  => '51',
+            'kabupaten_id' => '51.03',
+            'kecamatan_id' => '51.03.05',
+        ]));
+        $filterRes->assertStatus(200);
+        $filterRes->assertSee('Kos Jimbaran Hills');
+        $filterRes->assertDontSee('Kos Sakura Indah');
+
+        // 2. Update Kosan to uploaded MP4 video file
+        $videoFile = UploadedFile::fake()->create('tour_kosan.mp4', 512, 'video/mp4');
+        $updateRes = $this->put(route('admin.product.kosan.update', $kosan->id), [
+            'title'        => 'Kos Jimbaran Hills',
+            'provinsi_id'  => '51',
+            'kabupaten_id' => '51.03',
+            'kecamatan_id' => '51.03.05',
+            'video_mode'   => 'upload',
+            'video_file'   => $videoFile,
+        ]);
+        $updateRes->assertSessionHas('success');
+
+        $kosan->refresh();
+        $this->assertNotNull($kosan->video_path);
+        $this->assertNull($kosan->video_url);
+        Storage::disk('public')->assertExists($kosan->video_path);
+        $uploadedPath = $kosan->video_path;
+
+        // Verify HTML5 video player renders on frontend
+        $detailRes2 = $this->get(route('kosan.detail', $kosan->slug));
+        $detailRes2->assertStatus(200);
+        $detailRes2->assertSee('<video', false);
+        $detailRes2->assertSee($uploadedPath);
+
+        // 3. Unrelated edit preserves existing uploaded video
+        $preserveRes = $this->put(route('admin.product.kosan.update', $kosan->id), [
+            'title'      => 'Kos Jimbaran Hills Executive',
+            'video_mode' => 'upload',
+        ]);
+        $preserveRes->assertSessionHas('success');
+        $kosan->refresh();
+        $this->assertEquals($uploadedPath, $kosan->video_path);
+
+        // 4. Removing video deletes file and clears columns
+        $removeRes = $this->put(route('admin.product.kosan.update', $kosan->id), [
+            'title'        => 'Kos Jimbaran Hills Executive',
+            'remove_video' => 1,
+        ]);
+        $removeRes->assertSessionHas('success');
+        $kosan->refresh();
+        $this->assertFalse($kosan->has_video);
+        Storage::disk('public')->assertMissing($uploadedPath);
+    }
+
+    /**
+     * 15. Test Kamar Video Upload, Link, Multi-Room Shared Video Safety & Frontend Rendering
+     */
+    public function test_kamar_video_upload_link_multi_room_and_frontend_display(): void
+    {
+        $this->actingAs($this->superAdmin);
+
+        // 1. Multi-room creation with uploaded video file
+        $videoFile = UploadedFile::fake()->create('kamar_tour.mp4', 512, 'video/mp4');
+        $resMulti = $this->post(route('admin.product.kosan.kamar.insert', $this->kosanA->id), [
+            'is_multiple_rooms' => 1,
+            'room_prefix'       => 'Deluxe',
+            'room_start_number' => 501,
+            'room_quantity'     => 2,
+            'price_bulan'       => 1800000,
+            'video_mode'        => 'upload',
+            'video_file'        => $videoFile,
+        ]);
+        $resMulti->assertSessionHas('success');
+
+        $kamar501 = ProductKamarKosan::where('room', 'Deluxe 501')->first();
+        $kamar502 = ProductKamarKosan::where('room', 'Deluxe 502')->first();
+        $this->assertNotNull($kamar501);
+        $this->assertNotNull($kamar502);
+        $this->assertNotEmpty($kamar501->video_path);
+        $this->assertEquals($kamar501->video_path, $kamar502->video_path);
+        Storage::disk('public')->assertExists($kamar501->video_path);
+        $sharedVideoPath = $kamar501->video_path;
+
+        // Verify Kamar detail page renders video player
+        $detailKamar = $this->get(route('kamar.detail', $kamar501->id));
+        $detailKamar->assertStatus(200);
+        $detailKamar->assertSee('Video Deluxe 501');
+        $detailKamar->assertSee('<video', false);
+
+        // 2. Switching Kamar 501 to YouTube Shorts link MUST NOT delete shared video file still used by Kamar 502
+        $resUpdate501 = $this->put(route('admin.product.kosan.kamar.update', [$this->kosanA->id, $kamar501->id]), [
+            'room'        => 'Deluxe 501',
+            'price_bulan' => 1800000,
+            'video_mode'  => 'link',
+            'video_url'   => 'https://www.youtube.com/shorts/abcDEF12345',
+        ]);
+        $resUpdate501->assertSessionHas('success');
+
+        $kamar501->refresh();
+        $this->assertNull($kamar501->video_path);
+        $this->assertEquals('https://www.youtube.com/embed/abcDEF12345?rel=0', $kamar501->video_embed['src']);
+        $this->assertTrue($kamar501->video_embed['is_vertical']);
+        // Shared file MUST still exist for Kamar 502!
+        Storage::disk('public')->assertExists($sharedVideoPath);
+
+        // Verify Kamar detail page renders YouTube Shorts embed
+        $detailKamar2 = $this->get(route('kamar.detail', $kamar501->id));
+        $detailKamar2->assertStatus(200);
+        $detailKamar2->assertSee('https://www.youtube.com/embed/abcDEF12345?rel=0');
+
+        // 3. Reject javascript: XSS video URL
+        $this->assertNull(\App\Models\ProductKosan::parseVideoMedia(null, 'javascript:alert(1)'));
+        $resXss = $this->put(route('admin.product.kosan.kamar.update', [$this->kosanA->id, $kamar501->id]), [
+            'room'        => 'Deluxe 501',
+            'price_bulan' => 1800000,
+            'video_mode'  => 'link',
+            'video_url'   => 'javascript:alert(1)',
+        ]);
+        $resXss->assertSessionHasErrors(['video_url']);
+    }
 }

@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasVideoMedia;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ProductKamarKosan extends Model
 {
-    use SoftDeletes;
-    protected $fillable = ['product_kosan_id','room','description','fasilitas','cumulative_discount','gmaps','views'];
+    use SoftDeletes, HasVideoMedia;
+    protected $fillable = ['product_kosan_id','room','description','fasilitas','cumulative_discount','gmaps','video_path','video_url','views'];
     protected $touches = ['productKosan'];
     protected $appends = ['room_status', 'primary_image'];
 

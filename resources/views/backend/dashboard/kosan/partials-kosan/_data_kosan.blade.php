@@ -38,13 +38,20 @@
                             <tr class="align-middle">
                                 <td class="text-center fw-semibold text-muted">{{ $product_kosan->firstItem() + $index }}</td>
                                 <td>
-                                    <div class="table-cell-title">{{ $item->title }}</div>
+                                    <div class="table-cell-title d-flex align-items-center gap-1.5 flex-wrap">
+                                        <span>{{ $item->title }}</span>
+                                        @if($item->has_video)
+                                            <span class="badge bg-danger-subtle text-danger fs-8" title="Memiliki Video Properti">
+                                                <i class="bi bi-camera-video-fill me-1"></i>Video
+                                            </span>
+                                        @endif
+                                    </div>
                                     <small class="table-cell-sub">Slug: {{ $item->slug }}</small>
                                 </td>
                                 <td>
-                                    @if($item->wilayah)
+                                    @if($item->full_location)
                                         <div class="text-secondary fs-8">
-                                            <i class="bi bi-geo-alt text-muted me-1"></i>{{ $item->wilayah }}
+                                            <i class="bi bi-geo-alt text-muted me-1"></i>{{ $item->full_location }}
                                         </div>
                                     @else
                                         <span class="text-muted fs-8">-</span>
@@ -176,30 +183,19 @@
                         </div>
                         <div class="modal-body p-3 p-md-4">
                             <div class="row g-3">
-                                <div class="col-md-6">
+                                <div class="col-12">
                                     <label for="edit_title_{{ $item->id }}" class="form-label">
                                         Nama Kos / Judul <span class="text-danger">*</span>
                                     </label>
                                     <input type="text" name="title" id="edit_title_{{ $item->id }}" class="form-control" value="{{ old('title', $item->title) }}" required>
                                 </div>
 
-                                <div class="col-md-6">
-                                    <label for="select_wilayah_edit_{{ $item->id }}" class="form-label fw-semibold">
-                                        Wilayah (Bali) <span class="text-danger">*</span>
-                                    </label>
-                                    <select name="wilayah" id="select_wilayah_edit_{{ $item->id }}" class="form-select select-wilayah-edit" data-current-value="{{ $item->wilayah }}" required>
-                                        <option value="" disabled>-- Pilih Kab / Kota (Bali) --</option>
-                                        @php
-                                            $baliRegencies = ['Denpasar', 'Badung', 'Gianyar', 'Tabanan', 'Buleleng', 'Karangasem', 'Klungkung', 'Bangli', 'Jembrana'];
-                                            $currentWilayah = old('wilayah', $item->wilayah);
-                                        @endphp
-                                        @foreach($baliRegencies as $reg)
-                                            <option value="{{ $reg }}" {{ strcasecmp((string)$currentWilayah, (string)$reg) === 0 ? 'selected' : '' }}>{{ $reg }}</option>
-                                        @endforeach
-                                        @if(!empty($currentWilayah) && !in_array($currentWilayah, $baliRegencies))
-                                            <option value="{{ $currentWilayah }}" selected>{{ $currentWilayah }}</option>
-                                        @endif
-                                    </select>
+                                <div class="col-12">
+                                    @include('backend.dashboard.kosan.partials-kosan._wilayah_dependent_select', [
+                                        'prefix' => 'edit_' . $item->id,
+                                        'provinces' => $provinces ?? \App\Service\WilayahService::getProvinces(),
+                                        'item' => $item,
+                                    ])
                                 </div>
 
                                 <div class="col-12">
@@ -292,6 +288,14 @@
                                             <img src="{{ asset('storage/' . $item->image) }}" alt="Denah" class="rounded-2 border" style="max-height: 90px; object-fit: contain;">
                                         </div>
                                     @endif
+                                </div>
+
+                                <div class="col-12">
+                                    @include('backend.dashboard.kosan.partials-kosan._video_input', [
+                                        'uid' => 'kosan_edit_' . $item->id,
+                                        'model' => $item,
+                                        'contextLabel' => 'Properti Kosan',
+                                    ])
                                 </div>
                             </div>
                         </div>

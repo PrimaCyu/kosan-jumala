@@ -72,18 +72,55 @@
                 </div>
               </div>
 
-              <div>
-                <label class="block text-[10px] font-extrabold uppercase tracking-wider text-[#3B2314]/60 mb-2">Wilayah</label>
+              @php
+                $provincesList = $provinces ?? \App\Service\WilayahService::getProvinces();
+                $reqProvId = request('provinsi_id', '');
+                $reqKabId  = request('kabupaten_id', '');
+                $reqKecId  = request('kecamatan_id', '');
+                $initRegencies = !empty($reqProvId) ? \App\Service\WilayahService::getRegencies($reqProvId) : [];
+                $initDistricts = !empty($reqKabId) ? \App\Service\WilayahService::getDistricts($reqKabId) : [];
+              @endphp
+              <div class="space-y-2.5" id="frontend-wilayah-filter" data-regencies-url="{{ url('/api/wilayah/regencies') }}" data-districts-url="{{ url('/api/wilayah/districts') }}">
+                <div class="flex items-center justify-between">
+                  <label class="block text-[10px] font-extrabold uppercase tracking-wider text-[#3B2314]/60">Lokasi Wilayah Indonesia</label>
+                  <span class="text-[9px] font-bold text-[#00A896]">Provinsi &rarr; Kab/Kota &rarr; Kecamatan</span>
+                </div>
+
+                <!-- 1. Provinsi -->
                 <div class="relative">
-                  <i class="fa-solid fa-location-dot absolute left-4 top-1/2 -translate-y-1/2 text-[#E60049] text-sm pointer-events-none"></i>
-                  <select name="wilayah" class="w-full appearance-none bg-[#FFF8F1] border border-[#F3A833]/40 rounded-2xl pl-11 pr-10 py-3.5 text-xs font-bold text-[#3B2314] focus:outline-none focus:border-[#00A896] cursor-pointer">
-                    <option value="semua">Semua Wilayah</option>
-                    @php $wilayahList = ['Badung','Denpasar','Gianyar','Buleleng','Tabanan','Karangasem','Klungkung','Bangli','Jembrana','Jakarta Selatan','Jakarta Pusat','Jakarta Barat','Yogyakarta','Bandung','Surabaya','Malang','Semarang']; @endphp
-                    @foreach($wilayahList as $w)
-                      <option value="{{ $w }}" {{ request('wilayah') == $w ? 'selected' : '' }}>{{ $w }}</option>
+                  <i class="fa-solid fa-map-location-dot absolute left-3.5 top-1/2 -translate-y-1/2 text-[#E60049] text-xs pointer-events-none"></i>
+                  <select name="provinsi_id" id="filter-provinsi" class="w-full appearance-none bg-[#FFF8F1] border border-[#F3A833]/40 rounded-xl pl-9 pr-9 py-2.5 text-xs font-bold text-[#3B2314] focus:outline-none focus:border-[#00A896] cursor-pointer">
+                    <option value="">Semua Provinsi</option>
+                    @foreach($provincesList as $prov)
+                      <option value="{{ $prov['id'] }}" {{ (string)$reqProvId === (string)$prov['id'] ? 'selected' : '' }}>{{ $prov['name'] }}</option>
                     @endforeach
                   </select>
-                  <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-[#6B4630]/50 text-[10px] pointer-events-none"></i>
+                  <i class="fa-solid fa-chevron-down absolute right-3.5 top-1/2 -translate-y-1/2 text-[#6B4630]/50 text-[10px] pointer-events-none"></i>
+                </div>
+
+                <!-- 2. Kabupaten/Kota & 3. Kecamatan -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  <div class="relative">
+                    <i class="fa-solid fa-city absolute left-3.5 top-1/2 -translate-y-1/2 text-[#F3A833] text-xs pointer-events-none"></i>
+                    <select name="kabupaten_id" id="filter-kabupaten" class="w-full appearance-none bg-[#FFF8F1] border border-[#F3A833]/40 rounded-xl pl-9 pr-8 py-2.5 text-xs font-bold text-[#3B2314] focus:outline-none focus:border-[#00A896] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed" {{ empty($reqProvId) ? 'disabled' : '' }}>
+                      <option value="">{{ empty($reqProvId) ? 'Pilih Provinsi dulu' : 'Semua Kab/Kota' }}</option>
+                      @foreach($initRegencies as $reg)
+                        <option value="{{ $reg['id'] }}" {{ (string)$reqKabId === (string)$reg['id'] ? 'selected' : '' }}>{{ $reg['name'] }}</option>
+                      @endforeach
+                    </select>
+                    <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-[#6B4630]/50 text-[10px] pointer-events-none"></i>
+                  </div>
+
+                  <div class="relative">
+                    <i class="fa-solid fa-location-dot absolute left-3.5 top-1/2 -translate-y-1/2 text-[#00A896] text-xs pointer-events-none"></i>
+                    <select name="kecamatan_id" id="filter-kecamatan" class="w-full appearance-none bg-[#FFF8F1] border border-[#F3A833]/40 rounded-xl pl-9 pr-8 py-2.5 text-xs font-bold text-[#3B2314] focus:outline-none focus:border-[#00A896] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed" {{ empty($reqKabId) ? 'disabled' : '' }}>
+                      <option value="">{{ empty($reqKabId) ? 'Pilih Kab/Kota dulu' : 'Semua Kecamatan' }}</option>
+                      @foreach($initDistricts as $dist)
+                        <option value="{{ $dist['id'] }}" {{ (string)$reqKecId === (string)$dist['id'] ? 'selected' : '' }}>{{ $dist['name'] }}</option>
+                      @endforeach
+                    </select>
+                    <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-[#6B4630]/50 text-[10px] pointer-events-none"></i>
+                  </div>
                 </div>
               </div>
 
@@ -123,13 +160,13 @@
                     <div>
                       <label class="block text-[9px] font-extrabold uppercase tracking-wider text-[#006F65]">Status Pencarian</label>
                       <span class="text-[10px] font-bold text-[#3B2314]">
-                        {{ request('search') || (request('wilayah') && request('wilayah') != 'semua') || request('price_range') ? 'Filter Aktif' : 'Menampilkan Semua' }}
+                        {{ request('search') || request('provinsi_id') || request('kabupaten_id') || request('kecamatan_id') || (request('wilayah') && request('wilayah') != 'semua') || request('price_range') ? 'Filter Aktif' : 'Menampilkan Semua' }}
                       </span>
                     </div>
                   </div>
                 </div>
                 <div class="flex gap-2">
-                  @if(request('search') || (request('wilayah') && request('wilayah') != 'semua') || request('price_range'))
+                  @if(request('search') || request('provinsi_id') || request('kabupaten_id') || request('kecamatan_id') || (request('wilayah') && request('wilayah') != 'semua') || request('price_range'))
                     <a href="{{ route('kosan.index') }}" class="w-11 h-11 rounded-xl border border-[#E60049]/20 text-[#E60049] hover:bg-[#E60049] hover:text-white flex items-center justify-center transition-all" title="Reset filter"><i class="fa-solid fa-rotate-left text-xs"></i></a>
                   @endif
                   <button type="submit" class="px-5 h-11 rounded-xl bg-[#E60049] hover:bg-[#3B2314] text-white text-xs font-extrabold shadow-md hover:shadow-lg transition-all active:scale-95"><i class="fa-solid fa-magnifying-glass mr-1"></i> Cari</button>
@@ -203,8 +240,15 @@
                 </span>
               </div>
 
-              <div class="absolute bottom-3 right-3 bg-[#3B2314]/75 backdrop-blur-md text-white text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
-                <i class="fa-solid fa-eye text-cyan-400"></i> {{ number_format($kos->view ?? 0) }}
+              <div class="absolute bottom-3 right-3 flex items-center gap-1.5">
+                @if($kos->has_video)
+                  <span class="bg-[#E60049]/95 backdrop-blur-md text-white text-[10px] font-black px-2.5 py-1 rounded-full flex items-center gap-1 shadow">
+                    <i class="fa-solid fa-play text-[8px]"></i> Video
+                  </span>
+                @endif
+                <div class="bg-[#3B2314]/75 backdrop-blur-md text-white text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
+                  <i class="fa-solid fa-eye text-cyan-400"></i> {{ number_format($kos->view ?? 0) }}
+                </div>
               </div>
             </div>
 
@@ -214,7 +258,8 @@
                   <a href="{{ route('kosan.detail', $kos->slug) }}">{{ $kos->title }}</a>
                 </h3>
                 <p class="text-xs text-[#6B4630] flex items-center gap-1 mt-1 font-medium">
-                  <i class="fa-solid fa-location-dot text-[#E60049] text-[11px]"></i> {{ $kos->wilayah ?? 'Lokasi Terdaftar' }}
+                  <i class="fa-solid fa-location-dot text-[#E60049] text-[11px] shrink-0"></i>
+                  <span class="truncate" title="{{ $kos->full_location }}">{{ $kos->full_location }}</span>
                 </p>
                 <p class="text-[#6B4630] text-xs mt-2 line-clamp-2 leading-relaxed">
                   {{ Str::limit(strip_tags($kos->description), 95) }}
@@ -311,6 +356,75 @@
         this.nextElementSibling.className = 'block px-3 py-2.5 rounded-xl border text-[10px] font-extrabold text-center transition-all bg-[#3B2314] text-white border-[#3B2314] shadow-md';
       });
     });
+
+    // Dependent Dropdown Wilayah Indonesia (Provinsi -> Kab/Kota -> Kecamatan)
+    (function() {
+      const wrap = document.getElementById('frontend-wilayah-filter');
+      if (!wrap) return;
+      const provSel = document.getElementById('filter-provinsi');
+      const kabSel  = document.getElementById('filter-kabupaten');
+      const kecSel  = document.getElementById('filter-kecamatan');
+      const regUrl  = wrap.getAttribute('data-regencies-url');
+      const distUrl = wrap.getAttribute('data-districts-url');
+
+      function fillSelect(sel, list, placeholder) {
+        sel.innerHTML = '';
+        const opt = document.createElement('option');
+        opt.value = '';
+        opt.textContent = placeholder;
+        sel.appendChild(opt);
+        list.forEach(item => {
+          const o = document.createElement('option');
+          o.value = item.id;
+          o.textContent = item.name;
+          sel.appendChild(o);
+        });
+      }
+
+      if (provSel) {
+        provSel.addEventListener('change', async function() {
+          const provId = this.value;
+          fillSelect(kecSel, [], 'Pilih Kab/Kota dulu');
+          kecSel.disabled = true;
+          if (!provId) {
+            fillSelect(kabSel, [], 'Pilih Provinsi dulu');
+            kabSel.disabled = true;
+            return;
+          }
+          fillSelect(kabSel, [], 'Memuat...');
+          kabSel.disabled = true;
+          try {
+            const res = await fetch(`${regUrl}/${encodeURIComponent(provId)}`);
+            const data = await res.json();
+            fillSelect(kabSel, Array.isArray(data) ? data : [], 'Semua Kab/Kota');
+            kabSel.disabled = false;
+          } catch (e) {
+            fillSelect(kabSel, [], 'Gagal memuat');
+          }
+        });
+      }
+
+      if (kabSel) {
+        kabSel.addEventListener('change', async function() {
+          const kabId = this.value;
+          if (!kabId) {
+            fillSelect(kecSel, [], 'Pilih Kab/Kota dulu');
+            kecSel.disabled = true;
+            return;
+          }
+          fillSelect(kecSel, [], 'Memuat...');
+          kecSel.disabled = true;
+          try {
+            const res = await fetch(`${distUrl}/${encodeURIComponent(kabId)}`);
+            const data = await res.json();
+            fillSelect(kecSel, Array.isArray(data) ? data : [], 'Semua Kecamatan');
+            kecSel.disabled = false;
+          } catch (e) {
+            fillSelect(kecSel, [], 'Gagal memuat');
+          }
+        });
+      }
+    })();
 
     // Loading Bar
     window.addEventListener('load', () => {

@@ -373,4 +373,6 @@
     });
 </script>
 
+@include('backend.dashboard.kosan.partials-kosan._media_region_scripts')
+
 @endsection

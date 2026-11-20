@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Artikel;
 use App\Models\ProductImageKosan;
 use App\Models\ProductKosan;
+use App\Service\WilayahService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -52,6 +53,9 @@ class KosanController extends Controller
             $query->where(function($q) use ($search) {
                 $q->whereRaw('LOWER(title) LIKE ?', ["%{$search}%"])
                   ->orWhereRaw('LOWER(wilayah) LIKE ?', ["%{$search}%"])
+                  ->orWhereRaw('LOWER(provinsi) LIKE ?', ["%{$search}%"])
+                  ->orWhereRaw('LOWER(kabupaten) LIKE ?', ["%{$search}%"])
+                  ->orWhereRaw('LOWER(kecamatan) LIKE ?', ["%{$search}%"])
                   ->orWhereRaw('LOWER(fasilitas) LIKE ?', ["%{$search}%"])
                   ->orWhereRaw('LOWER(description) LIKE ?', ["%{$search}%"]);
             });
@@ -88,7 +92,9 @@ class KosanController extends Controller
             'occupancy_rate' => $kpiOccupancyRate,
         ];
 
-        return view('backend.dashboard.kosan.index', compact('product_kosan', 'kpiStats'));
+        $provinces = WilayahService::getProvinces();
+
+        return view('backend.dashboard.kosan.index', compact('product_kosan', 'kpiStats', 'provinces'));
     }
 
     public function searchKosan(Request $request)
@@ -115,7 +121,11 @@ class KosanController extends Controller
             })
             ->when($search, function ($query, $search) {
                 return $query->where(function($q) use ($search) {
-                    $q->whereRaw('LOWER(title) LIKE ?', ["%{$search}%"]);
+                    $q->whereRaw('LOWER(title) LIKE ?', ["%{$search}%"])
+                      ->orWhereRaw('LOWER(wilayah) LIKE ?', ["%{$search}%"])
+                      ->orWhereRaw('LOWER(provinsi) LIKE ?', ["%{$search}%"])
+                      ->orWhereRaw('LOWER(kabupaten) LIKE ?', ["%{$search}%"])
+                      ->orWhereRaw('LOWER(kecamatan) LIKE ?', ["%{$search}%"]);
                 });
             })
             ->orderByDesc('created_at')
@@ -140,6 +150,113 @@ class KosanController extends Controller
         return $slug;
     }
 
+    /**
+     * Resolusi data wilayah berjenjang (Provinsi -> Kabupaten/Kota -> Kecamatan) dengan kompatibilitas penuh wilayah lama.
+     */
+    private function resolveWilayahData(Request $request, ?ProductKosan $existing = null): array
+    {
+        $provId = trim((string) $request->input('provinsi_id', ''));
+        $kabId  = trim((string) $request->input('kabupaten_id', ''));
+        $kecId  = trim((string) $request->input('kecamatan_id', ''));
+
+        $provObj = $provId !== '' ? WilayahService::findProvince($provId) : null;
+        $kabObj  = $kabId !== '' ? WilayahService::findRegency($kabId) : null;
+        $kecObj  = $kecId !== '' ? WilayahService::findDistrict($kecId) : null;
+
+        $provName = $provObj['name'] ?? trim((string) $request->input('provinsi', ''));
+        $kabName  = $kabObj['name'] ?? trim((string) $request->input('kabupaten', ''));
+        $kecName  = $kecObj['name'] ?? trim((string) $request->input('kecamatan', ''));
+
+        if ($provName !== '' || $kabName !== '' || $kecName !== '') {
+            $composed = WilayahService::composeWilayahLabel($kecName, $kabName, $provName);
+            return [
+                'provinsi_id'  => $provId !== '' ? $provId : null,
+                'provinsi'     => $provName !== '' ? $provName : null,
+                'kabupaten_id' => $kabId !== '' ? $kabId : null,
+                'kabupaten'    => $kabName !== '' ? $kabName : null,
+                'kecamatan_id' => $kecId !== '' ? $kecId : null,
+                'kecamatan'    => $kecName !== '' ? $kecName : null,
+                'wilayah'      => $composed !== '' ? $composed : ($existing->wilayah ?? 'Indonesia'),
+            ];
+        }
+
+        if ($request->filled('wilayah')) {
+            return [
+                'provinsi_id'  => $existing->provinsi_id ?? null,
+                'provinsi'     => $existing->provinsi ?? null,
+                'kabupaten_id' => $existing->kabupaten_id ?? null,
+                'kabupaten'    => $existing->kabupaten ?? null,
+                'kecamatan_id' => $existing->kecamatan_id ?? null,
+                'kecamatan'    => $existing->kecamatan ?? null,
+                'wilayah'      => trim((string) $request->input('wilayah')),
+            ];
+        }
+
+        return [
+            'provinsi_id'  => $existing->provinsi_id ?? null,
+            'provinsi'     => $existing->provinsi ?? null,
+            'kabupaten_id' => $existing->kabupaten_id ?? null,
+            'kabupaten'    => $existing->kabupaten ?? null,
+            'kecamatan_id' => $existing->kecamatan_id ?? null,
+            'kecamatan'    => $existing->kecamatan ?? null,
+            'wilayah'      => $existing && $existing->wilayah ? $existing->wilayah : 'Bali',
+        ];
+    }
+
+    /**
+     * Resolusi media video (Upload file MP4/WebM/MOV atau Link YouTube/Drive/TikTok/MP4) secara aman.
+     */
+    private function resolveVideoData(Request $request, ?ProductKosan $existing = null): array
+    {
+        $oldPath = $existing->video_path ?? null;
+        $oldUrl  = $existing->video_url ?? null;
+
+        if ($request->boolean('remove_video')) {
+            if ($oldPath && Storage::disk('public')->exists($oldPath)) {
+                Storage::disk('public')->delete($oldPath);
+            }
+            return ['video_path' => null, 'video_url' => null];
+        }
+
+        if ($request->hasFile('video_file') && $request->file('video_file')->isValid()) {
+            if ($oldPath && Storage::disk('public')->exists($oldPath)) {
+                Storage::disk('public')->delete($oldPath);
+            }
+            $storedPath = $request->file('video_file')->store('kosan/video', 'public');
+            return ['video_path' => $storedPath, 'video_url' => null];
+        }
+
+        $mode = $request->input('video_mode');
+        $rawUrl = trim((string) $request->input('video_url', ''));
+
+        if ($mode === 'link') {
+            if ($rawUrl !== '') {
+                if ($oldPath && Storage::disk('public')->exists($oldPath)) {
+                    Storage::disk('public')->delete($oldPath);
+                }
+                return ['video_path' => null, 'video_url' => $rawUrl];
+            }
+            // Jika mode link dikosongkan dan sebelumnya memang link (bukan file upload), kosongkan link
+            if ($existing && !$oldPath) {
+                return ['video_path' => null, 'video_url' => null];
+            }
+            return ['video_path' => $oldPath, 'video_url' => $oldUrl];
+        }
+
+        if ($mode === 'upload') {
+            return ['video_path' => $oldPath, 'video_url' => $oldUrl];
+        }
+
+        if ($rawUrl !== '') {
+            if ($oldPath && Storage::disk('public')->exists($oldPath)) {
+                Storage::disk('public')->delete($oldPath);
+            }
+            return ['video_path' => null, 'video_url' => $rawUrl];
+        }
+
+        return ['video_path' => $oldPath, 'video_url' => $oldUrl];
+    }
+
     public function insert(Request $request)
     {
         if (!auth()->user()->isSuperAdmin()) {
@@ -147,15 +264,28 @@ class KosanController extends Controller
         }
 
         $request->validate([
-            'title'       => 'required|string|max:255',
-            'wilayah'     => 'nullable|string|max:255',
-            'description' => 'nullable|string',
-            'tersedia'    => 'nullable|numeric',
-            'view'        => 'nullable|numeric',
-            'gmaps'       => 'nullable|string',
-            'image'       => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
-            'images'      => 'nullable|array',
-            'images.*'    => 'image|mimes:jpeg,png,jpg,webp|max:5120',
+            'title'        => 'required|string|max:255',
+            'wilayah'      => 'nullable|string|max:255',
+            'provinsi_id'  => 'nullable|string|max:15',
+            'provinsi'     => 'nullable|string|max:120',
+            'kabupaten_id' => 'nullable|string|max:15',
+            'kabupaten'    => 'nullable|string|max:120',
+            'kecamatan_id' => 'nullable|string|max:20',
+            'kecamatan'    => 'nullable|string|max:120',
+            'description'  => 'nullable|string',
+            'tersedia'     => 'nullable|numeric',
+            'view'         => 'nullable|numeric',
+            'gmaps'        => 'nullable|string',
+            'video_mode'   => 'nullable|in:link,upload',
+            'video_url'    => 'nullable|url|max:1000',
+            'video_file'   => 'nullable|file|mimes:mp4,webm,mov,ogg,ogv|max:51200',
+            'image'        => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+            'images'       => 'nullable|array',
+            'images.*'     => 'image|mimes:jpeg,png,jpg,webp|max:5120',
+        ], [
+            'video_url.url'    => 'Link video harus berupa URL yang valid (diawali https:// atau http://).',
+            'video_file.mimes' => 'Format file video harus MP4, WebM, MOV, atau OGG.',
+            'video_file.max'   => 'Ukuran file video maksimal 50 MB.',
         ]);
 
         $fasilitas = $request->fasilitas;
@@ -164,17 +294,18 @@ class KosanController extends Controller
         }
 
         $description = $request->description ?: ($request->deskripsi ?: '');
+        $wilayahData = $this->resolveWilayahData($request);
+        $videoData   = $this->resolveVideoData($request);
 
-        $data = [
+        $data = array_merge([
             'title'       => $request->title,
             'slug'        => $this->generateUniqueSlug($request->title),
             'description' => Artikel::sanitizeHtml($description),
             'fasilitas'   => $fasilitas ?? '',
-            'wilayah'     => $request->wilayah ?? 'Bali',
             'tersedia'    => $request->tersedia ?? 0,
             'view'        => $request->view ?? 0,
-            'gmaps'       => $request->gmaps ?? $request->google_maps
-        ];
+            'gmaps'       => $request->gmaps ?? $request->google_maps,
+        ], $wilayahData, $videoData);
 
         $kosan = ProductKosan::create($data);
 
@@ -198,6 +329,7 @@ class KosanController extends Controller
         }
 
         Cache::forget('home_kamar_list');
+        Cache::forget('home_kosan_list');
 
         return back()->with('success', 'Properti Kos-kosan berhasil ditambahkan');
     }
@@ -209,17 +341,31 @@ class KosanController extends Controller
         $oldSlug = $productKosan->slug;
 
         $request->validate([
-            'title'       => 'required|string|max:255',
-            'wilayah'     => 'nullable|string|max:255',
-            'description' => 'nullable|string',
-            'deskripsi'   => 'nullable|string',
-            'tersedia'    => 'nullable|numeric',
-            'view'        => 'nullable|numeric',
-            'gmaps'       => 'nullable|string',
-            'google_maps' => 'nullable|string',
-            'image'       => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
-            'images'      => 'nullable|array',
-            'images.*'    => 'image|mimes:jpeg,png,jpg,webp|max:5120',
+            'title'        => 'required|string|max:255',
+            'wilayah'      => 'nullable|string|max:255',
+            'provinsi_id'  => 'nullable|string|max:15',
+            'provinsi'     => 'nullable|string|max:120',
+            'kabupaten_id' => 'nullable|string|max:15',
+            'kabupaten'    => 'nullable|string|max:120',
+            'kecamatan_id' => 'nullable|string|max:20',
+            'kecamatan'    => 'nullable|string|max:120',
+            'description'  => 'nullable|string',
+            'deskripsi'    => 'nullable|string',
+            'tersedia'     => 'nullable|numeric',
+            'view'         => 'nullable|numeric',
+            'gmaps'        => 'nullable|string',
+            'google_maps'  => 'nullable|string',
+            'video_mode'   => 'nullable|in:link,upload',
+            'video_url'    => 'nullable|url|max:1000',
+            'video_file'   => 'nullable|file|mimes:mp4,webm,mov,ogg,ogv|max:51200',
+            'remove_video' => 'nullable|boolean',
+            'image'        => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+            'images'       => 'nullable|array',
+            'images.*'     => 'image|mimes:jpeg,png,jpg,webp|max:5120',
+        ], [
+            'video_url.url'    => 'Link video harus berupa URL yang valid (diawali https:// atau http://).',
+            'video_file.mimes' => 'Format file video harus MP4, WebM, MOV, atau OGG.',
+            'video_file.max'   => 'Ukuran file video maksimal 50 MB.',
         ]);
 
         $fasilitas = $request->fasilitas;
@@ -228,17 +374,18 @@ class KosanController extends Controller
         }
 
         $description = $request->description ?: ($request->deskripsi ?: ($productKosan->description ?: ''));
+        $wilayahData = $this->resolveWilayahData($request, $productKosan);
+        $videoData   = $this->resolveVideoData($request, $productKosan);
 
-        $data = [
+        $data = array_merge([
             'title'       => $request->title,
             'slug'        => $this->generateUniqueSlug($request->title, $productKosan->id),
             'description' => Artikel::sanitizeHtml($description),
             'fasilitas'   => $fasilitas ?? '',
-            'wilayah'     => $request->filled('wilayah') ? $request->wilayah : ($productKosan->wilayah ?: 'Bali'),
             'tersedia'    => $productKosan->productKamarKosan()->count() > 0 ? $productKosan->tersedia : ($request->tersedia ?? 0),
             'view'        => $request->view ?? ($productKosan->view ?? 0),
-            'gmaps'       => $request->gmaps ?? $request->google_maps
-        ];
+            'gmaps'       => $request->gmaps ?? $request->google_maps,
+        ], $wilayahData, $videoData);
 
         $productKosan->update($data);
         if ($productKosan->productKamarKosan()->count() > 0) {
@@ -265,6 +412,7 @@ class KosanController extends Controller
         }
 
         Cache::forget('home_kamar_list');
+        Cache::forget('home_kosan_list');
         Cache::forget("kosan_detail_{$oldSlug}");
         Cache::forget("kosan_detail_{$productKosan->slug}");
 
@@ -286,6 +434,7 @@ class KosanController extends Controller
         $productKosan->delete();
 
         Cache::forget('home_kamar_list');
+        Cache::forget('home_kosan_list');
         Cache::forget("kosan_detail_{$slug}");
 
         return back()->with('success', 'Properti Kos-kosan berhasil dihapus');

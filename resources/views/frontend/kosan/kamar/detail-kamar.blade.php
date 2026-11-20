@@ -31,7 +31,7 @@
   @php
     $namaKosan = $kamar->productKosan->title ?? 'Sinar Citra Lestari';
     $namaKamar = $kamar->room ?? 'Kamar Exclusive';
-    $wilayahKosan = $kamar->productKosan->wilayah ?? 'Bali';
+    $wilayahKosan = $kamar->productKosan ? $kamar->productKosan->full_location : 'Indonesia';
 
     $images = [];
     if ($kamar && $kamar->productKamarImageKosan && $kamar->productKamarImageKosan->count() > 0) {
@@ -200,16 +200,24 @@
           @endif
         </div>
 
-        <div class="relative grid grid-cols-2 gap-2.5 mt-4">
-          <div class="rounded-2xl bg-white/10 border border-white/10 p-3">
-            <i class="fa-solid fa-camera text-[#F3A833] mb-1 block"></i>
-            <p class="text-[9px] uppercase tracking-wider text-white/50">Galeri Foto</p>
-            <p class="font-bold text-xs">{{ count($images) }} Foto Tersedia</p>
-          </div>
-          <div class="rounded-2xl bg-white/10 border border-white/10 p-3">
-            <i class="fa-solid fa-eye text-[#00A896] mb-1 block"></i>
-            <p class="text-[9px] uppercase tracking-wider text-white/50">Total Kunjungan</p>
-            <p class="font-bold text-xs">{{ number_format($kamar->views ?? 0, 0, ',', '.') }} Dilihat</p>
+        <div class="relative space-y-2.5 mt-4">
+          @if($kamar->has_video)
+            <button type="button" onclick="scrollToVideoKamar()" class="w-full py-2.5 px-4 rounded-2xl bg-[#E60049] hover:bg-[#F3A833] hover:text-[#3B2314] text-white font-black text-xs transition-all flex items-center justify-center gap-2 shadow-lg active:scale-95">
+              <i class="fa-solid fa-play text-[11px]"></i>
+              <span>Tonton Video Tour Kamar</span>
+            </button>
+          @endif
+          <div class="grid grid-cols-2 gap-2.5">
+            <div class="rounded-2xl bg-white/10 border border-white/10 p-3">
+              <i class="fa-solid fa-camera text-[#F3A833] mb-1 block"></i>
+              <p class="text-[9px] uppercase tracking-wider text-white/50">Galeri Foto</p>
+              <p class="font-bold text-xs">{{ count($images) }} Foto Tersedia</p>
+            </div>
+            <div class="rounded-2xl bg-white/10 border border-white/10 p-3">
+              <i class="fa-solid fa-eye text-[#00A896] mb-1 block"></i>
+              <p class="text-[9px] uppercase tracking-wider text-white/50">Total Kunjungan</p>
+              <p class="font-bold text-xs">{{ number_format($kamar->views ?? 0, 0, ',', '.') }} Dilihat</p>
+            </div>
           </div>
         </div>
       </aside>
@@ -223,7 +231,19 @@
 
     <!-- 5. KONTEN DETAIL & SIDEBAR HARGA -->
     <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
-      <div class="lg:col-span-7 order-2 lg:order-1 reveal">
+      <div class="lg:col-span-7 order-2 lg:order-1 space-y-6 reveal">
+        @if($kamar->has_video)
+          <div id="video-tour-kamar">
+            @include('frontend.partials._video_player', [
+              'videoEmbed' => $kamar->video_embed,
+              'eyebrow'    => 'Video Tour Unit',
+              'heading'    => 'Video ' . $namaKamar,
+              'subtitle'   => 'Lihat langsung kondisi asli interior dan kelengkapan kamar ini.',
+              'compact'    => true,
+            ])
+          </div>
+        @endif
+
         <div class="scl-card rounded-[2rem] p-5 sm:p-7 lg:p-8 scl-hover">
           <div class="flex items-start justify-between gap-5 mb-7">
             <div>
@@ -466,6 +486,14 @@
       const el = document.getElementById('sibling-rooms-section');
       if (el) {
         el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    function scrollToVideoKamar() {
+      const el = document.getElementById('video-tour-kamar');
+      if (el) {
+        const top = el.getBoundingClientRect().top + window.scrollY - 90;
+        window.scrollTo({ top: top, behavior: 'smooth' });
       }
     }
 

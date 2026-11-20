@@ -103,7 +103,14 @@
                                                 </div>
                                             @endif
                                             <div>
-                                                <div class="fw-semibold text-dark text-nowrap fs-7">{{ $item->room }}</div>
+                                                <div class="fw-semibold text-dark text-nowrap fs-7 d-flex align-items-center gap-1.5">
+                                                    <span>{{ $item->room }}</span>
+                                                    @if($item->has_video)
+                                                        <span class="badge bg-danger-subtle text-danger fs-8" title="Memiliki Video Kamar">
+                                                            <i class="bi bi-camera-video-fill me-1"></i>Video
+                                                        </span>
+                                                    @endif
+                                                </div>
                                                 @if($item->cumulative_discount)
                                                     <span class="badge badge-subtle-success fs-8 mt-1">
                                                         <i class="bi bi-percent me-1"></i>Diskon {{ $item->cumulative_discount }}%
@@ -1018,5 +1025,7 @@
         @endif
     })();
 </script>
+
+@include('backend.dashboard.kosan.partials-kosan._media_region_scripts')
 
 @endsection
