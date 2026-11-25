@@ -3,7 +3,7 @@
   <!--begin::Head-->
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Sinar Citra Lestari | Admin Dashboard</title>
+    <title>Kosan Jumala | Admin Dashboard</title>
 
     <script>
       (() => {
@@ -27,7 +27,7 @@
     <link rel="icon" href="{{ asset('logo.jpeg') }}?v={{ @filemtime(public_path('logo.jpeg')) ?: '4' }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     <meta name="color-scheme" content="light" />
-    <meta name="theme-color" content="#ffffff" />
+    <meta name="theme-color" content="#0B2E7A" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
     <!--begin::Google Fonts (Plus Jakarta Sans)-->
@@ -185,11 +185,15 @@
 
             <!-- Public Portal Link -->
             <li class="nav-item d-none d-lg-inline-block">
-              <a href="{{ route('home') }}" target="_blank" class="nav-public-btn" title="Buka Website Publik Sinar Citra Lestari">
+              <a href="{{ route('home') }}" target="_blank" class="nav-public-btn" title="Buka Website Publik Kosan Jumala">
                 <i class="bi bi-globe2 text-primary fs-8"></i>
                 <span>Web Publik</span>
                 <i class="bi bi-box-arrow-up-right text-muted" style="font-size: 0.65rem;"></i>
               </a>
+            </li>
+
+            <li class="nav-item d-none d-md-flex align-items-center" aria-hidden="true">
+              <span class="header-divider"></span>
             </li>
 
             <!-- Notification Center Popover Dropdown -->
@@ -277,7 +281,7 @@
                     </div>
                     <div class="overflow-hidden">
                       <div class="fw-bold fs-8 text-dark text-truncate">{{ Auth::user()->name ?? 'Administrator' }}</div>
-                      <div class="text-muted fs-9 text-truncate">{{ Auth::user()->email ?? 'admin@sinarcitralestari.com' }}</div>
+                      <div class="text-muted fs-9 text-truncate">{{ Auth::user()->email ?? 'admin@kosanjumala.com' }}</div>
                       <span class="badge {{ Auth::user()->isSuperAdmin() ? 'badge-subtle-primary' : 'badge-subtle-secondary' }} mt-1" style="font-size: 0.65rem;">
                         {{ Auth::user()->isSuperAdmin() ? 'Super Admin' : 'Admin Cabang' }}
                       </span>
@@ -327,8 +331,8 @@
             </div>
             <div class="brand-text-wrapper">
               <div class="brand-title">
-                <span class="brand-title-main">Sinar Citra</span>
-                <span class="brand-title-accent">Lestari</span>
+                <span class="brand-title-main">Kosan</span>
+                <span class="brand-title-accent">Jumala</span><span class="brand-title-dot"></span>
               </div>
               <div class="brand-subtitle">
                 <span class="brand-status-dot"></span>
@@ -373,7 +377,7 @@
                     <p class="mb-0">Permintaan Booking</p>
                   </span>
                   @if(isset($pendingBookingCount) && $pendingBookingCount > 0)
-                    <span class="badge rounded-pill px-2 py-0.5 fs-9 fw-bold ms-2" style="background-color: #dc2626; color: #ffffff;">{{ $pendingBookingCount }}</span>
+                    <span class="badge sidebar-badge-count ms-2">{{ $pendingBookingCount }}</span>
                   @endif
                 </a>
               </li>
@@ -458,7 +462,7 @@
         <div class="container-fluid d-flex justify-content-between align-items-center">
           <div>
             <span>&copy; {{ date('Y') }}</span>
-            <a href="{{ route('home') }}" target="_blank" class="text-decoration-none fw-semibold text-dark ms-1">Sinar Citra Lestari</a>
+            <a href="{{ route('home') }}" target="_blank" class="text-decoration-none fw-semibold text-dark ms-1">Kosan Jumala</a>
           </div>
           <div class="d-none d-sm-inline text-muted">
             Sistem Manajemen Operasional Kos
@@ -726,7 +730,7 @@
           </div>
           <div class="modal-footer py-2 px-3 border-top bg-light d-flex justify-content-between align-items-center">
             <small class="text-muted fs-9">Tekan <kbd class="px-1.5 py-0.5 bg-white border rounded">ESC</kbd> untuk menutup</small>
-            <small class="text-muted fs-9">Sinar Citra Lestari</small>
+            <small class="text-muted fs-9">Kosan Jumala</small>
           </div>
         </div>
       </div>

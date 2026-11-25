@@ -73,15 +73,15 @@
                                     <td class="text-center">
                                         <div class="d-inline-flex gap-1">
                                             @php
-                                                $kosanTitle = $kosan->title ?? 'Sinar Citra Lestari';
+                                                $kosanTitle = $kosan->title ?? 'Kosan Jumala';
                                                 $endDateStr = \Carbon\Carbon::parse($tamu->end_date)->isoFormat('D MMMM Y');
                                                 $priceStr = number_format($tamu->total_price, 0, ',', '.');
                                                 $pesanWA = "Halo Kak *{$tamu->name}*,\n\n"
-                                                         . "Kami dari pengelola *{$kosanTitle}* (Sinar Citra Lestari).\n"
+                                                         . "Kami dari pengelola *{$kosanTitle}*.\n"
                                                          . "Mengingatkan bahwa masa sewa kamar *{$item->room}* Anda akan berakhir pada *{$endDateStr}*.\n\n"
                                                          . "Apakah Kakak berencana untuk memperpanjang sewa untuk periode berikutnya?\n"
                                                          . "Biaya sewa: *Rp {$priceStr}*.\n\n"
-                                                         . "Mohon konfirmasinya ya Kak. Terima kasih! 🙏";
+                                                         . "Mohon konfirmasinya ya Kak. Terima kasih.";
                                                 $waHref = "https://wa.me/{$tamu->whatsapp_number}?text=" . rawurlencode($pesanWA);
                                             @endphp
                                             <!-- Tombol Chat WA -->

@@ -6,13 +6,13 @@
         <div class="page-header-box">
             <div>
                 <h1 class="page-title">
-                    <i class="bi bi-share text-secondary"></i> Kelola Sosial Media
+                    <i class="bi bi-share"></i> Kelola Sosial Media
                 </h1>
-                <p class="page-subtitle">Atur tautan profil sosial media resmi dan saluran komunikasi Sinar Citra Lestari.</p>
+                <p class="page-subtitle">Atur tautan profil sosial media resmi dan saluran komunikasi Kosan Jumala.</p>
             </div>
-            <div>
+            <div class="page-header-actions">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambahSosialMedia">
-                    <i class="bi bi-plus-lg me-1"></i> Tambah Sosial Media
+                    <i class="bi bi-plus-lg"></i> Tambah Sosial Media
                 </button>
             </div>
         </div>
@@ -142,7 +142,7 @@
                                     <label for="url_tambah" class="form-label">
                                         URL / Link Lengkap <span class="text-danger">*</span>
                                     </label>
-                                    <input type="url" name="url" id="url_tambah" class="form-control" placeholder="https://instagram.com/sinarcitralestari" required>
+                                    <input type="url" name="url" id="url_tambah" class="form-control" placeholder="https://instagram.com/kosanjumala" required>
                                 </div>
                             </div>
                         </div>
@@ -266,8 +266,8 @@
                                     <td class="text-center fw-semibold text-muted">${index + 1}</td>
                                     <td>
                                         <div class="d-flex align-items-center gap-2">
-                                            <div class="p-2 rounded-2 bg-primary-subtle text-primary">
-                                                <i class="bi bi-share-fill fs-6"></i>
+                                            <div class="property-icon-box p-2 d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                                                <i class="bi bi-share fs-6"></i>
                                             </div>
                                             <span class="table-cell-title">${item.title}</span>
                                         </div>

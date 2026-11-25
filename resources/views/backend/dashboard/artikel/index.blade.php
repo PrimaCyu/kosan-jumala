@@ -43,8 +43,8 @@
         transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     }
     .note-editor.note-frame:focus-within {
-        border-color: #4f46e5 !important;
-        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1) !important;
+        border-color: #1D4ED8 !important;
+        box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.12) !important;
     }
 
     /* Toolbar Styling */
@@ -89,9 +89,9 @@
         border-color: #e2e8f0 !important;
     }
     .note-btn.active, .note-btn:active {
-        background-color: #eef2ff !important;
-        color: #4f46e5 !important;
-        border-color: #c7d2fe !important;
+        background-color: #EFF6FF !important;
+        color: #1D4ED8 !important;
+        border-color: #BFDBFE !important;
     }
 
     /* Style dropdown: replace magic wand icon with clear 'Gaya Teks' text */
@@ -157,10 +157,10 @@
         margin-bottom: 1rem;
     }
     .note-editable blockquote {
-        border-left: 4px solid #4f46e5;
+        border-left: 4px solid #1D4ED8;
         padding: 10px 18px;
-        background-color: #f8fafc;
-        color: #475569;
+        background-color: #F8FAFD;
+        color: #3B4C6B;
         font-style: italic;
         margin: 1.2rem 0;
         border-radius: 0 8px 8px 0;
@@ -195,11 +195,11 @@
         border-color: #cbd5e1 !important;
     }
     .note-modal .btn-primary {
-        background-color: #0f172a !important;
-        border-color: #0f172a !important;
-        border-radius: 6px !important;
+        background-color: #1D4ED8 !important;
+        border-color: #1D4ED8 !important;
+        border-radius: 7px !important;
         font-size: 0.85rem !important;
-        font-weight: 500 !important;
+        font-weight: 600 !important;
         padding: 6px 14px !important;
     }
 
@@ -257,13 +257,13 @@
         <div class="page-header-box">
             <div>
                 <h1 class="page-title">
-                    <i class="bi bi-file-earmark-text text-secondary"></i> Kelola Artikel Blog
+                    <i class="bi bi-journal-text"></i> Kelola Artikel Blog
                 </h1>
                 <p class="page-subtitle">Publikasikan konten edukasi sewa kos, tips hunian, dan panduan informatif untuk calon penyewa.</p>
             </div>
-            <div>
-                <button type="button" class="btn btn-primary shadow-sm" data-bs-toggle="modal" data-bs-target="#modalTambahArtikel">
-                    <i class="bi bi-plus-lg me-1"></i> Tulis Artikel Baru
+            <div class="page-header-actions">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambahArtikel">
+                    <i class="bi bi-plus-lg"></i> Tulis Artikel Baru
                 </button>
             </div>
         </div>
@@ -275,11 +275,11 @@
         @include('backend.dashboard.kosan.kamar.partials.alerts')
 
         <!-- MAIN TABLE CARD -->
-        <div class="card mb-4 border shadow-sm">
-            <div class="card-header d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 py-3">
+        <div class="card mb-4">
+            <div class="card-header d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
                 <div class="d-flex flex-column">
-                    <h5 class="card-title mb-1 fs-6 fw-bold text-body-emphasis d-flex align-items-center">
-                        <i class="bi bi-journal-text text-secondary me-2"></i>Daftar Artikel Blog
+                    <h5 class="card-title mb-1">
+                        <i class="bi bi-journal-text"></i> Daftar Artikel Blog
                     </h5>
                     <p class="text-muted fs-8 mb-0">Menampilkan {{ $artikels->total() }} artikel yang tersedia di sistem.</p>
                 </div>
@@ -322,7 +322,7 @@
                 <div class="table-responsive">
                     <table class="table table-hover align-middle mb-0 table-min-md" id="table-artikel-list">
                         <thead>
-                            <tr class="table-light">
+                            <tr>
                                 <th style="width: 50px" class="text-center">No</th>
                                 <th style="width: 80px" class="text-center">Sampul</th>
                                 <th>Informasi Artikel</th>
@@ -369,30 +369,27 @@
                                         </span>
                                     </td>
                                     <td class="text-center">
-                                        <div class="d-inline-flex align-items-center gap-1.5">
+                                        <div class="action-btn-group">
                                             <button
                                                 type="button"
-                                                class="btn btn-sm btn-outline-primary py-1 px-2.5 rounded-2"
-                                                style="font-size: 0.8rem;"
+                                                class="btn btn-sm btn-outline-primary"
                                                 onclick="openEditModal({{ $item->id }})"
                                                 title="Edit Artikel"
                                             >
-                                                <i class="bi bi-pencil me-1"></i>Edit
+                                                <i class="bi bi-pencil"></i> Edit
                                             </button>
                                             <a
                                                 href="{{ route('news.detail', $item->slug) }}"
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                class="btn btn-sm btn-light border py-1 px-2 rounded-2"
-                                                style="font-size: 0.8rem;"
+                                                class="btn btn-sm btn-light border text-secondary"
                                                 title="Lihat di Web"
                                             >
-                                                <i class="bi bi-box-arrow-up-right text-secondary"></i>
+                                                <i class="bi bi-box-arrow-up-right"></i>
                                             </a>
                                             <button
                                                 type="button"
-                                                class="btn btn-sm btn-light border border-danger-subtle text-danger py-1 px-2 rounded-2"
-                                                style="font-size: 0.8rem;"
+                                                class="btn btn-sm btn-outline-danger"
                                                 onclick="confirmDelete({{ $item->id }}, '{{ addslashes($item->title) }}')"
                                                 title="Hapus Artikel"
                                             >
@@ -419,7 +416,7 @@
             </div>
 
             <!-- PAGINATION FOOTER -->
-            <div class="card-footer d-flex justify-content-between align-items-center flex-wrap gap-2 py-3 bg-white" id="artikel-pagination-footer">
+            <div class="card-footer d-flex justify-content-between align-items-center flex-wrap gap-2" id="artikel-pagination-footer">
                 <small class="text-muted fs-8">
                     Menampilkan {{ $artikels->firstItem() ?? 0 }} - {{ $artikels->lastItem() ?? 0 }} dari {{ $artikels->total() }} artikel
                 </small>
@@ -504,7 +501,7 @@
                     <div class="col-12">
                         <div class="d-flex align-items-center gap-2 p-2.5 rounded-2 bg-light border text-secondary fs-8">
                             <i class="bi bi-info-circle text-primary fs-7 shrink-0"></i>
-                            <span><strong>Tips Menulis:</strong> Gunakan <strong>Gaya Teks</strong> untuk sub-bab (H2/H3), <strong>Poin</strong> untuk daftar, dan tombol <strong>Fullscreen (⛶)</strong> untuk menulis leluasa tanpa distraksi.</span>
+                            <span><strong>Tips Menulis:</strong> Gunakan <strong>Gaya Teks</strong> untuk sub-bab (H2/H3), <strong>Poin</strong> untuk daftar, dan tombol <strong>Fullscreen</strong> untuk menulis leluasa tanpa distraksi.</span>
                         </div>
                     </div>
 
@@ -616,7 +613,7 @@
                     <div class="col-12">
                         <div class="d-flex align-items-center gap-2 p-2.5 rounded-2 bg-light border text-secondary fs-8">
                             <i class="bi bi-info-circle text-primary fs-7 shrink-0"></i>
-                            <span><strong>Tips Menulis:</strong> Gunakan <strong>Gaya Teks</strong> untuk sub-bab (H2/H3), <strong>Poin</strong> untuk daftar, dan tombol <strong>Fullscreen (⛶)</strong> untuk menulis leluasa tanpa distraksi.</span>
+                            <span><strong>Tips Menulis:</strong> Gunakan <strong>Gaya Teks</strong> untuk sub-bab (H2/H3), <strong>Poin</strong> untuk daftar, dan tombol <strong>Fullscreen</strong> untuk menulis leluasa tanpa distraksi.</span>
                         </div>
                     </div>
 
@@ -712,7 +709,7 @@
                         icon: 'warning',
                         title: 'Ukuran Terlalu Besar',
                         text: 'Maksimal ukuran gambar sampul adalah 5MB.',
-                        confirmButtonColor: '#0f172a'
+                        confirmButtonColor: '#1D4ED8'
                     });
                 } else {
                     alert('Maksimal ukuran gambar sampul adalah 5MB.');
@@ -752,7 +749,7 @@
                         icon: 'warning',
                         title: 'Ukuran Terlalu Besar',
                         text: 'Maksimal ukuran gambar sampul adalah 5MB.',
-                        confirmButtonColor: '#0f172a'
+                        confirmButtonColor: '#1D4ED8'
                     });
                 } else {
                     alert('Maksimal ukuran gambar sampul adalah 5MB.');
@@ -1049,7 +1046,7 @@
                             icon: 'warning',
                             title: 'Konten Belum Diisi',
                             text: 'Silakan isi konten atau naskah artikel sebelum mempublikasikan.',
-                            confirmButtonColor: '#0f172a'
+                            confirmButtonColor: '#1D4ED8'
                         });
                     } else {
                         alert('Silakan isi konten atau naskah artikel sebelum mempublikasikan.');
@@ -1072,7 +1069,7 @@
                             icon: 'warning',
                             title: 'Konten Belum Diisi',
                             text: 'Silakan isi konten atau naskah artikel sebelum menyimpan.',
-                            confirmButtonColor: '#0f172a'
+                            confirmButtonColor: '#1D4ED8'
                         });
                     } else {
                         alert('Silakan isi konten atau naskah artikel sebelum menyimpan.');

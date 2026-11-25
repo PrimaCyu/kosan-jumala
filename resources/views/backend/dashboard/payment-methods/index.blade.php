@@ -6,7 +6,7 @@
         <div class="page-header-box">
             <div>
                 <h1 class="page-title">
-                    <i class="bi bi-credit-card-2-front text-secondary"></i> Metode Pembayaran
+                    <i class="bi bi-credit-card-2-front"></i> Metode Pembayaran
                 </h1>
                 <p class="page-subtitle">Kelola opsi pembayaran untuk transaksi sewa kamar.</p>
             </div>
@@ -46,7 +46,7 @@
 
             <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
+                    <table class="table table-hover align-middle mb-0 table-min-md">
                         <thead>
                             <tr>
                                 <th style="width: 48px;" class="text-center ps-3">No</th>
@@ -202,7 +202,7 @@
 
                         <div class="col-md-4" id="create-field-holder">
                             <label class="form-label">Atas Nama (a/n)</label>
-                            <input type="text" name="account_holder" class="form-control" placeholder="Contoh: PT Sinar Citra Lestari">
+                            <input type="text" name="account_holder" class="form-control" placeholder="Contoh: Kosan Jumala">
                         </div>
 
                         <!-- UPLOAD QRIS IMAGE -->
@@ -292,7 +292,7 @@
 
                             <div class="col-md-4" id="edit{{ $item->id }}-field-holder">
                                 <label class="form-label">Atas Nama (a/n)</label>
-                                <input type="text" name="account_holder" class="form-control" value="{{ $item->account_holder }}" placeholder="Contoh: PT Sinar Citra Lestari">
+                                <input type="text" name="account_holder" class="form-control" value="{{ $item->account_holder }}" placeholder="Contoh: Kosan Jumala">
                             </div>
 
                             <input type="hidden" name="code" value="{{ $item->code }}">

@@ -6,7 +6,7 @@
         <div class="page-header-box">
             <div>
                 <h1 class="page-title">
-                    <i class="bi bi-calendar-check text-secondary"></i> Permintaan Booking
+                    <i class="bi bi-calendar-check"></i> Permintaan Booking
                 </h1>
                 <p class="page-subtitle">Verifikasi pemesanan unit kamar, bukti transfer, dan rekam jejak transaksi.</p>
             </div>
@@ -29,28 +29,28 @@
                 <a href="{{ route('admin.booking.index', array_merge(['status' => 'pending'], request()->except(['status', 'page']))) }}"
                    class="status-filter-btn {{ ($statusFilter ?? 'pending') === 'pending' ? 'active' : '' }}">
                     Menunggu Review
-                    <span class="badge rounded-pill ms-1 {{ ($statusFilter ?? 'pending') === 'pending' ? 'bg-white text-dark' : 'bg-warning-subtle text-warning-emphasis' }}">
+                    <span class="badge rounded-pill ms-1 badge-subtle-warning">
                         {{ $countPending ?? 0 }}
                     </span>
                 </a>
                 <a href="{{ route('admin.booking.index', array_merge(['status' => 'approved'], request()->except(['status', 'page']))) }}"
                    class="status-filter-btn {{ ($statusFilter ?? '') === 'approved' ? 'active' : '' }}">
                     Disetujui
-                    <span class="badge rounded-pill ms-1 {{ ($statusFilter ?? '') === 'approved' ? 'bg-white text-dark' : 'bg-secondary-subtle text-secondary' }}">
+                    <span class="badge rounded-pill ms-1 badge-subtle-secondary">
                         {{ $countApproved ?? 0 }}
                     </span>
                 </a>
                 <a href="{{ route('admin.booking.index', array_merge(['status' => 'reject'], request()->except(['status', 'page']))) }}"
                    class="status-filter-btn {{ ($statusFilter ?? '') === 'reject' ? 'active' : '' }}">
                     Ditolak
-                    <span class="badge rounded-pill ms-1 {{ ($statusFilter ?? '') === 'reject' ? 'bg-white text-dark' : 'bg-secondary-subtle text-secondary' }}">
+                    <span class="badge rounded-pill ms-1 badge-subtle-secondary">
                         {{ $countReject ?? 0 }}
                     </span>
                 </a>
                 <a href="{{ route('admin.booking.index', array_merge(['status' => 'all'], request()->except(['status', 'page']))) }}"
                    class="status-filter-btn {{ ($statusFilter ?? '') === 'all' ? 'active' : '' }}">
                     Semua
-                    <span class="badge rounded-pill ms-1 {{ ($statusFilter ?? '') === 'all' ? 'bg-white text-dark' : 'bg-secondary-subtle text-secondary' }}">
+                    <span class="badge rounded-pill ms-1 badge-subtle-secondary">
                         {{ $countAll ?? 0 }}
                     </span>
                 </a>
@@ -175,17 +175,17 @@
                                     <!-- 6. AKSI -->
                                     <td class="text-center text-nowrap">
                                         @if($item->status === 'pending')
-                                            <div class="d-inline-flex gap-1.5">
-                                                <button type="button" class="btn btn-sm btn-primary py-0.5 px-2.5 rounded-2 fs-8 fw-semibold" data-bs-toggle="modal" data-bs-target="#modalApprove{{ $item->id }}" title="Setujui Booking">
+                                            <div class="action-btn-group">
+                                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalApprove{{ $item->id }}" title="Setujui Booking">
                                                     <i class="bi bi-check2"></i> Terima
                                                 </button>
-                                                <button type="button" class="btn btn-sm btn-outline-danger py-0.5 px-2.5 rounded-2 fs-8" data-bs-toggle="modal" data-bs-target="#modalReject{{ $item->id }}" title="Tolak Booking">
+                                                <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#modalReject{{ $item->id }}" title="Tolak Booking">
                                                     <i class="bi bi-x"></i> Tolak
                                                 </button>
                                             </div>
                                         @else
-                                            <button type="button" class="btn btn-sm btn-light border py-0.5 px-2.5 rounded-2 text-secondary fs-8" data-bs-toggle="modal" data-bs-target="#modalDetail{{ $item->id }}" title="Lihat Rekam Jejak">
-                                                <i class="bi bi-shield-check me-1"></i>Detail
+                                            <button type="button" class="btn btn-sm btn-light border text-secondary" data-bs-toggle="modal" data-bs-target="#modalDetail{{ $item->id }}" title="Lihat Rekam Jejak">
+                                                <i class="bi bi-shield-check"></i> Detail
                                             </button>
                                         @endif
                                     </td>
@@ -396,18 +396,18 @@
                                 <i class="bi bi-clock-history me-1"></i> Rekam Jejak Pengelola
                             </h6>
 
-                            <div class="p-3 bg-light rounded-2 mb-3">
+                            <div class="p-3 bg-light rounded-2 border mb-3">
                                 <div class="fs-8 text-muted mb-1">Status Transaksi:</div>
                                 @if($item->status === 'approved')
-                                    <span class="badge bg-success text-white px-2.5 py-1 fw-semibold fs-8">
-                                        <i class="bi bi-check-circle-fill me-1"></i> Disetujui (Approved)
+                                    <span class="badge badge-subtle-success px-2.5 py-1 fs-8">
+                                        <i class="bi bi-check-circle me-1"></i> Disetujui (Approved)
                                     </span>
                                 @elseif($item->status === 'reject')
-                                    <span class="badge bg-danger text-white px-2.5 py-1 fw-semibold fs-8">
-                                        <i class="bi bi-x-circle-fill me-1"></i> Ditolak (Rejected)
+                                    <span class="badge badge-subtle-danger px-2.5 py-1 fs-8">
+                                        <i class="bi bi-x-circle me-1"></i> Ditolak (Rejected)
                                     </span>
                                 @else
-                                    <span class="badge bg-warning text-dark px-2.5 py-1 fw-semibold fs-8">
+                                    <span class="badge badge-subtle-warning px-2.5 py-1 fs-8">
                                         <i class="bi bi-hourglass-split me-1"></i> Menunggu Review
                                     </span>
                                 @endif

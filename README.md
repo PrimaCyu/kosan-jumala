@@ -13,7 +13,7 @@ Prototype aplikasi web untuk pencarian, reservasi, dan manajemen hunian **Kosan 
 Proyek ini dibuat sebagai **prototype** sistem informasi kos yang menghubungkan calon penghuni dengan pengelola kos dalam satu platform.
 
 ### Fitur Utama
-- **Portal Publik** — Katalog kos & kamar, filter lokasi/harga, galeri foto/video, peta lokasi interaktif, serta formulir booking online.
+- **Portal Publik** —  kamar, filter lokasi/harga, galeri foto/video, peta lokasi interaktif, serta formulir booking online.
 - **Reservasi & Pembayaran** — Pilihan durasi sewa fleksibel, metode pembayaran (Transfer Bank, QRIS, Tunai), serta bukti reservasi PDF.
 - **Dashboard Admin** — Manajemen properti kos, kamar, persetujuan booking, artikel, testimoni, sosial media, dan hak akses admin.
 
