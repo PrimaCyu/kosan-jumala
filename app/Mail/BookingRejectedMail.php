@@ -24,7 +24,7 @@ class BookingRejectedMail extends Mailable
     {
         $this->tamu = $tamu;
         $this->reason = $reason ?? 'Pembayaran tidak memenuhi ketentuan yang berlaku atau unit kamar telah terisi.';
-        $this->waNumber = $waNumber ?? '6281234567890';
+        $this->waNumber = $waNumber ?? '6282146138847';
     }
 
     /**
@@ -33,7 +33,7 @@ class BookingRejectedMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Pemberitahuan Status Booking Kos #' . str_pad($this->tamu->id, 5, '0', STR_PAD_LEFT) . ' - Sinar Citra Lestari',
+            subject: 'Pemberitahuan Status Booking Kamar #' . str_pad($this->tamu->id, 5, '0', STR_PAD_LEFT) . ' - Jumala Living',
         );
     }
 

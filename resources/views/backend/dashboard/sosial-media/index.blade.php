@@ -8,7 +8,7 @@
                 <h1 class="page-title">
                     <i class="bi bi-share"></i> Kelola Sosial Media
                 </h1>
-                <p class="page-subtitle">Atur tautan profil sosial media resmi dan saluran komunikasi Kosan Jumala.</p>
+                <p class="page-subtitle">Atur tautan profil sosial media resmi dan saluran komunikasi Jumala Living.</p>
             </div>
             <div class="page-header-actions">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambahSosialMedia">
@@ -96,9 +96,14 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="4" class="text-center text-muted py-5">
-                                        <i class="bi bi-share display-6 d-block mb-2 opacity-50"></i>
-                                        Belum ada tautan sosial media.
+                                    <td colspan="4" class="text-center py-5">
+                                        <div class="empty-state-box">
+                                            <div class="empty-state-icon">
+                                                <i class="bi bi-share"></i>
+                                            </div>
+                                            <h6>Belum Ada Tautan Sosial Media</h6>
+                                            <p>Tambahkan kontak WhatsApp, Instagram, atau TikTok resmi Jumala Living.</p>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforelse
@@ -107,14 +112,16 @@
                 </div>
             </div>
 
-            <div class="card-footer d-flex justify-content-between align-items-center flex-wrap gap-2">
-                <small class="text-muted fs-8">
-                    Menampilkan {{ $sosialMedias->firstItem() ?? 0 }} - {{ $sosialMedias->lastItem() ?? 0 }} dari {{ $sosialMedias->total() }} akun
-                </small>
-                <div>
-                    {{ $sosialMedias->links('pagination::bootstrap-5') }}
+            @if($sosialMedias->total() > 0)
+                <div class="card-footer d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <small class="text-muted fs-8">
+                        Menampilkan {{ $sosialMedias->firstItem() ?? 0 }}–{{ $sosialMedias->lastItem() ?? 0 }} dari {{ $sosialMedias->total() }} akun
+                    </small>
+                    <div>
+                        {{ $sosialMedias->links('pagination::bootstrap-5') }}
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
 
         <!-- MODAL TAMBAH SOSIAL MEDIA -->
@@ -142,7 +149,7 @@
                                     <label for="url_tambah" class="form-label">
                                         URL / Link Lengkap <span class="text-danger">*</span>
                                     </label>
-                                    <input type="url" name="url" id="url_tambah" class="form-control" placeholder="https://instagram.com/kosanjumala" required>
+                                    <input type="url" name="url" id="url_tambah" class="form-control" placeholder="https://instagram.com/jumalaliving" required>
                                 </div>
                             </div>
                         </div>

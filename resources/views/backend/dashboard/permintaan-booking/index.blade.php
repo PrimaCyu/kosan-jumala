@@ -192,9 +192,12 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="7" class="text-center text-muted py-5">
-                                        <i class="bi bi-inbox display-6 d-block mb-2 opacity-50"></i>
-                                        Tidak ada transaksi booking pada kategori ini.
+                                    <td colspan="7" class="p-0">
+                                        <div class="empty-state-box">
+                                            <div class="empty-icon"><i class="bi bi-inbox"></i></div>
+                                            <h6 class="fw-bold mb-1">Tidak Ada Transaksi Booking</h6>
+                                            <p class="text-muted small mb-0">Belum ada permintaan booking pada kategori filter ini.</p>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforelse
@@ -203,14 +206,16 @@
                 </div>
             </div>
 
-            <div class="card-footer d-flex justify-content-between align-items-center flex-wrap gap-2 py-2.5">
-                <small class="text-muted fs-8">
-                    Menampilkan {{ $bookings->firstItem() ?? 0 }} - {{ $bookings->lastItem() ?? 0 }} dari {{ $bookings->total() }} booking
-                </small>
-                <div>
-                    {{ $bookings->appends(request()->except('page'))->links('pagination::bootstrap-5') }}
+            @if($bookings->total() > 0)
+                <div class="card-footer d-flex justify-content-between align-items-center flex-wrap gap-2 py-2.5">
+                    <small class="text-muted fs-8">
+                        Menampilkan {{ $bookings->firstItem() ?? 0 }} - {{ $bookings->lastItem() ?? 0 }} dari {{ $bookings->total() }} booking
+                    </small>
+                    <div>
+                        {{ $bookings->appends(request()->except('page'))->links('pagination::bootstrap-5') }}
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
     </div>
 </div>

@@ -3,7 +3,7 @@
 @section('content')
 
 @php
-    $hour = (int)date('H');
+    $hour = (int) date('H');
     $greeting = $hour < 11 ? 'Selamat Pagi' : ($hour < 15 ? 'Selamat Siang' : ($hour < 18 ? 'Selamat Sore' : 'Selamat Malam'));
     $sixMonthTotal = collect($revenueTrend ?? [])->sum('revenue');
 @endphp
@@ -14,12 +14,12 @@
       <div>
         <div class="d-flex align-items-center flex-wrap gap-2 mb-1.5">
           <span class="fs-8 text-muted d-inline-flex align-items-center gap-1.5">
-            <i class="bi bi-calendar3 text-secondary"></i>
+            <i class="bi bi-calendar3 text-gold"></i>
             <span>{{ \Carbon\Carbon::now()->locale('id')->isoFormat('dddd, D MMMM Y') }}</span>
           </span>
           <span class="text-muted opacity-50">&bull;</span>
-          <span class="badge badge-subtle-secondary">
-            {{ Auth::user()->isSuperAdmin() ? 'Semua Cabang' : 'Cabang Ditugaskan' }}
+          <span class="badge badge-subtle-gold">
+            <i class="bi bi-house-heart me-1"></i>Jumala Living
           </span>
           @if(!empty($operationalAlerts) && count($operationalAlerts) > 0)
             <span class="badge badge-subtle-warning">
@@ -32,16 +32,23 @@
           @endif
         </div>
         <h1 class="page-title mb-0">{{ $greeting }}, {{ Auth::user()->name ?? 'Pengelola' }}</h1>
-        <p class="page-subtitle">Ringkasan kapasitas hunian, tren pendapatan sewa, dan aktivitas operasional cabang.</p>
+        <p class="page-subtitle">Ringkasan ketersediaan kamar, okupansi hunian, dan aktivitas pengelolaan Jumala Living.</p>
       </div>
       <div class="page-header-actions">
-        <a href="{{ route('admin.product.kosan.index') }}" class="btn btn-light border px-3">
-          <i class="bi bi-buildings"></i>
-          <span>Kelola Properti</span>
+        <a href="{{ route('admin.kamar.create') }}" class="btn btn-gold px-3">
+          <i class="bi bi-plus-lg"></i>
+          <span>Tambah Kamar</span>
+        </a>
+        <a href="{{ route('admin.kamar.index') }}" class="btn btn-light border px-3">
+          <i class="bi bi-door-open"></i>
+          <span>Semua Kamar</span>
         </a>
         <a href="{{ route('admin.booking.index') }}" class="btn btn-primary px-3">
           <i class="bi bi-calendar-check"></i>
-          <span>Kelola Booking</span>
+          <span>Booking</span>
+          @if(($pendingBookingsCount ?? 0) > 0)
+            <span class="badge bg-warning text-dark rounded-pill ms-1">{{ $pendingBookingsCount }}</span>
+          @endif
         </a>
       </div>
     </div>
@@ -51,16 +58,8 @@
 <div class="app-content">
   <div class="container-fluid">
 
-    <!-- 1. PERLU TINDAKAN HARI INI (Hanya tampil jika ada item mendesak) -->
     @if(!empty($operationalAlerts) && count($operationalAlerts) > 0)
       <div class="mb-4">
-        <div class="d-flex align-items-center justify-content-between mb-2">
-          <div class="d-flex align-items-center gap-2">
-            <span class="fs-8 fw-bold text-uppercase text-muted" style="letter-spacing: 0.04em;">Perhatian Operasional</span>
-            <span class="badge badge-subtle-warning">{{ count($operationalAlerts) }} item</span>
-          </div>
-          <span class="fs-8 text-muted d-none d-sm-inline">Prioritas tindak lanjut hari ini</span>
-        </div>
         <div class="d-flex flex-column gap-2">
           @foreach($operationalAlerts as $alert)
             <div class="card p-3">
@@ -74,7 +73,7 @@
                     <div class="fs-8 text-muted">{{ $alert['subtitle'] }}</div>
                   </div>
                 </div>
-                <a href="{{ $alert['action_url'] }}" class="btn btn-xs btn-light border px-2.5 py-1.5 text-center flex-shrink-0 mt-1 mt-sm-0">
+                <a href="{{ $alert['action_url'] }}" class="btn btn-sm btn-light border px-3 flex-shrink-0">
                   <span>{{ $alert['action_label'] }}</span>
                   <i class="bi bi-arrow-right ms-1"></i>
                 </a>
@@ -85,210 +84,181 @@
       </div>
     @endif
 
-    <!-- 2. RINGKASAN STATISTIK UTAMA (4 KPI Cards) -->
+    <!-- 4 KPI UTAMA KAMAR JUMALA LIVING -->
     <div class="kpi-stat-grid">
-      <!-- KPI 1: Tingkat Okupansi -->
       <div class="kpi-stat-card">
         <div class="kpi-stat-header">
-          <span class="kpi-stat-label">Tingkat Okupansi</span>
-          <span class="kpi-stat-icon">
-            <i class="bi bi-pie-chart"></i>
-          </span>
+          <span class="kpi-stat-label">Total Kamar</span>
+          <span class="kpi-stat-icon"><i class="bi bi-buildings"></i></span>
         </div>
-        <div class="kpi-stat-value">{{ $occupancyRate }}%</div>
+        <div class="kpi-stat-value">{{ $totalKamar }} <span class="fs-6 fw-medium text-muted">unit</span></div>
         <div class="progress-thin mb-2">
           <div class="progress-bar-normal" style="width: {{ min(100, $occupancyRate) }}%;"></div>
         </div>
         <div class="kpi-stat-meta">
-          <span><strong class="text-dark">{{ $occupiedKamar }}</strong> dari {{ $totalKamar }} kamar terisi</span>
+          Okupansi hunian <strong class="text-dark">{{ $occupancyRate }}%</strong>
         </div>
       </div>
 
-      <!-- KPI 2: Kamar Siap Huni -->
       <div class="kpi-stat-card">
         <div class="kpi-stat-header">
-          <span class="kpi-stat-label">Kamar Siap Huni</span>
-          <span class="kpi-stat-icon">
-            <i class="bi bi-door-open"></i>
-          </span>
+          <span class="kpi-stat-label">Kamar Tersedia</span>
+          <span class="kpi-stat-icon"><i class="bi bi-check2-circle"></i></span>
         </div>
-        <div class="kpi-stat-value">{{ $availableKamar }} <span class="fs-6 fw-medium text-muted">unit</span></div>
+        <div class="kpi-stat-value text-success">{{ $availableKamar }} <span class="fs-6 fw-medium text-muted">unit</span></div>
         <div class="kpi-stat-meta">
           @if($availableKamar > 0)
-            <span class="badge badge-subtle-success">Tersedia disewa</span>
+            <span class="badge badge-subtle-success">Siap dipesan online</span>
           @else
-            <span class="badge badge-subtle-secondary">Kapasitas penuh</span>
+            <span class="badge badge-subtle-secondary">Belum ada unit kosong</span>
           @endif
         </div>
       </div>
 
-      <!-- KPI 3: Pendapatan Bulan Ini -->
       <div class="kpi-stat-card">
         <div class="kpi-stat-header">
-          <span class="kpi-stat-label">Pendapatan Bulan Ini</span>
-          <span class="kpi-stat-icon">
-            <i class="bi bi-wallet2"></i>
-          </span>
+          <span class="kpi-stat-label">Kamar Terisi</span>
+          <span class="kpi-stat-icon"><i class="bi bi-person-check"></i></span>
         </div>
-        <div class="kpi-stat-value">Rp {{ number_format($currentMonthRevenue, 0, ',', '.') }}</div>
+        <div class="kpi-stat-value">{{ $occupiedKamar }} <span class="fs-6 fw-medium text-muted">unit</span></div>
         <div class="kpi-stat-meta">
-          <span>Periode {{ \Carbon\Carbon::now()->locale('id')->isoFormat('MMMM Y') }}</span>
+          @if(($pendingKamar ?? 0) > 0)
+            <span class="badge badge-subtle-warning">{{ $pendingKamar }} menunggu verifikasi</span>
+          @else
+            <span>Dihuni oleh penyewa aktif</span>
+          @endif
         </div>
       </div>
 
-      <!-- KPI 4: Cabang Properti -->
       <div class="kpi-stat-card">
         <div class="kpi-stat-header">
-          <span class="kpi-stat-label">Cabang Properti</span>
-          <span class="kpi-stat-icon">
-            <i class="bi bi-buildings"></i>
-          </span>
+          <span class="kpi-stat-label">Tidak Tersedia</span>
+          <span class="kpi-stat-icon"><i class="bi bi-slash-circle"></i></span>
         </div>
-        <div class="kpi-stat-value">{{ $totalKosan }} <span class="fs-6 fw-medium text-muted">lokasi</span></div>
+        <div class="kpi-stat-value">{{ $unavailableKamar }} <span class="fs-6 fw-medium text-muted">unit</span></div>
         <div class="kpi-stat-meta">
-          <span>Total <strong class="text-dark">{{ $totalKamar }}</strong> unit kamar aktif</span>
+          <span>Nonaktif / dalam perawatan</span>
         </div>
       </div>
     </div>
 
-    <!-- 3. GRAFIK PENDAPATAN & AKTIVITAS TERBARU -->
-    <div class="row g-3 mb-4">
-      <!-- Grafik Pendapatan 6 Bulan Terakhir -->
-      <div class="col-12 col-lg-8">
-        <div class="card h-100">
-          <div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-2">
-            <div>
-              <h5 class="card-title mb-0">Pendapatan 6 Bulan Terakhir</h5>
-              <span class="fs-8 text-muted">Tren akumulasi penerimaan sewa kamar terkonfirmasi</span>
-            </div>
-            <div class="d-flex align-items-center gap-2">
-              <span class="badge badge-subtle-secondary tabular-nums">
-                Total 6 Bln: Rp {{ number_format($sixMonthTotal, 0, ',', '.') }}
-              </span>
-            </div>
-          </div>
-          <div class="card-body d-flex flex-column justify-content-center">
-            <div style="min-height: 240px; position: relative; width: 100%;">
-              <canvas id="revenueChart"></canvas>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Aktivitas Operasional Terbaru -->
-      <div class="col-12 col-lg-4">
-        <div class="card h-100">
-          <div class="card-header d-flex justify-content-between align-items-center">
-            <div>
-              <h5 class="card-title mb-0">Aktivitas Terbaru</h5>
-              <span class="fs-8 text-muted">Log transaksi & pembaruan unit</span>
-            </div>
-            <a href="{{ route('admin.booking.index') }}" class="fs-8 fw-semibold text-primary text-decoration-none">
-              Semua
-            </a>
-          </div>
-          <div class="card-body">
-            <div class="dash-timeline">
-              @forelse($recentActivities as $act)
-                <div class="dash-timeline-item">
-                  <div class="dash-timeline-dot"></div>
-                  <div class="dash-timeline-time">{{ $act['time'] }}</div>
-                  <div class="fs-8 fw-semibold text-dark">{{ $act['title'] }}</div>
-                  <div class="fs-8 text-muted">{{ $act['property'] }}</div>
-                </div>
-              @empty
-                <div class="text-center py-4 text-muted fs-8">
-                  <i class="bi bi-clock-history fs-3 d-block mb-1.5 text-secondary opacity-50"></i>
-                  Belum ada aktivitas operasional tercatat.
-                </div>
-              @endforelse
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 4. DAFTAR PROPERTI CABANG (Tabel Ringkasan Kapasitas) -->
-    <div class="card mb-2">
+    <!-- RINGKASAN DATA KAMAR -->
+    <div class="card mb-4">
       <div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-2">
         <div>
-          <h5 class="card-title mb-0">Daftar Properti Cabang</h5>
-          <span class="fs-8 text-muted">Kapasitas hunian dan ketersediaan kamar per lokasi kos</span>
+          <h5 class="card-title mb-0">Ringkasan Data Kamar</h5>
+          <span class="fs-8 text-muted">Daftar unit kamar Jumala Living beserta tarif dan status ketersediaan terbaru</span>
         </div>
-        <a href="{{ route('admin.product.kosan.index') }}" class="btn btn-xs btn-light border px-2.5 py-1.5">
-          <span>Kelola Semua Properti</span>
-          <i class="bi bi-arrow-right ms-1"></i>
-        </a>
+        <div class="d-flex align-items-center gap-2">
+          <a href="{{ route('admin.kamar.create') }}" class="btn btn-sm btn-primary">
+            <i class="bi bi-plus-lg"></i> Tambah Kamar
+          </a>
+          <a href="{{ route('admin.kamar.index') }}" class="btn btn-sm btn-light border">
+            <span>Kelola Semua</span>
+            <i class="bi bi-arrow-right ms-1"></i>
+          </a>
+        </div>
       </div>
 
       <div class="card-body p-0">
         <div class="table-responsive">
-          <table class="table align-middle mb-0 table-min-md">
+          <table class="table table-hover align-middle mb-0 table-min-md">
             <thead>
               <tr>
-                <th class="ps-4">Nama Cabang Properti</th>
-                <th>Wilayah</th>
-                <th>Total Unit</th>
-                <th>Terisi</th>
-                <th>Ketersediaan</th>
-                <th style="min-width: 150px;">Okupansi</th>
+                <th class="ps-4">Unit Kamar</th>
+                <th>Tipe & Luas</th>
+                <th>Harga Sewa</th>
+                <th>Status</th>
+                <th>Penghuni</th>
                 <th class="text-end pe-4">Aksi</th>
               </tr>
             </thead>
             <tbody>
-              @forelse($propertiesOverview as $prop)
+              @forelse($roomsSummary as $room)
+                @php
+                  $monthly = $room->monthly_price;
+                  $rawPrice = $monthly ? (float) $monthly->price : 0;
+                  $disc = $monthly && (float) $monthly->discount > 0 ? (float) $monthly->discount : (float) ($room->cumulative_discount ?? 0);
+                  $netPrice = ($rawPrice > 0 && $disc > 0) ? ($disc <= 100 ? $rawPrice * (1 - $disc / 100) : max(0, $rawPrice - $disc)) : $rawPrice;
+                  $status = $room->room_status;
+                @endphp
                 <tr>
                   <td class="ps-4">
-                    <div class="fw-semibold text-dark">{{ $prop['title'] }}</div>
-                    <span class="fs-9 text-muted">ID Cabang #{{ $prop['id'] }}</span>
+                    <div class="d-flex align-items-center gap-2.5">
+                      @if($room->primary_image)
+                        <img src="{{ asset('storage/' . $room->primary_image->image) }}" alt="{{ $room->room }}" class="table-room-thumb">
+                      @else
+                        <div class="table-room-thumb-placeholder">
+                          <i class="bi bi-door-closed"></i>
+                        </div>
+                      @endif
+                      <div>
+                        <a href="{{ route('admin.kamar.show', $room->id) }}" class="table-cell-title text-decoration-none">
+                          {{ $room->room }}
+                        </a>
+                        @if($room->lantai)
+                          <div class="table-cell-sub">{{ $room->lantai }}</div>
+                        @endif
+                      </div>
+                    </div>
                   </td>
                   <td>
-                    <span class="text-secondary fs-8">{{ $prop['wilayah'] }}</span>
+                    <div class="fs-8 fw-semibold text-dark">{{ $room->tipe_kamar ?: 'Standard' }}</div>
+                    <div class="fs-9 text-muted">{{ $room->luas_kamar ?: '-' }}</div>
                   </td>
                   <td class="tabular-nums">
-                    <span class="fw-medium">{{ $prop['rooms_count'] }} kamar</span>
-                  </td>
-                  <td class="tabular-nums">
-                    <span class="fw-medium text-dark">{{ $prop['occupied_count'] }} kamar</span>
-                  </td>
-                  <td>
-                    @if($prop['available_count'] > 0)
-                      <span class="badge badge-subtle-success">
-                        {{ $prop['available_count'] }} unit kosong
-                      </span>
+                    @if($rawPrice > 0)
+                      <div class="fw-bold text-dark fs-8">Rp {{ number_format($netPrice, 0, ',', '.') }}<span class="text-muted fw-normal">/bln</span></div>
+                      @if($disc > 0)
+                        <div class="fs-9 text-muted text-decoration-line-through">Rp {{ number_format($rawPrice, 0, ',', '.') }}</div>
+                      @endif
                     @else
-                      <span class="badge badge-subtle-secondary">Penuh</span>
+                      <span class="badge badge-subtle-secondary">Belum diatur</span>
                     @endif
                   </td>
                   <td>
-                    <div class="d-flex align-items-center gap-2">
-                      <div class="progress-thin flex-grow-1">
-                        <div class="progress-bar-normal" style="width: {{ $prop['occupancy_rate'] }}%;"></div>
-                      </div>
-                      <span class="fs-8 fw-semibold text-dark tabular-nums" style="min-width: 34px;">{{ $prop['occupancy_rate'] }}%</span>
-                    </div>
+                    @if($status === 'terisi')
+                      <span class="badge badge-subtle-primary"><i class="bi bi-person-fill-check me-1"></i>Terisi</span>
+                    @elseif($status === 'tidak_tersedia')
+                      <span class="badge badge-subtle-secondary"><i class="bi bi-slash-circle me-1"></i>Tidak Tersedia</span>
+                    @elseif($status === 'pending')
+                      <span class="badge badge-subtle-warning"><i class="bi bi-hourglass-split me-1"></i>Pending</span>
+                    @else
+                      <span class="badge badge-subtle-success"><i class="bi bi-check-circle me-1"></i>Tersedia</span>
+                    @endif
+                  </td>
+                  <td>
+                    @if($room->active_tenant)
+                      <div class="fs-8 fw-semibold text-dark">{{ Str::limit($room->active_tenant->name, 18) }}</div>
+                      <div class="fs-9 text-muted">s/d {{ \Carbon\Carbon::parse($room->active_tenant->end_date)->format('d M Y') }}</div>
+                    @elseif($room->pending_tenant)
+                      <div class="fs-8 text-warning fw-semibold">{{ Str::limit($room->pending_tenant->name, 18) }}</div>
+                      <div class="fs-9 text-muted">Menunggu approval</div>
+                    @else
+                      <span class="text-muted fs-8">-</span>
+                    @endif
                   </td>
                   <td class="text-end pe-4">
                     <div class="action-btn-group">
-                      <a href="{{ route('admin.product.kosan.kamar.index', $prop['id']) }}" class="btn btn-xs btn-primary px-2.5 py-1" title="Buka daftar kamar kos ini">
-                        <i class="bi bi-door-open"></i>
-                        <span>Kelola Kamar</span>
+                      <a href="{{ route('admin.kamar.show', $room->id) }}" class="btn btn-xs btn-light border" title="Detail Kamar">
+                        <i class="bi bi-eye"></i> Detail
                       </a>
-                      <a href="{{ route('admin.product.kosan.index') }}" class="btn btn-xs btn-light border px-2 py-1" title="Kelola data properti">
-                        <i class="bi bi-sliders"></i>
+                      <a href="{{ route('admin.kamar.edit', $room->id) }}" class="btn btn-xs btn-outline-primary" title="Edit Kamar">
+                        <i class="bi bi-pencil"></i> Edit
                       </a>
                     </div>
                   </td>
                 </tr>
               @empty
                 <tr>
-                  <td colspan="7" class="text-center py-5">
+                  <td colspan="6" class="text-center py-4">
                     <div class="empty-state-box">
-                      <div class="empty-state-icon">
-                        <i class="bi bi-buildings"></i>
-                      </div>
-                      <h6>Belum Ada Properti Terdaftar</h6>
-                      <p>Tambahkan cabang properti kosan pertama Anda untuk mulai memantau kapasitas kamar.</p>
+                      <div class="empty-state-icon"><i class="bi bi-door-open"></i></div>
+                      <h6>Belum Ada Unit Kamar</h6>
+                      <p class="mb-3">Tambahkan kamar pertama Jumala Living untuk mulai mengelola dan mempublikasikan di website.</p>
+                      <a href="{{ route('admin.kamar.create') }}" class="btn btn-sm btn-primary">
+                        <i class="bi bi-plus-lg"></i> Tambah Kamar Pertama
+                      </a>
                     </div>
                   </td>
                 </tr>
@@ -299,10 +269,62 @@
       </div>
     </div>
 
+    <!-- PENDAPATAN & AKTIVITAS PENGELOLAAN TERBARU -->
+    <div class="row g-3">
+      <div class="col-12 col-lg-7">
+        <div class="card h-100">
+          <div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-2">
+            <div>
+              <h5 class="card-title mb-0">Pendapatan Sewa (6 Bulan Terakhir)</h5>
+              <span class="fs-8 text-muted">Bulan ini: <strong class="text-dark">Rp {{ number_format($currentMonthRevenue, 0, ',', '.') }}</strong></span>
+            </div>
+            <span class="badge badge-subtle-gold tabular-nums">
+              Total 6 Bln: Rp {{ number_format($sixMonthTotal, 0, ',', '.') }}
+            </span>
+          </div>
+          <div class="card-body d-flex flex-column justify-content-center">
+            <div style="min-height: 230px; position: relative; width: 100%;">
+              <canvas id="revenueChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-5">
+        <div class="card h-100">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <div>
+              <h5 class="card-title mb-0">Aktivitas Pengelolaan Terbaru</h5>
+              <span class="fs-8 text-muted">Pembaruan kamar dan transaksi terkini</span>
+            </div>
+            <a href="{{ route('admin.booking.index') }}" class="fs-8 fw-semibold text-gold text-decoration-none">
+              Booking
+            </a>
+          </div>
+          <div class="card-body">
+            <div class="dash-timeline">
+              @forelse($recentActivities as $act)
+                <div class="dash-timeline-item">
+                  <div class="dash-timeline-dot"></div>
+                  <div class="dash-timeline-time">{{ $act['time'] }}</div>
+                  <div class="fs-8 fw-bold text-dark">{{ $act['title'] }}</div>
+                  <div class="fs-8 text-muted">{{ $act['detail'] }}</div>
+                </div>
+              @empty
+                <div class="text-center py-4 text-muted fs-8">
+                  <i class="bi bi-clock-history fs-3 d-block mb-1.5 opacity-50"></i>
+                  Belum ada aktivitas pengelolaan tercatat.
+                </div>
+              @endforelse
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
-<!-- Chart.js for Minimalist Revenue Line Chart -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
@@ -313,9 +335,9 @@
     const values = {!! json_encode(array_column($revenueTrend, 'revenue')) !!};
 
     const chartCtx = ctx.getContext('2d');
-    const areaGradient = chartCtx.createLinearGradient(0, 0, 0, 260);
-    areaGradient.addColorStop(0, 'rgba(29, 78, 216, 0.14)');
-    areaGradient.addColorStop(1, 'rgba(29, 78, 216, 0.0)');
+    const areaGradient = chartCtx.createLinearGradient(0, 0, 0, 240);
+    areaGradient.addColorStop(0, 'rgba(198, 161, 91, 0.28)');
+    areaGradient.addColorStop(1, 'rgba(198, 161, 91, 0.0)');
 
     new Chart(ctx, {
       type: 'line',
@@ -324,76 +346,52 @@
         datasets: [{
           label: 'Pendapatan',
           data: values,
-          borderColor: '#0B2E7A',
+          borderColor: '#3B1D12',
           borderWidth: 2.5,
           backgroundColor: areaGradient,
           fill: true,
-          tension: 0.38,
-          pointBackgroundColor: '#ffffff',
-          pointBorderColor: '#1D4ED8',
+          tension: 0.35,
+          pointBackgroundColor: '#FFFFFF',
+          pointBorderColor: '#C6A15B',
           pointBorderWidth: 2.5,
           pointRadius: 4,
           pointHoverRadius: 6,
-          pointHoverBackgroundColor: '#1D4ED8',
-          pointHoverBorderColor: '#ffffff',
+          pointHoverBackgroundColor: '#C6A15B',
+          pointHoverBorderColor: '#3B1D12',
           pointHoverBorderWidth: 2,
         }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        interaction: {
-          mode: 'index',
-          intersect: false
-        },
+        interaction: { mode: 'index', intersect: false },
         plugins: {
           legend: { display: false },
           tooltip: {
-            backgroundColor: '#0B2E7A',
-            titleColor: '#DBEAFE',
+            backgroundColor: '#3B1D12',
+            titleColor: '#E1C98E',
             bodyColor: '#FFFFFF',
-            titleFont: { family: 'Plus Jakarta Sans', size: 11, weight: 600 },
-            bodyFont: { family: 'Plus Jakarta Sans', size: 13, weight: 700 },
             padding: 12,
             cornerRadius: 8,
             displayColors: false,
             callbacks: {
-              label: function(context) {
-                return 'Rp ' + Number(context.raw).toLocaleString('id-ID');
-              }
+              label: (context) => 'Rp ' + Number(context.raw).toLocaleString('id-ID')
             }
           }
         },
         scales: {
           x: {
             grid: { display: false },
-            border: { color: '#E3EAF4' },
-            ticks: {
-              color: '#64748B',
-              font: { family: 'Plus Jakarta Sans', size: 11, weight: 500 },
-              padding: 6
-            }
+            border: { color: '#E9DDCD' },
+            ticks: { color: '#846E60', font: { family: 'Plus Jakarta Sans', size: 11 } }
           },
           y: {
             beginAtZero: true,
-            grid: {
-              color: '#EFF3F9',
-              drawBorder: false
-            },
-            border: { dash: [4, 4], color: 'transparent' },
+            grid: { color: '#F2EAE0', drawBorder: false },
             ticks: {
-              color: '#64748B',
-              font: { family: 'Plus Jakarta Sans', size: 11, weight: 500 },
-              padding: 8,
-              callback: function(value) {
-                if (value >= 1000000) {
-                  return 'Rp ' + (value / 1000000).toFixed(1) + ' jt';
-                }
-                if (value >= 1000) {
-                  return 'Rp ' + (value / 1000).toFixed(0) + ' rb';
-                }
-                return 'Rp ' + value;
-              }
+              color: '#846E60',
+              font: { family: 'Plus Jakarta Sans', size: 11 },
+              callback: (value) => value >= 1000000 ? 'Rp ' + (value / 1000000).toFixed(1) + ' jt' : (value >= 1000 ? 'Rp ' + (value / 1000).toFixed(0) + ' rb' : 'Rp ' + value)
             }
           }
         }

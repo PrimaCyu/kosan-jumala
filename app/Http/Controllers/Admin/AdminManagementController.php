@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\ProductKosan;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -13,56 +12,47 @@ class AdminManagementController extends Controller
 {
     public function index(Request $request)
     {
-        $query = User::with('kosans');
+        $query = User::query();
 
-        if ($request->has('search') && !empty($request->search)) {
+        if ($request->filled('search')) {
             $search = strtolower($request->search);
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"])
                   ->orWhereRaw('LOWER(email) LIKE ?', ["%{$search}%"]);
             });
         }
 
         $users = $query->orderBy('created_at', 'desc')->paginate(10);
-        $allKosans = ProductKosan::select('id', 'title', 'wilayah')->get();
 
-        return view('backend.dashboard.users.index', compact('users', 'allKosans'));
+        return view('backend.dashboard.users.index', compact('users'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name'        => 'required|string|max:255',
-            'email'       => 'required|email|max:255|unique:users,email',
-            'password'    => ['required', Password::min(8)],
-            'role'        => 'required|in:super_admin,admin',
-            'kosan_ids'   => 'nullable|array',
-            'kosan_ids.*' => 'exists:product_kosans,id',
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|email|max:255|unique:users,email',
+            'password' => ['required', Password::min(8)],
+            'role'     => 'required|in:super_admin,admin',
         ]);
 
-        $user = User::create([
+        User::create([
             'name'     => strip_tags($request->name),
             'email'    => filter_var($request->email, FILTER_SANITIZE_EMAIL),
             'password' => Hash::make($request->password),
             'role'     => $request->role,
         ]);
 
-        if ($request->role === 'admin' && $request->has('kosan_ids')) {
-            $user->kosans()->sync($request->kosan_ids);
-        }
-
-        return back()->with('success', 'Admin baru berhasil ditambahkan beserta penugasan kos.');
+        return back()->with('success', 'Akun admin baru berhasil ditambahkan untuk Jumala Living.');
     }
 
     public function update(Request $request, User $user)
     {
         $request->validate([
-            'name'        => 'required|string|max:255',
-            'email'       => 'required|email|max:255|unique:users,email,' . $user->id,
-            'password'    => ['nullable', Password::min(8)],
-            'role'        => 'required|in:super_admin,admin',
-            'kosan_ids'   => 'nullable|array',
-            'kosan_ids.*' => 'exists:product_kosans,id',
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|email|max:255|unique:users,email,' . $user->id,
+            'password' => ['nullable', Password::min(8)],
+            'role'     => 'required|in:super_admin,admin',
         ]);
 
         $data = [
@@ -77,13 +67,7 @@ class AdminManagementController extends Controller
 
         $user->update($data);
 
-        if ($request->role === 'admin') {
-            $user->kosans()->sync($request->kosan_ids ?? []);
-        } else {
-            $user->kosans()->detach();
-        }
-
-        return back()->with('success', 'Data admin ' . $user->name . ' dan penugasan cabang berhasil diperbarui.');
+        return back()->with('success', 'Data admin ' . $user->name . ' berhasil diperbarui.');
     }
 
     public function destroy(User $user)

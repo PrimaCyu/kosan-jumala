@@ -25,7 +25,7 @@ class BookingApprovedMail extends Mailable
     {
         $this->tamu = $tamu;
         $this->pdfOutput = $pdfOutput;
-        $this->waNumber = $waNumber ?? '6281234567890';
+        $this->waNumber = $waNumber ?? '6282146138847';
     }
 
     /**

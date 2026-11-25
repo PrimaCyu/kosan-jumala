@@ -162,7 +162,7 @@
     <div class="email-container">
         <div class="email-header">
             <h1>Pemberitahuan Status Booking</h1>
-            <p>{{ config('app.name', 'Sinar Citra Lestari') }}</p>
+            <p>{{ config('app.name', 'Jumala Living') }}</p>
         </div>
 
         <div class="email-body">
@@ -212,7 +212,7 @@
             </div>
 
             @php
-                $waMsg = "Halo Admin Sinar Citra Lestari, saya " . $tamu->name . " (Kode Booking #" . str_pad($tamu->id, 5, '0', STR_PAD_LEFT) . " di " . ($tamu->productKamarKosan->productKosan->title ?? 'Kos') . ") yang pengajuannya ditolak dengan alasan: '" . $reason . "'. Mohon bantuan untuk tindak lanjut / proses pengembalian dana (refund).";
+                $waMsg = "Halo Admin Jumala Living, saya " . $tamu->name . " (Kode Booking #" . str_pad($tamu->id, 5, '0', STR_PAD_LEFT) . " di " . ($tamu->productKamarKosan->productKosan->title ?? 'Jumala Living') . ") yang pengajuannya ditolak dengan alasan: '" . $reason . "'. Mohon bantuan untuk tindak lanjut / proses pengembalian dana (refund).";
                 $waLink = "https://wa.me/" . $waNumber . "?text=" . urlencode($waMsg);
             @endphp
 
@@ -228,7 +228,7 @@
         </div>
 
         <div class="footer">
-            &copy; {{ date('Y') }} {{ config('app.name', 'Sinar Citra Lestari') }}. Seluruh hak cipta dilindungi.<br>
+            &copy; {{ date('Y') }} {{ config('app.name', 'Jumala Living') }}. Seluruh hak cipta dilindungi.<br>
             Email ini dikirim otomatis oleh sistem informasi reservasi kos.
         </div>
     </div>

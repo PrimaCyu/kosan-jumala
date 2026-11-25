@@ -57,17 +57,55 @@ class ProductKosan extends Model
     }
 
     /**
+     * Resolve or initialize the single canonical Jumala Living property record.
+     */
+    public static function jumala(): self
+    {
+        $property = static::orderBy('id', 'asc')->first();
+        if ($property) {
+            return $property;
+        }
+
+        return static::create([
+            'title'        => 'Jumala Living',
+            'slug'         => 'jumala-living',
+            'wilayah'      => 'Jl. Kenanga No. 3, Lowokwaru, Malang, Jawa Timur 65141',
+            'provinsi_id'  => '35',
+            'provinsi'     => 'Jawa Timur',
+            'kabupaten_id' => '35.73',
+            'kabupaten'    => 'Kota Malang',
+            'kecamatan_id' => '35.73.05',
+            'kecamatan'    => 'Lowokwaru',
+            'description'  => '<p>Jumala Living merupakan hunian kos khusus putri yang menghadirkan lingkungan nyaman, privat, dan mendukung aktivitas sehari-hari di kawasan Lowokwaru, Malang.</p>',
+            'fasilitas'    => 'Wi-Fi / Internet, Parkir Motor, Dapur Bersama, CCTV 24 Jam, Ruang Tamu Bersama, Ruang Jemur, Kulkas Bersama, Air Minum / Dispenser',
+            'gmaps'        => 'https://maps.google.com/?q=Jumala+Living+Jl.+Kenanga+No.+3,+Lowokwaru,+Malang',
+            'tersedia'     => 0,
+            'view'         => 0,
+        ]);
+    }
+
+    /**
      * Hitung ulang dan sinkronkan kolom tersedia di database dengan data kamar riil.
      */
     public function syncAvailableCount(): int
     {
-        $totalRooms = $this->productKamarKosan()->count();
-        if ($totalRooms === 0) {
+        $totalBookable = $this->productKamarKosan()
+            ->where(function ($q) {
+                $q->whereNull('status_ketersediaan')
+                  ->orWhere('status_ketersediaan', '!=', 'tidak_tersedia');
+            })
+            ->count();
+
+        if ($this->productKamarKosan()->count() === 0) {
             return (int) ($this->tersedia ?? 0);
         }
 
         $today = now()->toDateString();
-        $occupiedRooms = $this->productKamarKosan()
+        $occupiedBookable = $this->productKamarKosan()
+            ->where(function ($q) {
+                $q->whereNull('status_ketersediaan')
+                  ->orWhere('status_ketersediaan', '!=', 'tidak_tersedia');
+            })
             ->whereHas('tamu', function ($q) use ($today) {
                 $q->where('status', 'approved')
                   ->whereDate('start_date', '<=', $today)
@@ -75,7 +113,7 @@ class ProductKosan extends Model
             })
             ->count();
 
-        $available = max(0, $totalRooms - $occupiedRooms);
+        $available = max(0, $totalBookable - $occupiedBookable);
         $this->update(['tersedia' => $available]);
         return $available;
     }
@@ -121,15 +159,36 @@ class ProductKosan extends Model
     }
 
     /**
-     * Accessor untuk jumlah kamar kosong riil.
+     * Accessor untuk jumlah kamar kosong siap huni (tidak termasuk tidak_tersedia / terisi).
      */
     public function getAvailableRoomsCountAttribute(): int
     {
+        if ($this->relationLoaded('productKamarKosan')) {
+            if ($this->productKamarKosan->count() === 0) {
+                return (int) ($this->tersedia ?? 0);
+            }
+            return $this->productKamarKosan->filter(fn($k) => $k->room_status === 'kosong')->count();
+        }
+
         $total = $this->total_rooms_count;
         if ($total === 0) {
             return (int) ($this->tersedia ?? 0);
         }
-        return max(0, $total - $this->occupied_rooms_count);
+
+        $today = now()->toDateString();
+        $bookableCount = $this->productKamarKosan()
+            ->where(function ($q) {
+                $q->whereNull('status_ketersediaan')
+                  ->orWhere('status_ketersediaan', '!=', 'tidak_tersedia');
+            })
+            ->whereDoesntHave('tamu', function ($q) use ($today) {
+                $q->where('status', 'approved')
+                  ->whereDate('start_date', '<=', $today)
+                  ->whereDate('end_date', '>=', $today);
+            })
+            ->count();
+
+        return $bookableCount;
     }
 
     /**

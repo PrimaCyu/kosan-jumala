@@ -29,7 +29,7 @@ class BookingConfirmationMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: '[Menunggu Verifikasi] Booking Kos #' . str_pad($this->tamu->id, 5, '0', STR_PAD_LEFT) . ' - Sinar Citra Lestari',
+            subject: '[Menunggu Verifikasi] Booking Kamar #' . str_pad($this->tamu->id, 5, '0', STR_PAD_LEFT) . ' - Jumala Living',
         );
     }
 

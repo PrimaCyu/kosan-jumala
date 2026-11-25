@@ -223,7 +223,7 @@
               </div>
               <div>
                 <h4 class="font-black text-sm text-[#3B2314]">{{ $kamar->room ?? 'Unit Kamar' }}</h4>
-                <p class="text-xs text-[#7B6759] mt-0.5">{{ $kosan->title ?? 'Sinar Citra Lestari' }}</p>
+                <p class="text-xs text-[#7B6759] mt-0.5">{{ $kosan->title ?? 'Jumala Living' }}</p>
                 <span class="inline-flex items-center gap-1 text-[11px] text-[#9A887A] mt-1">
                   <i class="fa-solid fa-location-dot text-[#E60049] text-[10px]"></i>
                   {{ $kosan->wilayah ?? 'Lokasi Terdaftar' }}
@@ -274,14 +274,26 @@
           </a>
 
           @php
-            $waMessage = "Halo Admin Sinar Citra Lestari,\nSaya ingin mengonfirmasi booking kamar kos:\n\n"
+            $waMessage = "Halo Admin Jumala Living,\nSaya ingin mengonfirmasi booking kamar kos:\n\n"
               . "• Kode Booking: #BOOK-" . str_pad($tamu->id, 5, '0', STR_PAD_LEFT) . "\n"
               . "• Nama Penyewa: " . $tamu->name . "\n"
-              . "• Properti: " . ($kosan->title ?? '-') . " (" . ($kamar->room ?? '-') . ")\n"
+              . "• Properti: " . ($kosan->title ?? 'Jumala Living') . " (" . ($kamar->room ?? '-') . ")\n"
               . "• Check-in: " . \Carbon\Carbon::parse($tamu->start_date)->translatedFormat('d M Y') . " (" . $tamu->start_time . ")\n"
               . "• Total: Rp " . number_format($tamu->total_price, 0, ',', '.') . "\n\n"
               . "Mohon bantuannya untuk verifikasi. Terima kasih!";
-            $waUrl = "https://wa.me/6281234567890?text=" . rawurlencode($waMessage);
+            $waNumberSuccess = '6282146138847';
+            if (isset($globalSosmed)) {
+                foreach ($globalSosmed as $sm) {
+                    if (str_contains(strtolower($sm->title ?? ''), 'whatsapp') || str_contains($sm->url ?? '', 'wa.me')) {
+                        preg_match('/[0-9]{9,15}/', $sm->url, $waMatch);
+                        if (!empty($waMatch[0])) {
+                            $waNumberSuccess = $waMatch[0];
+                            break;
+                        }
+                    }
+                }
+            }
+            $waUrl = "https://wa.me/" . $waNumberSuccess . "?text=" . rawurlencode($waMessage);
           @endphp
 
           <!-- WHATSAPP CONFIRMATION BUTTON -->

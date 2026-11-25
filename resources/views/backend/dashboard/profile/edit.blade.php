@@ -35,8 +35,8 @@
               <h5 class="card-title mb-0">Informasi Profil</h5>
               <span class="fs-8 text-muted">Identitas dan alamat email login</span>
             </div>
-            <span class="badge {{ $user->isSuperAdmin() ? 'badge-subtle-primary' : 'badge-subtle-secondary' }}">
-              {{ $user->isSuperAdmin() ? 'Super Admin' : 'Admin Cabang' }}
+            <span class="badge {{ $user->isSuperAdmin() ? 'badge-subtle-gold' : 'badge-subtle-primary' }}">
+              {{ $user->isSuperAdmin() ? 'Super Admin' : 'Admin Operasional' }}
             </span>
           </div>
           <div class="card-body">

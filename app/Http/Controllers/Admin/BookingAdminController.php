@@ -17,14 +17,7 @@ class BookingAdminController extends Controller
 {
     public function indexBooking(Request $request)
     {
-        $user = auth()->user();
-        $isSuper = $user->isSuperAdmin();
-        $assignedIds = $isSuper ? collect() : $user->kosans()->pluck('product_kosans.id');
-
-        // Base scope for counting and filtering according to role
-        $baseScope = Tamu::query()->when(!$isSuper, function ($q) use ($assignedIds) {
-            $q->whereHas('productKamarKosan', fn($sub) => $sub->whereIn('product_kosan_id', $assignedIds));
-        });
+        $baseScope = Tamu::query();
 
         // Calculate counts for tabs
         $countPending  = (clone $baseScope)->where('status', 'pending')->count();
@@ -47,12 +40,12 @@ class BookingAdminController extends Controller
 
         if ($request->filled('search')) {
             $search = strtolower($request->search);
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"])
                   ->orWhereRaw('LOWER(email) LIKE ?', ["%{$search}%"])
                   ->orWhereRaw('LOWER(telp) LIKE ?', ["%{$search}%"])
-                  ->orWhereHas('productKamarKosan.productKosan', function($sub) use ($search) {
-                      $sub->whereRaw('LOWER(title) LIKE ?', ["%{$search}%"]);
+                  ->orWhereHas('productKamarKosan', function ($sub) use ($search) {
+                      $sub->whereRaw('LOWER(room) LIKE ?', ["%{$search}%"]);
                   });
             });
         }
@@ -78,13 +71,6 @@ class BookingAdminController extends Controller
         $id = $tamu instanceof Tamu ? $tamu->id : $tamu;
         $dataTamu = Tamu::with('productKamarKosan.productKosan')->findOrFail($id);
         $user = auth()->user();
-
-        if (!$user->isSuperAdmin()) {
-            $assignedIds = $user->kosans()->pluck('product_kosans.id')->toArray();
-            if (!in_array($dataTamu->productKamarKosan->product_kosan_id, $assignedIds)) {
-                abort(403, 'Akses ditolak. Anda tidak berwenang mengelola booking kosan ini.');
-            }
-        }
 
         // Cek apakah jadwal bertabrakan dengan booking lain yang sudah APPROVED pada kamar ini
         $overlappingApproved = Tamu::where('product_kamar_kosan_id', $dataTamu->product_kamar_kosan_id)
@@ -139,7 +125,7 @@ class BookingAdminController extends Controller
         Cache::forget('home_kosan_list');
 
         $waSosmed = SosialMedia::where('title', 'like', '%whatsapp%')->orWhere('url', 'like', '%wa.me%')->first();
-        $waNumber = '6281234567890';
+        $waNumber = '6282146138847';
         if ($waSosmed) {
             preg_match('/[0-9]{9,15}/', $waSosmed->url, $m);
             if (!empty($m[0])) {
@@ -180,13 +166,6 @@ class BookingAdminController extends Controller
         $dataTamu = Tamu::with('productKamarKosan.productKosan')->findOrFail($id);
         $user = auth()->user();
 
-        if (!$user->isSuperAdmin()) {
-            $assignedIds = $user->kosans()->pluck('product_kosans.id')->toArray();
-            if (!in_array($dataTamu->productKamarKosan->product_kosan_id, $assignedIds)) {
-                abort(403, 'Akses ditolak. Anda tidak berwenang mengelola booking kosan ini.');
-            }
-        }
-
         // Determine rejection reason
         $reasonPreset = $request->input('reason_preset');
         $reasonCustom = trim($request->input('rejection_reason') ?? '');
@@ -218,7 +197,7 @@ class BookingAdminController extends Controller
             if (!empty($dataTamu->email)) {
                 $dataTamu->load(['productKamarKosan.productKosan']);
                 $waSosmed = SosialMedia::where('title', 'like', '%whatsapp%')->orWhere('url', 'like', '%wa.me%')->first();
-                $waNumber = '6281234567890';
+                $waNumber = '6282146138847';
                 if ($waSosmed) {
                     preg_match('/[0-9]{9,15}/', $waSosmed->url, $m);
                     if (!empty($m[0])) {
@@ -239,14 +218,6 @@ class BookingAdminController extends Controller
     {
         $id = $tamu instanceof Tamu ? $tamu->id : $tamu;
         $dataTamu = Tamu::with('productKamarKosan.productKosan')->findOrFail($id);
-        $user = auth()->user();
-
-        if (!$user->isSuperAdmin()) {
-            $assignedIds = $user->kosans()->pluck('product_kosans.id')->toArray();
-            if (!in_array($dataTamu->productKamarKosan->product_kosan_id, $assignedIds)) {
-                abort(403, 'Akses ditolak.');
-            }
-        }
 
         if (empty($dataTamu->proof_of_transfer)) {
             abort(404, 'Bukti pembayaran tidak ditemukan.');

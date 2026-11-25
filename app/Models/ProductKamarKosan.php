@@ -9,7 +9,22 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class ProductKamarKosan extends Model
 {
     use SoftDeletes, HasVideoMedia;
-    protected $fillable = ['product_kosan_id','room','description','fasilitas','cumulative_discount','gmaps','video_path','video_url','views'];
+    protected $fillable = [
+        'product_kosan_id',
+        'room',
+        'tipe_kamar',
+        'luas_kamar',
+        'lantai',
+        'description',
+        'catatan',
+        'status_ketersediaan',
+        'fasilitas',
+        'cumulative_discount',
+        'gmaps',
+        'video_path',
+        'video_url',
+        'views',
+    ];
     protected $touches = ['productKosan'];
     protected $appends = ['room_status', 'primary_image'];
 
@@ -94,24 +109,46 @@ class ProductKamarKosan extends Model
     }
 
     /**
-     * Booking pending (menunggu verifikasi/persetujuan admin).
+     * Booking pending aktif (dalam batas waktu 2 jam terakhir).
      */
     public function getPendingTenantAttribute()
     {
+        $cutoff = now()->subHours(2);
         if ($this->relationLoaded('tamu')) {
-            return $this->tamu->where('status', 'pending')->sortByDesc('created_at')->first();
+            return $this->tamu
+                ->where('status', 'pending')
+                ->filter(function ($t) use ($cutoff) {
+                    return $t->created_at && \Carbon\Carbon::parse($t->created_at)->gte($cutoff);
+                })
+                ->sortByDesc('created_at')
+                ->first();
         }
 
-        return $this->tamu()->where('status', 'pending')->orderByDesc('created_at')->first();
+        return $this->tamu()
+            ->where('status', 'pending')
+            ->where('created_at', '>=', $cutoff)
+            ->orderByDesc('created_at')
+            ->first();
     }
 
     /**
-     * Status ketersediaan kamar riil: 'terisi' | 'pending' | 'kosong'.
+     * Apakah unit kamar diaktifkan untuk pemesanan publik.
+     */
+    public function isBookable(): bool
+    {
+        return ($this->status_ketersediaan ?? 'tersedia') !== 'tidak_tersedia';
+    }
+
+    /**
+     * Status ketersediaan kamar riil: 'terisi' | 'tidak_tersedia' | 'pending' | 'kosong'.
      */
     public function getRoomStatusAttribute(): string
     {
         if ($this->active_tenant) {
             return 'terisi';
+        }
+        if (!$this->isBookable()) {
+            return 'tidak_tersedia';
         }
         if ($this->pending_tenant) {
             return 'pending';

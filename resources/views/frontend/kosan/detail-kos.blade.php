@@ -316,7 +316,7 @@
             }
         }
     }
-    $waMessage = "Halo Pengelola Sinar Citra Lestari, saya tertarik dengan unit kos " . $kosan->title . " di " . ($kosan->wilayah ?? 'Bali') . ". Apakah masih ada kamar yang tersedia untuk disurvei/disewa?";
+    $waMessage = "Halo Pengelola Jumala Living, saya tertarik dengan unit kos " . $kosan->title . " di " . ($kosan->wilayah ?? 'Lowokwaru, Malang') . ". Apakah masih ada kamar yang tersedia untuk disurvei/disewa?";
     $waInquiryUrl = "https://wa.me/" . $waNumber . "?text=" . urlencode($waMessage);
   @endphp
 
@@ -562,7 +562,7 @@
             <div class="absolute top-0 right-0 w-24 h-24 rounded-bl-[3rem] bg-[#F3A833]/15"></div>
             <div class="relative text-xs sm:text-sm text-[#604D3F] leading-[1.9] [&_p]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:my-2 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:my-2 [&_li]:mb-1.5 [&_strong]:font-bold [&_strong]:text-[#3B2314] [&_h1]:text-xl [&_h2]:text-lg [&_h3]:text-base [&_h1]:font-black [&_h2]:font-black [&_h3]:font-bold [&_h1]:text-[#3B2314] [&_h2]:text-[#3B2314] [&_h3]:text-[#3B2314]">
               @if(!empty(trim(strip_tags($kosan->description ?? ''))))
-                {!! \App\Models\Artikel::sanitizeHtml($kosan->description) !!}
+                {!! \App\Support\HtmlSanitizer::clean($kosan->description) !!}
               @else
                 <p class="text-[#9A8675] italic">Deskripsi kosan belum ditambahkan oleh pemilik.</p>
               @endif
@@ -815,7 +815,7 @@
             $kamarFasilitas = array_filter(array_map('trim', explode(',', $kamarItem->fasilitas ?? '')));
             $imgCount = $kamarItem->productKamarImageKosan->count();
 
-            $kamarWaMsg = "Halo Pengelola Sinar Citra Lestari, saya tertarik dengan unit kamar " . $kamarItem->room . " di " . $kosan->title . " (yang saat ini berstatus terisi). Apakah ada perkiraan jadwal kamar ini akan kosong kembali?";
+            $kamarWaMsg = "Halo Pengelola Jumala Living, saya tertarik dengan unit kamar " . $kamarItem->room . " di " . $kosan->title . " (yang saat ini berstatus terisi). Apakah ada perkiraan jadwal kamar ini akan kosong kembali?";
             $kamarWaUrl = "https://wa.me/" . $waNumber . "?text=" . urlencode($kamarWaMsg);
           @endphp
 
@@ -1011,7 +1011,7 @@
           <button type="button" onclick="toggleFaq(3)" class="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 font-black text-sm sm:text-base text-[#3B2314] hover:text-[#E60049] transition-colors">
             <span class="flex items-center gap-3">
               <span class="w-7 h-7 rounded-lg bg-[#F3A833]/20 text-[#D97706] flex items-center justify-center text-xs shrink-0 font-black">3</span>
-              <span>Bagaimana alur pemesanan (booking) kamar online di Sinar Citra Lestari?</span>
+              <span>Bagaimana alur pemesanan (booking) kamar online di Jumala Living?</span>
             </span>
             <i id="faq-icon-3" class="fa-solid fa-chevron-down text-xs text-[#8F7765] transition-transform duration-300"></i>
           </button>
@@ -1043,7 +1043,7 @@
           <div>
             <span class="text-[10px] font-extrabold uppercase tracking-[.2em] text-[#E60049]">07 — Rekomendasi</span>
             <h3 class="text-2xl sm:text-3xl font-black text-[#3B2314] mt-1">Kos Lainnya di Sekitarmu</h3>
-            <p class="text-xs sm:text-sm text-[#7B6759] mt-0.5">Jelajahi pilihan kos lainnya dari jaringan Sinar Citra Lestari.</p>
+            <p class="text-xs sm:text-sm text-[#7B6759] mt-0.5">Jelajahi pilihan hunian lainnya dari Jumala Living.</p>
           </div>
 
           <a href="{{ route('kosan.index') }}" class="inline-flex items-center gap-1.5 text-xs font-black text-[#E60049] hover:underline">

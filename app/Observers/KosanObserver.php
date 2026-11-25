@@ -37,6 +37,7 @@ class KosanObserver
     protected function clearCache(ProductKosan $kosan): void
     {
         Cache::forget('home_kamar_list');
+        Cache::forget('home_kosan_list');
 
         if (!empty($kosan->slug)) {
             Cache::forget("kosan_detail_{$kosan->slug}");

@@ -33,7 +33,7 @@
     }
 
     // Resolusi nomor WhatsApp
-    $waNumber = '6281234567890';
+    $waNumber = '6282146138847';
     if (isset($globalSosmed)) {
         foreach ($globalSosmed as $sm) {
             if (str_contains(strtolower($sm->title), 'whatsapp') || str_contains($sm->url, 'wa.me')) {
@@ -46,7 +46,7 @@
         }
     }
 
-    $kamarWaMsg = "Halo Admin Sinar Citra Lestari, saya tertarik dengan unit " . ($kamar->room ?? 'Kamar') . " di " . ($kamar->productKosan->title ?? 'Kos') . " yang saat ini sedang terisi. Apakah saya bisa masuk daftar antrean (waiting list) untuk periode sewa berikutnya?";
+    $kamarWaMsg = "Halo Admin Jumala Living, saya tertarik dengan unit " . ($kamar->room ?? 'Kamar') . " di " . ($kamar->productKosan->title ?? 'Jumala Living') . " yang saat ini sedang terisi. Apakah saya bisa masuk daftar antrean (waiting list) untuk periode sewa berikutnya?";
     $kamarWaUrl = "https://wa.me/" . $waNumber . "?text=" . urlencode($kamarWaMsg);
 @endphp
 
@@ -89,9 +89,14 @@
         @foreach($kategoriOrdered as $katKey => $meta)
             @if(isset($pricesByKategori[$katKey]))
                 @php 
-                    $priceObj = $pricesByKategori[$katKey]; 
-                    $hasDiscount = ($priceObj->discount > 0);
-                    $originalPrice = $hasDiscount ? round($priceObj->price / (1 - ($priceObj->discount / 100))) : null;
+                    $priceObj = $pricesByKategori[$katKey];
+                    $basePrice = (float) $priceObj->price;
+                    $disc = (float) ($priceObj->discount > 0 ? $priceObj->discount : ($katKey === 'bulan' ? ($kamar->cumulative_discount ?? 0) : 0));
+                    $hasDiscount = ($disc > 0 && $basePrice > 0);
+                    $originalPrice = $hasDiscount ? $basePrice : null;
+                    $netPrice = $hasDiscount
+                        ? ($disc <= 100 ? max(0, round($basePrice * (1 - ($disc / 100)))) : max(0, $basePrice - $disc))
+                        : $basePrice;
                 @endphp
                 <div class="bg-[#FFF8F1] hover:bg-[#F3A833]/15 p-4 rounded-2xl border border-[#E9DDD2] hover:border-[#F3A833] transition-all duration-200 relative overflow-hidden group shadow-sm">
                     <div class="flex justify-between items-start gap-3">
@@ -108,7 +113,7 @@
                             @endif
 
                             <div class="text-xl sm:text-2xl font-black text-[#3B2314]">
-                                Rp {{ number_format($priceObj->price, 0, ',', '.') }} 
+                                Rp {{ number_format($netPrice, 0, ',', '.') }} 
                                 <span class="text-xs text-[#9A887A] font-bold">/{{ $meta['unit'] }}</span>
                             </div>
 
@@ -121,7 +126,7 @@
 
                         @if($hasDiscount)
                             <div class="text-[11px] bg-[#E60049] text-white font-black px-2.5 py-1 rounded-full shadow-md shrink-0">
-                                Diskon {{ $priceObj->discount }}%
+                                Diskon {{ round($disc) }}%
                             </div>
                         @endif
                     </div>
@@ -174,6 +179,6 @@
 
     <p class="text-[10px] text-[#8E7B6D] flex items-start gap-2 leading-relaxed pt-1">
         <i class="fa-solid fa-shield-halved text-[#00A896] text-xs mt-0.5 shrink-0"></i>
-        <span>Harga resmi tertera transparan. Booking diverifikasi langsung oleh pengelola resmi Sinar Citra Lestari.</span>
+        <span>Harga resmi tertera transparan. Booking diverifikasi langsung oleh pengelola resmi Jumala Living.</span>
     </p>
 </div>

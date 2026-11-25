@@ -161,7 +161,7 @@
     <div class="email-container">
         <div class="email-header">
             <h1>Pembayaran & Reservasi Disetujui!</h1>
-            <p>{{ config('app.name', 'Sinar Citra Lestari') }}</p>
+            <p>{{ config('app.name', 'Jumala Living') }}</p>
         </div>
 
         <div class="email-body">
@@ -220,7 +220,7 @@
             </div>
 
             @php
-                $waMsg = "Halo Pengelola Sinar Citra Lestari, saya " . $tamu->name . " (Booking #" . str_pad($tamu->id, 5, '0', STR_PAD_LEFT) . " di " . ($tamu->productKamarKosan->productKosan->title ?? 'Kos') . " - " . ($tamu->productKamarKosan->room ?? '') . ") yang pembayarannya telah disetujui. Saya ingin berkoordinasi mengenai jadwal kedatangan / serah terima kunci.";
+                $waMsg = "Halo Pengelola Jumala Living, saya " . $tamu->name . " (Booking #" . str_pad($tamu->id, 5, '0', STR_PAD_LEFT) . " di " . ($tamu->productKamarKosan->productKosan->title ?? 'Jumala Living') . " - " . ($tamu->productKamarKosan->room ?? '') . ") yang pembayarannya telah disetujui. Saya ingin berkoordinasi mengenai jadwal kedatangan / serah terima kunci.";
                 $waLink = "https://wa.me/" . $waNumber . "?text=" . urlencode($waMsg);
             @endphp
 
@@ -235,7 +235,7 @@
         </div>
 
         <div class="footer">
-            &copy; {{ date('Y') }} {{ config('app.name', 'Sinar Citra Lestari') }}. Seluruh hak cipta dilindungi.<br>
+            &copy; {{ date('Y') }} {{ config('app.name', 'Jumala Living') }}. Seluruh hak cipta dilindungi.<br>
             Email ini merupakan bukti konfirmasi resmi atas pembayaran dan reservasi kos.
         </div>
     </div>

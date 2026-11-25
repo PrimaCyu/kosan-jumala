@@ -139,7 +139,7 @@
     <div class="email-container">
         <div class="email-header">
             <h1>Tanda Terima Permohonan Booking</h1>
-            <p>{{ config('app.name', 'Sinar Citra Lestari') }}</p>
+            <p>{{ config('app.name', 'Jumala Living') }}</p>
         </div>
 
         <div class="email-body">
@@ -199,7 +199,7 @@
         </div>
 
         <div class="footer">
-            &copy; {{ date('Y') }} {{ config('app.name', 'Sinar Citra Lestari') }}. Seluruh hak cipta dilindungi.<br>
+            &copy; {{ date('Y') }} {{ config('app.name', 'Jumala Living') }}. Seluruh hak cipta dilindungi.<br>
             Email ini dikirim otomatis sebagai konfirmasi permohonan reservasi awal.
         </div>
     </div>

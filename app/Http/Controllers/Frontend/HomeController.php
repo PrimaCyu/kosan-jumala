@@ -7,28 +7,73 @@ use App\Models\PaymentMethod;
 use App\Models\ProductKamarKosan;
 use App\Models\ProductKosan;
 use App\Models\Testimoni;
-use App\Service\WilayahService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
 class HomeController extends Controller
 {
-    /**
-     * Escape karakter wildcard LIKE agar user tidak bisa inject pattern.
-     */
-    private function escapeLike(string $value): string
+    public function index(Request $request)
     {
-        return str_replace(['%', '_', '\\'], ['\\%', '\\_', '\\\\'], $value);
-    }
+        $property = ProductKosan::jumala();
 
-    public function index()
-    {
-        $kamarList = Cache::remember('home_kamar_list', 3600, function () {
+        $allPublishedRooms = Cache::remember('home_kamar_list', 3600, function () use ($property) {
             return ProductKamarKosan::with(['productKosan.productImageKosan', 'productKamarImageKosan', 'priceKamar', 'tamu'])
-                        ->orderByDesc('views')
-                        ->orderByDesc('created_at')
-                        ->get();
+                ->where('product_kosan_id', $property->id)
+                ->where(function ($q) {
+                    $q->whereNull('status_ketersediaan')
+                      ->orWhere('status_ketersediaan', '!=', 'tidak_tersedia');
+                })
+                ->orderByDesc('views')
+                ->orderByDesc('created_at')
+                ->get();
         });
+
+        $kamarList = $allPublishedRooms;
+
+        if ($request->filled('search')) {
+            $needle = strtolower(trim((string) $request->input('search')));
+            $kamarList = $kamarList->filter(function ($kamar) use ($needle) {
+                $haystack = strtolower(implode(' ', array_filter([
+                    $kamar->room,
+                    $kamar->tipe_kamar,
+                    $kamar->luas_kamar,
+                    $kamar->fasilitas,
+                    strip_tags((string) $kamar->description),
+                ])));
+                return str_contains($haystack, $needle);
+            })->values();
+        }
+
+        if ($request->filled('price_range')) {
+            $rangeMap = [
+                'under-500' => [null, 500000],
+                '500-1000'  => [500000, 1000000],
+                '1000-1500' => [1000000, 1500000],
+                '1500-2500' => [1500000, 2500000],
+                'over-2500' => [2500000, null],
+            ];
+            $rangeKey = $request->input('price_range');
+            if (isset($rangeMap[$rangeKey])) {
+                [$min, $max] = $rangeMap[$rangeKey];
+                $kamarList = $kamarList->filter(function ($kamar) use ($min, $max) {
+                    $monthly = $kamar->priceKamar->first(fn($p) => strtolower($p->kategori) === 'bulan');
+                    if (!$monthly) {
+                        return false;
+                    }
+                    $raw = (float) $monthly->price;
+                    $disc = (float) $monthly->discount > 0 ? (float) $monthly->discount : (float) ($kamar->cumulative_discount ?? 0);
+                    $net = $disc > 0 ? ($disc <= 100 ? $raw * (1 - $disc / 100) : max(0, $raw - $disc)) : $raw;
+
+                    if (!is_null($min) && $net < $min) {
+                        return false;
+                    }
+                    if (!is_null($max) && $net > $max) {
+                        return false;
+                    }
+                    return true;
+                })->values();
+            }
+        }
 
         $kosanList = Cache::remember('home_kosan_list', 3600, function () {
             return ProductKosan::with(['productImageKosan', 'productKamarKosan.priceKamar'])->get();
@@ -43,183 +88,75 @@ class HomeController extends Controller
 
     public function kosanIndex(Request $request)
     {
-        $today = now()->toDateString();
-        $query = ProductKosan::with([
-            'productImageKosan',
-            'productKamarKosan.priceKamar',
-            'productKamarKosan.tamu' => function ($t) use ($today) {
-                $t->where('status', 'approved')
-                  ->whereDate('end_date', '>=', $today);
-            }
-        ]);
-
-        if ($request->has('search') && !empty($request->search)) {
-            $search = $this->escapeLike(strtolower($request->search));
-            $query->where(function($q) use ($search) {
-                $q->whereRaw('LOWER(title) LIKE ?', ["%{$search}%"])
-                  ->orWhereRaw('LOWER(wilayah) LIKE ?', ["%{$search}%"])
-                  ->orWhereRaw('LOWER(provinsi) LIKE ?', ["%{$search}%"])
-                  ->orWhereRaw('LOWER(kabupaten) LIKE ?', ["%{$search}%"])
-                  ->orWhereRaw('LOWER(kecamatan) LIKE ?', ["%{$search}%"])
-                  ->orWhereRaw('LOWER(fasilitas) LIKE ?', ["%{$search}%"])
-                  ->orWhereHas('productKamarKosan', function($sub) use ($search) {
-                      $sub->whereRaw('LOWER(room) LIKE ?', ["%{$search}%"])
-                          ->orWhereRaw('LOWER(fasilitas) LIKE ?', ["%{$search}%"]);
-                  });
-            });
-        }
-
-        if ($request->filled('provinsi_id')) {
-            $provId = $request->input('provinsi_id');
-            $provObj = WilayahService::findProvince($provId);
-            $query->where(function ($q) use ($provId, $provObj) {
-                $q->where('provinsi_id', $provId);
-                if ($provObj) {
-                    $name = $this->escapeLike(strtolower($provObj['name']));
-                    $q->orWhereRaw('LOWER(provinsi) LIKE ?', ["%{$name}%"])
-                      ->orWhereRaw('LOWER(wilayah) LIKE ?', ["%{$name}%"]);
-                }
-            });
-        }
-
-        if ($request->filled('kabupaten_id')) {
-            $kabId = $request->input('kabupaten_id');
-            $kabObj = WilayahService::findRegency($kabId);
-            $query->where(function ($q) use ($kabId, $kabObj) {
-                $q->where('kabupaten_id', $kabId);
-                if ($kabObj) {
-                    $short = strtolower(trim(preg_replace('/^(kabupaten|kota)\s+/i', '', $kabObj['name'])));
-                    $escaped = $this->escapeLike($short);
-                    $q->orWhereRaw('LOWER(kabupaten) LIKE ?', ["%{$escaped}%"])
-                      ->orWhereRaw('LOWER(wilayah) LIKE ?', ["%{$escaped}%"]);
-                }
-            });
-        }
-
-        if ($request->filled('kecamatan_id')) {
-            $kecId = $request->input('kecamatan_id');
-            $kecObj = WilayahService::findDistrict($kecId);
-            $query->where(function ($q) use ($kecId, $kecObj) {
-                $q->where('kecamatan_id', $kecId);
-                if ($kecObj) {
-                    $escaped = $this->escapeLike(strtolower($kecObj['name']));
-                    $q->orWhereRaw('LOWER(kecamatan) LIKE ?', ["%{$escaped}%"])
-                      ->orWhereRaw('LOWER(wilayah) LIKE ?', ["%{$escaped}%"]);
-                }
-            });
-        }
-
-        if ($request->has('wilayah') && $request->wilayah != 'semua' && !empty($request->wilayah)) {
-            $wSearch = $this->escapeLike(strtolower($request->wilayah));
-            $query->where(function ($q) use ($wSearch) {
-                $q->whereRaw('LOWER(wilayah) LIKE ?', ["%{$wSearch}%"])
-                  ->orWhereRaw('LOWER(provinsi) LIKE ?', ["%{$wSearch}%"])
-                  ->orWhereRaw('LOWER(kabupaten) LIKE ?', ["%{$wSearch}%"])
-                  ->orWhereRaw('LOWER(kecamatan) LIKE ?', ["%{$wSearch}%"]);
-            });
-        }
-
-        if ($request->filled('price_min') || $request->filled('price_max')) {
-            $min = $request->price_min;
-            $max = $request->price_max;
-            $query->whereHas('productKamarKosan.priceKamar', function ($q) use ($min, $max) {
-                if (!empty($min)) {
-                    $q->where('price', '>=', (float)$min);
-                }
-                if (!empty($max)) {
-                    $q->where('price', '<=', (float)$max);
-                }
-            });
-        } elseif ($request->filled('price_range')) {
-            $rangeMap = [
-                'under-500'  => [null, 500000],
-                '500-1000'   => [500000, 1000000],
-                '1000-1500'  => [1000000, 1500000],
-                '1500-2500'  => [1500000, 2500000],
-                'over-2500'  => [2500000, null],
-            ];
-            if (isset($rangeMap[$request->price_range])) {
-                [$min, $max] = $rangeMap[$request->price_range];
-                $query->whereHas('productKamarKosan.priceKamar', function ($q) use ($min, $max) {
-                    $q->whereRaw('LOWER(kategori) = ?', ['bulan']);
-                    if (!is_null($min)) {
-                        $q->where('price', '>=', $min);
-                    }
-                    if (!is_null($max)) {
-                        $q->where('price', '<=', $max);
-                    }
-                });
-            }
-        }
-
-        $kosanList = $query->orderByDesc('created_at')->paginate(9)->withQueryString();
-        $provinces = WilayahService::getProvinces();
-        return view('frontend.kosan.kos', compact('kosanList', 'provinces'));
+        $params = array_filter($request->only(['search', 'price_range']));
+        $target = route('home', $params) . '#pilihan-kamar';
+        return redirect($target);
     }
 
     public function kosanDetail($slug)
     {
-        $kosan = ProductKosan::with([
-            'productImageKosan',
-            'productKamarKosan.productKamarImageKosan',
-            'productKamarKosan.priceKamar',
-            'productKamarKosan.tamu' => function ($t) {
-                $t->where('status', 'approved')
-                  ->whereDate('end_date', '>=', now()->toDateString());
-            }
-        ])
-        ->where('slug', $slug)
-        ->firstOrFail();
-
-        // Increment view count realistically
-        $kosan->increment('view');
-
-        // Related Kosan in same or other regions for exploration/cross-selling
-        $relatedKosans = ProductKosan::with(['productImageKosan', 'productKamarKosan.priceKamar'])
-            ->where('id', '!=', $kosan->id)
-            ->take(3)
-            ->get();
-
-        return view('frontend.kosan.detail-kos', compact('kosan', 'relatedKosans'));
+        return redirect(url('/#tentang'));
     }
 
     public function kamarDetail($product_kamar_kosan = null)
     {
         if (!$product_kamar_kosan) {
-            return redirect()->route('kosan.index');
+            return redirect(url('/#pilihan-kamar'));
         }
+
+        $today = now()->toDateString();
+        $cutoff = now()->subHours(2);
 
         $kamar = ProductKamarKosan::with([
             'productKosan.productImageKosan',
             'productKosan.productKamarKosan' => function ($q) use ($product_kamar_kosan) {
                 $q->where('id', '!=', $product_kamar_kosan)
-                  ->with(['productKamarImageKosan', 'priceKamar']);
+                  ->where(function ($sub) {
+                      $sub->whereNull('status_ketersediaan')
+                          ->orWhere('status_ketersediaan', '!=', 'tidak_tersedia');
+                  })
+                  ->with(['productKamarImageKosan', 'priceKamar', 'tamu']);
             },
             'productKamarImageKosan',
             'priceKamar',
-            'tamu' => function ($t) {
-                $t->where('status', 'approved')
-                  ->whereDate('end_date', '>=', now()->toDateString());
-            }
+            'tamu' => function ($t) use ($today, $cutoff) {
+                $t->where(function ($q) use ($today) {
+                    $q->where('status', 'approved')
+                      ->whereDate('end_date', '>=', $today);
+                })->orWhere(function ($q) use ($cutoff) {
+                    $q->where('status', 'pending')
+                      ->where('created_at', '>=', $cutoff);
+                });
+            },
         ])->findOrFail($product_kamar_kosan);
+
+        if (!$kamar->isBookable() && !$kamar->active_tenant) {
+            return redirect(url('/#pilihan-kamar'))
+                ->with('failed', 'Mohon maaf, unit kamar tersebut saat ini sedang tidak tersedia.');
+        }
+
         $kamar->increment('views');
 
         return view('frontend.kosan.kamar.detail-kamar', compact('kamar'));
     }
 
     /**
-     * Form booking kamar kos (dipindahkan dari route closure).
+     * Form booking kamar kos.
      */
     public function formBooking($product_kamar_kosan)
     {
         $kamar = ProductKamarKosan::with(['priceKamar', 'productKosan', 'tamu', 'productKamarImageKosan'])
             ->findOrFail($product_kamar_kosan);
 
+        if (!$kamar->isBookable()) {
+            return redirect(url('/#pilihan-kamar'))
+                ->with('failed', 'Unit kamar ini sedang dinonaktifkan / tidak tersedia untuk pemesanan.');
+        }
+
         $bookedRanges = [];
         $latestBookedEnd = null;
         if ($kamar && $kamar->tamu) {
             foreach ($kamar->tamu as $t) {
-                // Abaikan booking pending kadaluarsa (> 2 jam) agar tidak memblokir ketersediaan
                 $isStalePending = ($t->status === 'pending' && $t->created_at && $t->created_at->lt(now()->subHours(2)));
                 if (!$isStalePending && in_array(strtolower($t->status), ['approved', 'pending']) && $t->start_date && $t->end_date) {
                     $sDate = \Carbon\Carbon::parse($t->start_date)->format('Y-m-d');
@@ -258,7 +195,7 @@ class HomeController extends Controller
     }
 
     /**
-     * API: Cek tanggal ketersediaan kamar (dipindahkan dari route closure).
+     * API: Cek tanggal ketersediaan kamar.
      */
     public function checkDateKamar($id)
     {
@@ -278,37 +215,4 @@ class HomeController extends Controller
 
         return response()->json($tamu);
     }
-
-    public function newsIndex(Request $request)
-    {
-        $query = Artikel::query();
-
-        if ($request->has('search') && !empty($request->search)) {
-            $search = $this->escapeLike(strtolower($request->search));
-            $query->whereRaw('LOWER(title) LIKE ?', ["%{$search}%"]);
-        }
-
-        $artikels = $query->orderByDesc('created_at')->paginate(6)->withQueryString();
-        return view('frontend.news.news', compact('artikels'));
-    }
-
-    public function newsDetail($slug)
-    {
-        $artikel = Cache::remember("artikel_detail_{$slug}", 3600, function () use ($slug) {
-            return Artikel::where('slug', $slug)->firstOrFail();
-        });
-
-        // Increment view di database secara efisien tanpa menghancurkan cache konten artikel
-        Artikel::where('id', $artikel->id)->increment('view');
-
-        $beritaLainnya = Cache::remember("artikel_berita_lainnya_{$artikel->id}", 3600, function () use ($artikel) {
-            return Artikel::where('id', '!=', $artikel->id)
-                                ->orderByDesc('created_at')
-                                ->take(5)
-                                ->get();
-        });
-
-        return view('frontend.news.detail-news', compact('artikel', 'beritaLainnya'));
-    }
 }
-

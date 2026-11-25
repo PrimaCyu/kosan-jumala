@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Login Pengelola - Sinar Citra Lestari</title>
+    <title>Login Pengelola — Jumala Living</title>
     <link rel="icon" href="{{ asset('logo.jpeg') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     @if (config('services.turnstile.enabled', true) && !empty(config('services.turnstile.site_key')))
         <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
@@ -15,17 +15,20 @@
 
     <style>
         :root {
-            --navy-950: #071D4E;
-            --navy-900: #0B2E7A;
-            --primary: #1D4ED8;
-            --primary-hover: #1E40AF;
-            --canvas: #F4F7FC;
+            --espresso-950: #210F08;
+            --espresso-900: #2D150D;
+            --espresso-800: #3B1D12;
+            --espresso-700: #4F2A1B;
+            --gold-500: #C6A15B;
+            --gold-400: #E1C98E;
+            --gold-600: #9E7831;
+            --canvas: #FAF6F0;
             --surface: #FFFFFF;
-            --border: #E3EAF4;
-            --border-strong: #CBD6E7;
-            --text-main: #0F1E3A;
-            --text-secondary: #3B4C6B;
-            --text-muted: #64748B;
+            --beige: #E9DDCD;
+            --beige-strong: #D8C6B0;
+            --text-main: #29130C;
+            --text-secondary: #5C463A;
+            --text-muted: #846E60;
         }
 
         *, *::before, *::after {
@@ -38,8 +41,8 @@
             font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background-color: var(--canvas);
             background-image:
-                radial-gradient(circle at 12% 10%, rgba(29, 78, 216, 0.08) 0%, transparent 42%),
-                radial-gradient(circle at 88% 90%, rgba(11, 46, 122, 0.07) 0%, transparent 42%);
+                radial-gradient(circle at 10% 10%, rgba(198, 161, 91, 0.14) 0%, transparent 42%),
+                radial-gradient(circle at 90% 90%, rgba(59, 29, 18, 0.08) 0%, transparent 42%);
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
@@ -51,11 +54,11 @@
 
         .login-shell {
             width: 100%;
-            max-width: 860px;
+            max-width: 880px;
             background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 18px;
-            box-shadow: 0 24px 48px -16px rgba(11, 46, 122, 0.14), 0 4px 12px rgba(11, 46, 122, 0.05);
+            border: 1px solid var(--beige);
+            border-radius: 20px;
+            box-shadow: 0 28px 56px -18px rgba(41, 19, 12, 0.18), 0 6px 16px rgba(41, 19, 12, 0.06);
             overflow: hidden;
             display: grid;
             grid-template-columns: 1fr;
@@ -63,15 +66,15 @@
 
         @media (min-width: 768px) {
             .login-shell {
-                grid-template-columns: 340px 1fr;
+                grid-template-columns: 360px 1fr;
             }
         }
 
-        /* Left Corporate Navy Brand Panel */
+        /* Left Luxury Dark Espresso Panel */
         .login-brand-panel {
-            background: linear-gradient(165deg, #0E378F 0%, #0B2E7A 55%, #071D4E 100%);
-            color: #FFFFFF;
-            padding: 2.25rem 2rem;
+            background: linear-gradient(165deg, #432215 0%, #3B1D12 52%, #231009 100%);
+            color: #FFF9F2;
+            padding: 2.35rem 2.1rem;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -85,7 +88,7 @@
             width: 240px;
             height: 240px;
             border-radius: 50%;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(198, 161, 91, 0.18);
             right: -90px;
             bottom: -90px;
             pointer-events: none;
@@ -94,52 +97,61 @@
         .login-brand-panel::before {
             content: '';
             position: absolute;
-            width: 150px;
-            height: 150px;
+            width: 180px;
+            height: 180px;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(96, 165, 250, 0.18) 0%, transparent 70%);
-            left: -40px;
-            top: -40px;
+            background: radial-gradient(circle, rgba(198, 161, 91, 0.16) 0%, transparent 70%);
+            left: -50px;
+            top: -50px;
             pointer-events: none;
         }
 
         .brand-mark {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 0.9rem;
             position: relative;
             z-index: 1;
         }
 
-        .brand-mark-icon {
-            width: 42px;
-            height: 42px;
-            border-radius: 11px;
-            background: rgba(255, 255, 255, 0.14);
-            border: 1px solid rgba(255, 255, 255, 0.22);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            color: #FFFFFF;
+        .brand-mark-logo {
+            width: 54px;
+            height: 54px;
+            border-radius: 14px;
+            border: 1.5px solid rgba(198, 161, 91, 0.72);
+            overflow: hidden;
+            background: #2B140C;
             flex-shrink: 0;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        .brand-mark-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
 
         .brand-mark-name {
-            font-size: 1.15rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
             line-height: 1.2;
+            color: #FFFDF9;
         }
 
         .brand-mark-name span {
-            color: #93C5FD;
+            color: var(--gold-400);
         }
 
         .brand-mark-sub {
-            font-size: 0.72rem;
-            color: rgba(219, 234, 254, 0.75);
-            font-weight: 500;
+            font-size: 0.68rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: rgba(225, 201, 142, 0.82);
+            font-weight: 600;
+            margin-top: 3px;
         }
 
         .brand-copy {
@@ -148,559 +160,364 @@
             z-index: 1;
         }
 
-        @media (max-width: 767.98px) {
-            .login-brand-panel {
-                padding: 1.5rem 1.5rem;
-            }
-            .brand-copy {
-                margin: 1rem 0 0;
-            }
-            .brand-highlights,
-            .brand-footer-meta {
-                display: none;
-            }
-        }
-
         .brand-copy h2 {
-            font-size: 1.35rem;
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.48rem;
             font-weight: 700;
-            letter-spacing: -0.02em;
-            line-height: 1.35;
-            margin-bottom: 0.65rem;
+            line-height: 1.32;
+            margin-bottom: 0.7rem;
+            color: #FFFDF9;
         }
 
         .brand-copy p {
-            font-size: 0.825rem;
-            color: rgba(219, 234, 254, 0.82);
-            line-height: 1.6;
+            font-size: 0.84rem;
+            line-height: 1.65;
+            color: rgba(248, 240, 230, 0.78);
         }
 
-        .brand-highlights {
+        .brand-features {
             list-style: none;
             display: flex;
             flex-direction: column;
             gap: 0.65rem;
-            margin-top: 1.5rem;
             position: relative;
             z-index: 1;
         }
 
-        .brand-highlights li {
+        .brand-features li {
             display: flex;
             align-items: center;
             gap: 0.6rem;
-            font-size: 0.79rem;
-            color: rgba(239, 246, 255, 0.88);
+            font-size: 0.8rem;
+            color: rgba(255, 249, 242, 0.9);
+            font-weight: 500;
         }
 
-        .brand-highlights i {
-            color: #93C5FD;
-            font-size: 0.9rem;
+        .brand-features i {
+            color: var(--gold-400);
+            font-size: 0.95rem;
         }
 
-        .brand-footer-meta {
-            font-size: 0.72rem;
-            color: rgba(191, 219, 254, 0.65);
+        .brand-location {
+            margin-top: 1.5rem;
             padding-top: 1rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(198, 161, 91, 0.2);
+            font-size: 0.74rem;
+            color: rgba(225, 201, 142, 0.78);
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
             position: relative;
             z-index: 1;
         }
 
-        /* Right White Form Panel */
-        .login-card {
-            padding: 2.25rem 2.25rem;
+        /* Right Form Panel */
+        .login-form-panel {
+            padding: 2.5rem 2.35rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            background: #FFFFFF;
         }
 
         @media (max-width: 575.98px) {
-            .login-card {
-                padding: 1.75rem 1.35rem;
+            .login-brand-panel,
+            .login-form-panel {
+                padding: 1.85rem 1.5rem;
             }
         }
 
-        .login-header {
-            margin-bottom: 1.5rem;
+        .form-eyebrow {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--gold-600);
+            margin-bottom: 0.35rem;
         }
 
-        .login-title {
-            font-size: 1.35rem;
+        .form-heading {
+            font-size: 1.45rem;
             font-weight: 800;
-            color: var(--text-main);
             letter-spacing: -0.02em;
+            color: var(--text-main);
             margin-bottom: 0.3rem;
         }
 
-        .login-subtitle {
-            font-size: 0.825rem;
+        .form-subheading {
+            font-size: 0.85rem;
             color: var(--text-muted);
-            line-height: 1.45;
+            margin-bottom: 1.55rem;
+        }
+
+        .alert-box {
+            padding: 0.75rem 0.95rem;
+            border-radius: 10px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+            margin-bottom: 1.15rem;
         }
 
         .alert-error {
             background: #FEF2F2;
             border: 1px solid #FECACA;
             color: #991B1B;
-            font-size: 0.8rem;
-            border-radius: 10px;
-            padding: 0.75rem 0.9rem;
-            margin-bottom: 1.25rem;
-            display: flex;
-            align-items: flex-start;
-            gap: 0.55rem;
         }
 
-        .form-group {
-            margin-bottom: 1.1rem;
+        .alert-success {
+            background: #ECFDF5;
+            border: 1px solid #A7F3D0;
+            color: #065F46;
         }
 
-        .form-label {
+        .field-group {
+            margin-bottom: 1.15rem;
+        }
+
+        .field-label {
             display: block;
-            font-size: 0.8rem;
+            font-size: 0.81rem;
             font-weight: 600;
-            color: var(--text-secondary);
-            margin-bottom: 0.4rem;
+            color: var(--text-main);
+            margin-bottom: 0.42rem;
         }
 
-        .input-wrapper {
+        .input-wrap {
             position: relative;
-            display: flex;
-            align-items: center;
         }
 
         .input-icon {
             position: absolute;
-            left: 0.9rem;
-            color: #94A3B8;
-            font-size: 0.92rem;
-            pointer-events: none;
-            transition: color 0.15s ease;
-        }
-
-        .form-input {
-            width: 100%;
-            background: #F8FAFD;
-            border: 1px solid var(--border);
-            border-radius: 9px;
-            padding: 0.68rem 2.65rem 0.68rem 2.45rem;
-            font-family: inherit;
-            font-size: 0.86rem;
-            color: var(--text-main);
-            outline: none;
-            transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
-        }
-
-        .form-input::placeholder {
-            color: #94A3B8;
-        }
-
-        .form-input:focus {
-            background: #FFFFFF;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.12);
-        }
-
-        .input-wrapper:focus-within .input-icon {
-            color: var(--primary);
-        }
-
-        .btn-toggle-eye {
-            position: absolute;
-            right: 0.2rem;
-            width: 40px;
-            height: 40px;
-            background: transparent;
-            border: none;
-            color: #64748B;
-            cursor: pointer;
-            padding: 0;
-            font-size: 0.95rem;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            transition: color 0.15s ease;
-        }
-
-        .btn-toggle-eye:hover {
-            color: var(--navy-900);
-        }
-
-        .options-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-size: 0.8rem;
-            margin-bottom: 1.35rem;
+            left: 0.88rem;
+            top: 50%;
+            transform: translateY(-50%);
             color: var(--text-muted);
+            font-size: 0.95rem;
+            pointer-events: none;
         }
 
-        .remember-checkbox {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.45rem;
+        .field-input {
+            width: 100%;
+            height: 44px;
+            padding: 0.5rem 2.6rem 0.5rem 2.55rem;
+            border: 1px solid var(--beige-strong);
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 0.88rem;
+            color: var(--text-main);
+            background: #FFFFFF;
+            transition: border-color 0.16s ease, box-shadow 0.16s ease;
+        }
+
+        .field-input:focus {
+            outline: none;
+            border-color: var(--gold-500);
+            box-shadow: 0 0 0 3px rgba(198, 161, 91, 0.18);
+        }
+
+        .toggle-pw-btn {
+            position: absolute;
+            right: 0.65rem;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
             cursor: pointer;
-            user-select: none;
-            font-weight: 500;
-            color: var(--text-secondary);
+            padding: 0.3rem;
+            font-size: 0.95rem;
         }
 
-        .remember-checkbox input[type="checkbox"] {
-            accent-color: var(--primary);
-            width: 15px;
-            height: 15px;
-            cursor: pointer;
+        .toggle-pw-btn:hover {
+            color: var(--espresso-800);
         }
 
-        .forgot-link {
-            color: var(--primary);
-            font-weight: 600;
-            text-decoration: none;
-            cursor: pointer;
-            transition: color 0.15s ease;
-        }
-
-        .forgot-link:hover {
-            color: var(--navy-900);
-            text-decoration: underline;
+        .turnstile-wrap {
+            margin: 1rem 0 1.25rem;
         }
 
         .btn-submit {
             width: 100%;
-            background: var(--primary);
-            color: #FFFFFF;
-            border: 1px solid var(--primary);
-            border-radius: 9px;
-            padding: 0.75rem 1rem;
+            height: 45px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #3B1D12 0%, #4F2A1B 100%);
+            color: #FFFDF9;
             font-family: inherit;
-            font-size: 0.875rem;
-            font-weight: 600;
+            font-size: 0.9rem;
+            font-weight: 700;
             cursor: pointer;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
-            box-shadow: 0 4px 12px rgba(29, 78, 216, 0.24);
-            transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+            box-shadow: 0 6px 18px rgba(59, 29, 18, 0.22);
+            transition: transform 0.15s ease, filter 0.15s ease;
         }
 
         .btn-submit:hover {
-            background: var(--primary-hover);
-            box-shadow: 0 6px 16px rgba(29, 78, 216, 0.3);
+            filter: brightness(1.08);
+            transform: translateY(-1px);
         }
 
-        .btn-submit:active {
-            transform: scale(0.99);
-        }
-
-        .btn-submit:disabled {
-            opacity: 0.72;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .spinner {
-            display: inline-block;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .turnstile-box {
+        .form-footer-links {
+            margin-top: 1.5rem;
+            padding-top: 1.1rem;
+            border-top: 1px solid var(--beige);
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.25rem;
-            min-height: 65px;
-            width: 100%;
-            border-radius: 8px;
-        }
-
-        .turnstile-box iframe {
-            max-width: 100% !important;
-        }
-
-        .footer-back {
-            text-align: center;
-            margin-top: 1.4rem;
-            padding-top: 1.15rem;
-            border-top: 1px solid var(--border);
-        }
-
-        .footer-link {
-            font-size: 0.8rem;
-            font-weight: 600;
+            font-size: 0.78rem;
             color: var(--text-muted);
+        }
+
+        .back-home-link {
+            color: var(--espresso-800);
+            font-weight: 600;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 0.35rem;
-            transition: color 0.15s ease;
         }
 
-        .footer-link:hover {
-            color: var(--navy-900);
-        }
-
-        /* MODAL BANTUAN LUPA SANDI */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(7, 29, 78, 0.55);
-            backdrop-filter: blur(4px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-            z-index: 9999;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        .modal-box {
-            background: #FFFFFF;
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            max-width: 390px;
-            width: 100%;
-            padding: 1.5rem;
-            box-shadow: 0 24px 48px -12px rgba(7, 29, 78, 0.25);
-            animation: fadeIn 0.18s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.96); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        .modal-box-title {
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--text-main);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .modal-box-title i {
-            color: var(--primary);
-        }
-
-        .modal-box-text {
-            font-size: 0.825rem;
-            color: var(--text-muted);
-            line-height: 1.6;
-            margin-bottom: 1.25rem;
-        }
-
-        .modal-box-text strong {
-            color: var(--text-main);
-        }
-
-        .modal-box-btn {
-            width: 100%;
-            background: var(--navy-900);
-            color: #FFFFFF;
-            border: none;
-            border-radius: 8px;
-            padding: 0.62rem;
-            font-family: inherit;
-            font-size: 0.825rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.15s ease;
-        }
-
-        .modal-box-btn:hover {
-            background: var(--primary);
+        .back-home-link:hover {
+            color: var(--gold-600);
         }
     </style>
 </head>
 <body>
-
-    <div class="login-card">
-        <!-- HEADER -->
-        <div class="login-header">
-            <div class="login-logo">
-                <img src="{{ asset('logo.jpeg') }}" alt="Jumala Living Logo">
-            </div>
-            <h1 class="login-title">Jumala Living</h1>
-            <p class="login-subtitle">Portal Masuk Pengelola Kos</p>
-        </div>
-
-            <!-- ERROR ALERT -->
-            @if ($errors->any())
-                <div class="alert-error">
-                    <i class="bi bi-exclamation-circle" style="margin-top: 1px;"></i>
-                    <div>
-                        @foreach ($errors->all() as $error)
-                            <div>{{ $error }}</div>
-                        @endforeach
+    <div class="login-shell">
+        <aside class="login-brand-panel">
+            <div>
+                <div class="brand-mark">
+                    <div class="brand-mark-logo">
+                        <img src="{{ asset('logo.jpeg') }}" alt="Jumala Living">
                     </div>
+                    <div>
+                        <div class="brand-mark-name">Jumala <span>Living</span></div>
+                        <div class="brand-mark-sub">Premium Female Residence</div>
+                    </div>
+                </div>
+
+                <div class="brand-copy">
+                    <h2>Panel Pengelola Hunian Eksklusif</h2>
+                    <p>Kelola ketersediaan kamar, tarif sewa, galeri foto, serta verifikasi pemesanan penghuni secara terpadu.</p>
+                </div>
+
+                <ul class="brand-features">
+                    <li><i class="bi bi-door-open"></i> Manajemen Unit & Status Kamar Real-Time</li>
+                    <li><i class="bi bi-calendar2-check"></i> Verifikasi Booking & Kwitansi Otomatis</li>
+                    <li><i class="bi bi-images"></i> Sinkronisasi Langsung ke Website Publik</li>
+                </ul>
+            </div>
+
+            <div class="brand-location">
+                <i class="bi bi-geo-alt-fill"></i>
+                <span>Jl. Kenanga No. 3, Lowokwaru, Malang</span>
+            </div>
+        </aside>
+
+        <section class="login-form-panel">
+            <div class="form-eyebrow">Admin Portal</div>
+            <h1 class="form-heading">Masuk ke Dashboard</h1>
+            <p class="form-subheading">Gunakan akun pengelola Jumala Living Anda untuk melanjutkan.</p>
+
+            @if(session('error') || session('failed'))
+                <div class="alert-box alert-error">
+                    <i class="bi bi-exclamation-circle-fill"></i>
+                    <span>{{ session('error') ?? session('failed') }}</span>
                 </div>
             @endif
 
-            <!-- FORM -->
-            <form action="{{ route('login.post') }}" method="POST" id="formLogin" onsubmit="handleLoginSubmit(event)">
+            @if(session('success'))
+                <div class="alert-box alert-success">
+                    <i class="bi bi-check-circle-fill"></i>
+                    <span>{{ session('success') }}</span>
+                </div>
+            @endif
+
+            @if($errors->any())
+                <div class="alert-box alert-error">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                    <span>{{ $errors->first() }}</span>
+                </div>
+            @endif
+
+            <form method="POST" action="{{ route('login.post') }}">
                 @csrf
 
-                <!-- EMAIL -->
-                <div class="form-group">
-                    <label for="email" class="form-label">Alamat Email</label>
-                    <div class="input-wrapper">
+                <div class="field-group">
+                    <label for="email" class="field-label">Alamat Email</label>
+                    <div class="input-wrap">
                         <i class="bi bi-envelope input-icon"></i>
-                        <input type="email"
-                               name="email"
-                               id="email"
-                               value="{{ old('email') }}"
-                               required
-                               autofocus
-                               autocomplete="email"
-                               autocapitalize="none"
-                               spellcheck="false"
-                               placeholder="admin@kosanjumala.com"
-                               class="form-input">
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            value="{{ old('email') }}"
+                            class="field-input"
+                            placeholder="admin@jumalaliving.com"
+                            required
+                            autofocus
+                        >
                     </div>
                 </div>
 
-                <!-- PASSWORD WITH EYE TOGGLE -->
-                <div class="form-group">
-                    <label for="password" class="form-label">Kata Sandi</label>
-                    <div class="input-wrapper">
+                <div class="field-group">
+                    <label for="password" class="field-label">Kata Sandi</label>
+                    <div class="input-wrap">
                         <i class="bi bi-lock input-icon"></i>
-                        <input type="password"
-                               name="password"
-                               id="password"
-                               required
-                               autocomplete="current-password"
-                               placeholder="Masukkan kata sandi"
-                               class="form-input">
-                        <button type="button"
-                                class="btn-toggle-eye"
-                                id="togglePassword"
-                                onclick="togglePasswordVisibility()"
-                                aria-label="Tampilkan atau sembunyikan kata sandi"
-                                title="Tampilkan / Sembunyikan sandi">
-                            <i class="bi bi-eye" id="eyeIcon"></i>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            class="field-input"
+                            placeholder="Masukkan kata sandi"
+                            required
+                        >
+                        <button type="button" class="toggle-pw-btn" id="togglePasswordBtn" aria-label="Tampilkan atau sembunyikan kata sandi">
+                            <i class="bi bi-eye" id="togglePasswordIcon"></i>
                         </button>
                     </div>
                 </div>
 
-                <!-- REMEMBER ME & FORGOT PASSWORD -->
-                <div class="options-row">
-                    <label class="remember-checkbox">
-                        <input type="checkbox" name="remember" id="remember">
-                        <span>Ingat saya</span>
-                    </label>
-                    <a href="javascript:void(0)" class="forgot-link" onclick="openForgotModal()">Lupa kata sandi?</a>
-                </div>
-
-                <!-- CLOUDFLARE TURNSTILE CAPTCHA -->
                 @if (config('services.turnstile.enabled', true) && !empty(config('services.turnstile.site_key')))
-                    <div class="turnstile-box">
-                        <div class="cf-turnstile"
-                             data-sitekey="{{ config('services.turnstile.site_key') }}"
-                             data-theme="light"
-                             data-size="flexible"></div>
+                    <div class="turnstile-wrap">
+                        <div class="cf-turnstile" data-sitekey="{{ config('services.turnstile.site_key') }}" data-theme="light"></div>
                     </div>
                 @endif
 
-                <!-- SUBMIT BUTTON WITH SPINNER STATE -->
-                <button type="submit" class="btn-submit" id="btnSubmit">
-                    <span id="btnText">Masuk ke Dashboard</span>
-                    <i class="bi bi-arrow-right" id="btnArrow"></i>
+                <button type="submit" class="btn-submit">
+                    <span>Masuk Dashboard</span>
+                    <i class="bi bi-arrow-right"></i>
                 </button>
             </form>
 
-            <!-- BACK TO HOME -->
-            <div class="footer-back">
-                <a href="{{ route('home') }}" class="footer-link">
+            <div class="form-footer-links">
+                <a href="{{ route('home') }}" class="back-home-link">
                     <i class="bi bi-arrow-left"></i>
-                    <span>Kembali ke Beranda Publik</span>
+                    <span>Kembali ke Website</span>
                 </a>
+                <span>&copy; {{ date('Y') }} Jumala Living</span>
             </div>
-        </div>
-    </div>
-
-    <!-- MODAL BANTUAN LUPA KATA SANDI -->
-    <div class="modal-overlay" id="forgotModal" onclick="closeForgotModalOnBackdrop(event)">
-        <div class="modal-box">
-            <div class="modal-box-title">
-                <i class="bi bi-shield-lock"></i> Bantuan Kata Sandi
-            </div>
-            <p class="modal-box-text">
-                Untuk menjaga keamanan operasional kos, pengaturan ulang kata sandi dikelola langsung oleh <strong>Super Admin</strong>.
-                <br><br>
-                Silakan hubungi administrator pusat untuk mendapatkan kata sandi baru atau bantuan pemulihan akses akun Anda.
-            </p>
-            <button type="button" class="modal-box-btn" onclick="closeForgotModal()">Mengerti</button>
-        </div>
+        </section>
     </div>
 
     <script>
-        // Toggle Show/Hide Password
-        function togglePasswordVisibility() {
-            const passwordInput = document.getElementById('password');
-            const eyeIcon = document.getElementById('eyeIcon');
-            if (passwordInput && eyeIcon) {
-                if (passwordInput.type === 'password') {
-                    passwordInput.type = 'text';
-                    eyeIcon.classList.remove('bi-eye');
-                    eyeIcon.classList.add('bi-eye-slash');
-                } else {
-                    passwordInput.type = 'password';
-                    eyeIcon.classList.remove('bi-eye-slash');
-                    eyeIcon.classList.add('bi-eye');
-                }
-            }
-        }
+        document.addEventListener('DOMContentLoaded', function () {
+            const btn = document.getElementById('togglePasswordBtn');
+            const input = document.getElementById('password');
+            const icon = document.getElementById('togglePasswordIcon');
+            if (!btn || !input || !icon) return;
 
-        // Handle Submit Loading State
-        function handleLoginSubmit(e) {
-            const btn = document.getElementById('btnSubmit');
-            const btnText = document.getElementById('btnText');
-            const btnArrow = document.getElementById('btnArrow');
-
-            if (btn && btnText) {
-                setTimeout(() => {
-                    btn.disabled = true;
-                    btnText.textContent = 'Memverifikasi...';
-                    if (btnArrow) {
-                        btnArrow.className = 'bi bi-arrow-repeat spinner';
-                    }
-                }, 10);
-            }
-        }
-
-        // Modal Forgot Password
-        function openForgotModal() {
-            const modal = document.getElementById('forgotModal');
-            if (modal) modal.classList.add('active');
-        }
-
-        function closeForgotModal() {
-            const modal = document.getElementById('forgotModal');
-            if (modal) modal.classList.remove('active');
-        }
-
-        function closeForgotModalOnBackdrop(e) {
-            if (e.target.id === 'forgotModal') {
-                closeForgotModal();
-            }
-        }
-
-        // Close modal on Escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeForgotModal();
-            }
+            btn.addEventListener('click', function () {
+                const isPassword = input.getAttribute('type') === 'password';
+                input.setAttribute('type', isPassword ? 'text' : 'password');
+                icon.className = isPassword ? 'bi bi-eye-slash' : 'bi bi-eye';
+            });
         });
     </script>
 </body>

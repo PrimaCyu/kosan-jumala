@@ -31,6 +31,7 @@ class KamarSubItemObserver
     protected function clearCache(Model $model): void
     {
         Cache::forget('home_kamar_list');
+        Cache::forget('home_kosan_list');
 
         // If the model belongs directly to product_kamar_kosan_id (e.g. PriceKamar, FasilitasKamar, Tamu)
         if (!empty($model->product_kamar_kosan_id)) {

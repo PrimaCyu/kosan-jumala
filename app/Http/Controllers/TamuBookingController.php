@@ -81,6 +81,10 @@ class TamuBookingController extends Controller
                     ->lockForUpdate()
                     ->firstOrFail();
 
+                if (!$kamar->isBookable()) {
+                    throw new \DomainException('Mohon maaf, unit kamar ini sedang tidak tersedia untuk dipesan.');
+                }
+
                 // 1. Validasi ketersediaan jadwal kamar secara atomic di dalam lock
                 $bookingDate = $this->processBookingDates->calculateBookingRange($kamar->id, $request);
                 if (isset($bookingDate['status']) && $bookingDate['status'] === false) {

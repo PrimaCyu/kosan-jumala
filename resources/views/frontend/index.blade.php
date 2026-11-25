@@ -353,9 +353,11 @@
             'Halo Admin Jumala Living, saya tertarik untuk menanyakan pilihan kamar dan reservasi.'
         );
 
-        $mapsUrl = 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode(
-            'Jumala Living Jl. Kenanga No. 3, Lowokwaru, Malang, Jawa Timur 65141'
-        );
+        $mapsUrl = ($property && !empty($property->gmaps) && filter_var($property->gmaps, FILTER_VALIDATE_URL))
+            ? $property->gmaps
+            : ('https://www.google.com/maps/search/?api=1&query=' . rawurlencode(
+                'Jumala Living Jl. Kenanga No. 3, Lowokwaru, Malang, Jawa Timur 65141'
+            ));
 
         $roomFacilities = collect();
         $propertyFacilities = collect();
@@ -544,7 +546,7 @@
         ====================================================== --}}
         <section class="relative z-20 max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 -mt-7">
 
-            <form action="{{ route('kosan.index') }}"
+            <form action="{{ route('home') }}#pilihan-kamar"
                 method="GET"
                 class="bg-[#FFFCF8] border border-[#E9DDD2] rounded-2xl shadow-lg p-4 sm:p-5">
 
@@ -560,11 +562,11 @@
                             class="jl-filter w-full mt-1 bg-transparent text-sm font-semibold">
 
                             <option value="">Semua Budget</option>
-                            <option value="under-500">Di bawah Rp500.000</option>
-                            <option value="500-1000">Rp500.000–Rp1.000.000</option>
-                            <option value="1000-1500">Rp1.000.000–Rp1.500.000</option>
-                            <option value="1500-2500">Rp1.500.000–Rp2.500.000</option>
-                            <option value="over-2500">Di atas Rp2.500.000</option>
+                            <option value="under-500" @selected(request('price_range') === 'under-500')>Di bawah Rp500.000</option>
+                            <option value="500-1000" @selected(request('price_range') === '500-1000')>Rp500.000–Rp1.000.000</option>
+                            <option value="1000-1500" @selected(request('price_range') === '1000-1500')>Rp1.000.000–Rp1.500.000</option>
+                            <option value="1500-2500" @selected(request('price_range') === '1500-2500')>Rp1.500.000–Rp2.500.000</option>
+                            <option value="over-2500" @selected(request('price_range') === 'over-2500')>Di atas Rp2.500.000</option>
 
                         </select>
                     </div>
@@ -578,6 +580,7 @@
                         <input id="hero-search"
                             name="search"
                             type="text"
+                            value="{{ request('search') }}"
                             placeholder="Contoh: AC, WiFi, kamar mandi"
                             class="jl-filter w-full mt-1 bg-transparent text-sm font-semibold placeholder:text-[#A99A8F]">
 

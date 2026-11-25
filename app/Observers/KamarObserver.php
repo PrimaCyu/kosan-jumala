@@ -38,6 +38,7 @@ class KamarObserver
     protected function clearCache(ProductKamarKosan $kamar): void
     {
         Cache::forget('home_kamar_list');
+        Cache::forget('home_kosan_list');
 
         $kosan = $kamar->productKosan ?? ProductKosan::find($kamar->product_kosan_id);
         if ($kosan && !empty($kosan->slug)) {

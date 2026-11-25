@@ -107,9 +107,9 @@
   @include('frontend.navbar')
 
   @php
-    $namaKosan = $kamar->productKosan->title ?? 'Sinar Citra Lestari';
+    $namaKosan = $kamar->productKosan->title ?? 'Jumala Living';
     $namaKamar = $kamar->room ?? 'Kamar Exclusive';
-    $wilayahKosan = $kamar->productKosan ? $kamar->productKosan->full_location : 'Indonesia';
+    $wilayahKosan = $kamar->productKosan ? $kamar->productKosan->full_location : 'Lowokwaru, Malang';
 
     $images = [];
 
@@ -147,7 +147,7 @@
     }
 
     // Resolusi nomor WhatsApp
-    $waNumber = '6281234567890';
+    $waNumber = '6282146138847';
 
     if (isset($globalSosmed)) {
         foreach ($globalSosmed as $sm) {
@@ -162,7 +162,7 @@
         }
     }
 
-    $kamarWaMsg = "Halo Admin Sinar Citra Lestari, saya tertarik dengan unit " . $namaKamar . " di " . $namaKosan . " (" . $wilayahKosan . ")" . ($isOccupied ? " yang saat ini sedang terisi. Apakah ada info jadwal ketersediaan atau waiting list?" : ". Apakah unit ini siap untuk disurvei/dipesan?");
+    $kamarWaMsg = "Halo Admin Jumala Living, saya tertarik dengan unit " . $namaKamar . " di " . $namaKosan . " (" . $wilayahKosan . ")" . ($isOccupied ? " yang saat ini sedang terisi. Apakah ada info jadwal ketersediaan atau waiting list?" : ". Apakah unit ini siap untuk disurvei/dipesan?");
 
     $waUrl = "https://wa.me/" . $waNumber . "?text=" . urlencode($kamarWaMsg);
 

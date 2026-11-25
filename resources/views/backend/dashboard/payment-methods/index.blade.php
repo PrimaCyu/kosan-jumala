@@ -202,7 +202,7 @@
 
                         <div class="col-md-4" id="create-field-holder">
                             <label class="form-label">Atas Nama (a/n)</label>
-                            <input type="text" name="account_holder" class="form-control" placeholder="Contoh: Kosan Jumala">
+                            <input type="text" name="account_holder" class="form-control" placeholder="Contoh: Jumala Living">
                         </div>
 
                         <!-- UPLOAD QRIS IMAGE -->
@@ -292,7 +292,7 @@
 
                             <div class="col-md-4" id="edit{{ $item->id }}-field-holder">
                                 <label class="form-label">Atas Nama (a/n)</label>
-                                <input type="text" name="account_holder" class="form-control" value="{{ $item->account_holder }}" placeholder="Contoh: Kosan Jumala">
+                                <input type="text" name="account_holder" class="form-control" value="{{ $item->account_holder }}" placeholder="Contoh: Jumala Living">
                             </div>
 
                             <input type="hidden" name="code" value="{{ $item->code }}">

@@ -175,7 +175,7 @@
     <table class="header-table">
         <tr>
             <td style="vertical-align: top;">
-                <div class="logo-title">{{ config('app.name', 'Sinar Citra Lestari') }}</div>
+                <div class="logo-title">{{ config('app.name', 'Jumala Living') }}</div>
                 <div class="subtitle">Hunian Kos Nyaman & Terpercaya</div>
             </td>
             <td style="vertical-align: top; text-align: right;">
@@ -282,7 +282,7 @@
     </div>
 
     <div class="footer">
-        Dokumen ini dibuat otomatis oleh sistem {{ config('app.name', 'Sinar Citra Lestari') }} pada {{ date('d/m/Y H:i:s') }}.<br>
+        Dokumen ini dibuat otomatis oleh sistem {{ config('app.name', 'Jumala Living') }} pada {{ date('d/m/Y H:i:s') }}.<br>
         Terima kasih telah mempercayakan hunian Anda kepada kami!
     </div>
 

@@ -55,12 +55,36 @@
             </span>
         </div>
         <div class="text-xs sm:text-sm text-[#5D4A3D] leading-[1.8] bg-white p-4 sm:p-5 rounded-2xl border border-[#EADFD4] shadow-sm space-y-2">
+            @if(!empty($kamar->tipe_kamar) || !empty($kamar->luas_kamar) || !empty($kamar->lantai))
+                <div class="flex flex-wrap gap-2 pb-2 mb-2 border-b border-[#EADFD4]">
+                    @if(!empty($kamar->tipe_kamar))
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#FFF8F1] border border-[#EADFD4] text-[11px] font-bold text-[#3B2314]">
+                            <i class="fa-solid fa-tag text-[#C9A45C]"></i> Tipe: {{ $kamar->tipe_kamar }}
+                        </span>
+                    @endif
+                    @if(!empty($kamar->luas_kamar))
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#FFF8F1] border border-[#EADFD4] text-[11px] font-bold text-[#3B2314]">
+                            <i class="fa-solid fa-ruler-combined text-[#C9A45C]"></i> Luas: {{ $kamar->luas_kamar }}
+                        </span>
+                    @endif
+                    @if(!empty($kamar->lantai))
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#FFF8F1] border border-[#EADFD4] text-[11px] font-bold text-[#3B2314]">
+                            <i class="fa-solid fa-layer-group text-[#C9A45C]"></i> {{ $kamar->lantai }}
+                        </span>
+                    @endif
+                </div>
+            @endif
             @if($kamar && !empty(trim(strip_tags($kamar->description ?? ''))))
-                {!! \App\Models\Artikel::sanitizeHtml($kamar->description) !!}
+                {!! \App\Support\HtmlSanitizer::clean($kamar->description) !!}
             @elseif($kamar && $kamar->productKosan && !empty(trim(strip_tags($kamar->productKosan->description ?? ''))))
-                {!! \App\Models\Artikel::sanitizeHtml($kamar->productKosan->description) !!}
+                {!! \App\Support\HtmlSanitizer::clean($kamar->productKosan->description) !!}
             @else
                 <p>Unit kamar kos nyaman, bersih, dan terang berlokasi di area strategis kawasan {{ $wilayahNama }}. Menawarkan privasi maksimal dengan sirkulasi udara yang baik dan siap huni kapan saja.</p>
+            @endif
+            @if(!empty($kamar->catatan))
+                <div class="pt-2 mt-2 border-t border-[#EADFD4] text-xs text-[#6E594A]">
+                    <strong>Catatan Tambahan:</strong> {{ $kamar->catatan }}
+                </div>
             @endif
         </div>
     </section>

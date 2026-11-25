@@ -27,7 +27,6 @@ class AppServiceProvider extends ServiceProvider
         \App\Models\FasilitasKamar::observe(\App\Observers\KamarSubItemObserver::class);
         \App\Models\ProductImageKosan::observe(\App\Observers\KamarSubItemObserver::class);
         \App\Models\Tamu::observe(\App\Observers\KamarSubItemObserver::class);
-        \App\Models\Artikel::observe(\App\Observers\ArtikelObserver::class);
         \App\Models\Testimoni::observe(\App\Observers\TestimoniObserver::class);
 
         \Illuminate\Support\Facades\View::composer('*', function ($view) {
@@ -45,19 +44,10 @@ class AppServiceProvider extends ServiceProvider
                 if (\Illuminate\Support\Facades\Schema::hasTable('tamus')) {
                     $user = auth()->user();
                     if ($user) {
-                        $isSuper = $user->isSuperAdmin();
-                        $assignedIds = $isSuper ? collect() : $user->kosans()->pluck('product_kosans.id');
-                        
-                        $pendingBookingCount = \App\Models\Tamu::where('status', 'pending')
-                            ->when(!$isSuper, function ($q) use ($assignedIds) {
-                                $q->whereHas('productKamarKosan', fn($sub) => $sub->whereIn('product_kosan_id', $assignedIds));
-                            })->count();
+                        $pendingBookingCount = \App\Models\Tamu::where('status', 'pending')->count();
 
                         $navbarPendingBookings = \App\Models\Tamu::with(['productKamarKosan.productKosan'])
                             ->where('status', 'pending')
-                            ->when(!$isSuper, function ($q) use ($assignedIds) {
-                                $q->whereHas('productKamarKosan', fn($sub) => $sub->whereIn('product_kosan_id', $assignedIds));
-                            })
                             ->orderByDesc('created_at')
                             ->take(5)
                             ->get();

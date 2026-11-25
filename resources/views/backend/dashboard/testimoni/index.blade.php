@@ -127,9 +127,14 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="text-center text-muted py-5">
-                                        <i class="bi bi-chat-square-dots display-6 d-block mb-2 opacity-50"></i>
-                                        Belum ada testimoni pelanggan.
+                                    <td colspan="6" class="text-center py-5">
+                                        <div class="empty-state-box">
+                                            <div class="empty-state-icon">
+                                                <i class="bi bi-chat-square-quote"></i>
+                                            </div>
+                                            <h6>Belum Ada Testimoni Penghuni</h6>
+                                            <p>Tambahkan ulasan penghuni untuk ditampilkan di halaman utama Jumala Living.</p>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforelse
@@ -138,14 +143,16 @@
                 </div>
             </div>
 
-            <div class="card-footer d-flex justify-content-between align-items-center flex-wrap gap-2">
-                <small class="text-muted fs-8">
-                    Menampilkan {{ $testimonis->firstItem() ?? 0 }} - {{ $testimonis->lastItem() ?? 0 }} dari {{ $testimonis->total() }} testimoni
-                </small>
-                <div>
-                    {{ $testimonis->links('pagination::bootstrap-5') }}
+            @if($testimonis->total() > 0)
+                <div class="card-footer d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <small class="text-muted fs-8">
+                        Menampilkan {{ $testimonis->firstItem() ?? 0 }}–{{ $testimonis->lastItem() ?? 0 }} dari {{ $testimonis->total() }} testimoni
+                    </small>
+                    <div>
+                        {{ $testimonis->links('pagination::bootstrap-5') }}
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
 
         <!-- MODAL TAMBAH TESTIMONI -->

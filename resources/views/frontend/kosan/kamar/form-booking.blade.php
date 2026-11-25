@@ -350,7 +350,7 @@
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-7 sm:py-8 flex-grow w-full">
 
     @php
-      $namaKosan = $kamar->productKosan->title ?? 'Sinar Citra Lestari';
+      $namaKosan = $kamar->productKosan->title ?? 'Jumala Living';
       $bookedRanges = $bookedRanges ?? [];
       $latestBookedEnd = $latestBookedEnd ?? null;
       $isTodayBooked = $isTodayBooked ?? false;
@@ -605,8 +605,8 @@
 
             if ($methodsList->isEmpty()) {
                 $methodsList = collect([
-                    (object)['code' => 'qris', 'name' => 'QRIS (Semua Pembayaran)', 'type' => 'qris', 'bank_code' => 'QRIS', 'account_number' => null, 'account_holder' => 'Sinar Citra Lestari', 'qr_image_url' => null, 'instructions' => 'Buka aplikasi m-Banking atau e-Wallet favorit Anda, pilih menu QRIS / Scan.', 'is_active' => true],
-                    (object)['code' => 'bca', 'name' => 'Bank Central Asia (BCA)', 'type' => 'bank', 'bank_code' => 'BCA', 'account_number' => '1234567890', 'account_holder' => 'PT Sinar Citra Lestari', 'qr_image_url' => null, 'instructions' => 'Transfer tepat sesuai nominal tagihan ke rekening BCA kami.', 'is_active' => true],
+                    (object)['code' => 'qris', 'name' => 'QRIS (Semua Pembayaran)', 'type' => 'qris', 'bank_code' => 'QRIS', 'account_number' => null, 'account_holder' => 'Jumala Living', 'qr_image_url' => null, 'instructions' => 'Buka aplikasi m-Banking atau e-Wallet favorit Anda, pilih menu QRIS / Scan.', 'is_active' => true],
+                    (object)['code' => 'bca', 'name' => 'Bank Central Asia (BCA)', 'type' => 'bank', 'bank_code' => 'BCA', 'account_number' => '1234567890', 'account_holder' => 'Jumala Living', 'qr_image_url' => null, 'instructions' => 'Transfer tepat sesuai nominal tagihan ke rekening BCA kami.', 'is_active' => true],
                     (object)['code' => 'cash', 'name' => 'Bayar di Tempat (COD)', 'type' => 'cash', 'bank_code' => 'COD', 'account_number' => null, 'account_holder' => null, 'qr_image_url' => null, 'instructions' => 'Pembayaran dilakukan secara langsung kepada pengelola kos saat serah terima kunci di lokasi.', 'is_active' => true],
                 ]);
             }
