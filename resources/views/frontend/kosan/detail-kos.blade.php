@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sinar Citra Lestari - {{ $kosan->title }}</title>
+  <title>Jumala Living - {{ $kosan->title }}</title>
   @vite(['resources/css/app.css', 'resources/js/app.js'])
-  <link rel="icon" href="{{ asset('scl.png') }}">
+  <link rel="icon" href="{{ asset('logo.jpeg') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <!-- Leaflet.js Interactive Map CSS & JS -->

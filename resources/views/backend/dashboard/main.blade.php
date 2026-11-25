@@ -24,7 +24,7 @@
       })();
     </script>
 
-    <link rel="icon" href="{{ asset('logo.png') }}?v={{ @filemtime(public_path('logo.png')) ?: '4' }}">
+    <link rel="icon" href="{{ asset('logo.jpeg') }}?v={{ @filemtime(public_path('logo.jpeg')) ?: '4' }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     <meta name="color-scheme" content="light" />
     <meta name="theme-color" content="#ffffff" />
@@ -320,8 +320,8 @@
           <a href="{{ route('admin.dashboard') }}" class="brand-link">
             <div class="brand-logo-box">
               <img
-                src="{{ asset('logo.png') }}?v={{ @filemtime(public_path('logo.png')) ?: '4' }}"
-                alt="Sinar Citra Lestari"
+                src="{{ asset('logo.jpeg') }}?v={{ @filemtime(public_path('logo.jpeg')) ?: '4' }}"
+                alt="Jumala Living Logo"
                 class="brand-logo-img"
               />
             </div>

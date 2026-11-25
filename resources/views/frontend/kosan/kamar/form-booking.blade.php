@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Form Booking - {{ $kamar->room ?? 'Kamar Kos' }} - Sinar Citra Lestari</title>
+  <title>Form Booking - {{ $kamar->room ?? 'Kamar Kos' }} - Jumala Living</title>
   @vite(['resources/css/app.css', 'resources/js/app.js'])
-  <link rel="icon" href="{{ asset('scl.png') }}">
+  <link rel="icon" href="{{ asset('logo.jpeg') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   @if (config('services.turnstile.enabled', true) && !empty(config('services.turnstile.site_key')))

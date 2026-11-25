@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Artikel;
 use App\Models\PaymentMethod;
 use App\Models\ProductKamarKosan;
 use App\Models\ProductKosan;
@@ -39,11 +38,7 @@ class HomeController extends Controller
             return Testimoni::orderByDesc('created_at')->get();
         });
 
-        $artikels = Cache::remember('home_latest_artikels', 3600, function () {
-            return Artikel::orderByDesc('created_at')->take(3)->get();
-        });
-
-        return view('frontend.index', compact('kamarList', 'kosanList', 'testimonis', 'artikels'));
+        return view('frontend.index', compact('kamarList', 'kosanList', 'testimonis'));
     }
 
     public function kosanIndex(Request $request)

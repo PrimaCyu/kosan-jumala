@@ -1,1077 +1,1735 @@
+
 <!DOCTYPE html>
 <html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sinar Citra Lestari - Platform Pencarian & Sewa Kos Modern</title>
-    <meta name="description" content="Platform pencarian dan sewa kos modern Sinar Citra Lestari di Bali. Dapatkan unit kamar kos siap huni, fasilitas lengkap, lokasi strategis, dan reservasi instan resmi.">
-    <meta name="keywords" content="sewa kos bali, kosan modern gianyar, kos tabanan, kost fasilitas lengkap, kosan murah nyaman, kamar kos siap huni">
-    
-    <!-- Open Graph / Social Sharing -->
+    <meta name="theme-color" content="#3B2314">
+
+    <title>Jumala Living | Premium Female Residence Malang</title>
+
+    <meta name="description" content="Jumala Living merupakan hunian kos khusus putri di Lowokwaru, Malang, dengan pilihan kamar dan fasilitas untuk kenyamanan tinggal.">
+    <meta name="keywords" content="kos putri Malang, hunian putri Lowokwaru, Jumala Living, kost Malang">
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url('/') }}">
-    <meta property="og:title" content="Sinar Citra Lestari - Platform Pencarian & Sewa Kos Modern">
-    <meta property="og:description" content="Hunian kos modern, nyaman & bebas ribet. Fasilitas lengkap siap huni dengan reservasi instan bergaransi e-Ticket resmi.">
-    <meta property="og:image" content="{{ asset('scl.png') }}">
+    <meta property="og:title" content="Jumala Living | Premium Female Residence Malang">
+    <meta property="og:description" content="Hunian kos khusus putri di Lowokwaru, Malang.">
+    <meta property="og:image" content="{{ asset('logo.jpeg') }}">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700;800&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" href="{{ asset('logo.jpeg') }}">
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="icon" href="{{ asset('scl.png') }}">
 
     <style>
         :root {
-            --scl-brown: #3B2314;
-            --scl-brown-soft: #6B4630;
-            --scl-red: #E60049;
-            --scl-yellow: #F3A833;
-            --scl-green: #00A896;
-            --scl-cream: #FFF8F1;
-            --scl-paper: #FFFCF8;
-            --scl-line: #E9DDD2;
+            --jl-brown: #3B2314;
+            --jl-gold: #C9A45C;
+            --jl-ivory: #FFF8F1;
+            --jl-rose: #D99AA8;
+
+            --jl-white: #FFFCF8;
+            --jl-muted: #8E7B6D;
+            --jl-border: #E9DDD2;
+
+            --jl-serif: "Playfair Display", Georgia, serif;
+            --jl-sans: "DM Sans", Arial, sans-serif;
         }
 
-        @keyframes scl-float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
-        .scl-float {
-            animation: scl-float 5s ease-in-out infinite;
+        * {
+            box-sizing: border-box;
         }
 
-        .scl-float-delayed {
-            animation: scl-float 6s ease-in-out 2.5s infinite;
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 100px;
         }
 
-        .shine {
+        body {
+            background: var(--jl-ivory);
+            color: var(--jl-brown);
+            font-family: var(--jl-sans);
+        }
+
+        ::selection {
+            background: var(--jl-rose);
+            color: var(--jl-brown);
+        }
+
+        .jl-serif {
+            font-family: var(--jl-serif);
+        }
+
+        .jl-sans {
+            font-family: var(--jl-sans);
+        }
+
+        /* NAVBAR */
+
+        .jl-navbar-wrapper {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            width: 100%;
+        }
+
+        .jl-navbar-wrapper nav {
+            transition: box-shadow .3s ease, background .3s ease;
+        }
+
+        .jl-navbar-wrapper.scrolled nav {
+            box-shadow: 0 8px 25px rgba(59, 35, 20, .12);
+        }
+
+        /* HERO */
+
+        .jl-hero {
             position: relative;
-            overflow: hidden;
-        }
-        .shine::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -60%;
-            width: 40%;
-            height: 200%;
-            background: linear-gradient(
-                to right,
-                rgba(255, 255, 255, 0) 0%,
-                rgba(255, 255, 255, 0.3) 50%,
-                rgba(255, 255, 255, 0) 100%
-            );
-            transform: rotate(25deg);
-            animation: shineAnimation 4s infinite;
-        }
-        @keyframes shineAnimation {
-            0% { left: -60%; }
-            20% { left: 140%; }
-            100% { left: 140%; }
+            isolation: isolate;
+            overflow: clip;
+            background: var(--jl-brown);
         }
 
-        .reveal {
-            opacity: 0;
-            transform: translateY(24px);
-            transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1);
+        .jl-hero::before {
+            content: "";
+            position: absolute;
+            width: 420px;
+            height: 420px;
+            border: 1px solid rgba(201,164,92,.25);
+            border-radius: 50%;
+            top: -180px;
+            right: -100px;
+            z-index: -1;
         }
-        .reveal.active {
+
+        .jl-hero::after {
+            content: "";
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border: 1px solid rgba(217,154,168,.2);
+            border-radius: 50%;
+            bottom: -180px;
+            left: -100px;
+            z-index: -1;
+        }
+
+        .jl-hero-title {
+            letter-spacing: -.045em;
+            line-height: 1.12;
+        }
+
+        .jl-hero-image {
+            position: relative;
+            overflow: clip;
+            border-radius: 180px 180px 24px 24px;
+            border: 5px solid rgba(201,164,92,.65);
+            box-shadow: 0 25px 65px rgba(0,0,0,.25);
+        }
+
+        .jl-hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform .7s ease;
+        }
+
+        .jl-hero-image:hover img {
+            transform: scale(1.04);
+        }
+
+        .jl-hero-label {
+            backdrop-filter: blur(12px);
+            background: rgba(255,248,241,.94);
+        }
+
+        /* GENERAL */
+
+        .jl-reveal {
+            opacity: 0;
+            transform: translateY(25px);
+            transition: opacity .65s ease, transform .65s ease;
+        }
+
+        .jl-reveal.active {
             opacity: 1;
             transform: translateY(0);
         }
 
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
+        .jl-card {
+            transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
         }
-        .no-scrollbar {
-            scrollbar-width: none;
+
+        .jl-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 18px 38px rgba(59,35,20,.10);
+            border-color: var(--jl-gold);
+        }
+
+        .jl-button {
+            transition: all .25s ease;
+        }
+
+        .jl-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .jl-section-title {
+            letter-spacing: -.035em;
+            line-height: 1.2;
+        }
+
+        .jl-accent-line {
+            width: 45px;
+            height: 2px;
+            background: var(--jl-gold);
+        }
+
+        .jl-facility-icon {
+            color: var(--jl-gold);
+        }
+
+        .jl-room-image img {
+            transition: transform .5s ease;
+        }
+
+        .jl-room-image:hover img {
+            transform: scale(1.06);
+        }
+
+        .jl-link {
+            transition: color .2s ease;
+        }
+
+        .jl-link:hover {
+            color: var(--jl-gold);
+        }
+
+        /* FILTER */
+
+        .jl-filter {
+            outline: none;
+            transition: border-color .2s ease, box-shadow .2s ease;
+        }
+
+        .jl-filter:focus {
+            border-color: var(--jl-gold);
+            box-shadow: 0 0 0 3px rgba(201,164,92,.15);
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 768px) {
+            html {
+                scroll-padding-top: 80px;
+            }
+
+            .jl-hero-image {
+                max-width: 340px;
+                margin: 0 auto;
+                border-radius: 150px 150px 20px 20px;
+            }
+
+            .jl-hero-title {
+                letter-spacing: -.035em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .jl-hero-title {
+                font-size: 2.35rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                animation-duration: .01ms !important;
+                transition-duration: .01ms !important;
+            }
+
+            .jl-reveal {
+                opacity: 1;
+                transform: none;
+            }
         }
     </style>
 </head>
 
-<body class="bg-[#FFF8F1] text-[#3B2314] font-sans antialiased overflow-x-hidden selection:bg-[#E60049] selection:text-white min-h-screen flex flex-col justify-between">
+<body class="jl-sans antialiased overflow-x-clip min-h-screen flex flex-col">
 
-    <!-- FLASH MESSAGE MODAL -->
+    {{-- SUCCESS NOTIFICATION --}}
     @if (session('success'))
-        <div id="flash-success-modal" onclick="if(event.target===this) closeSuccessModal()" class="fixed inset-0 bg-[#3B2314]/70 backdrop-blur-sm z-[999] flex items-center justify-center p-4">
-            <div class="bg-[#FFFCF8] w-full max-w-md rounded-[2.5rem] p-6 sm:p-8 shadow-2xl relative space-y-5 border border-[#F3A833]/30 animate-in fade-in zoom-in duration-200">
-                <button type="button" onclick="closeSuccessModal()" class="absolute top-5 right-5 w-9 h-9 rounded-full bg-[#3B2314]/5 flex items-center justify-center text-[#6B4630] hover:bg-[#E60049] hover:text-white transition-all" aria-label="Tutup modal">
-                    <i class="fa-solid fa-xmark text-sm"></i>
+        <div id="flash-success-modal" class="fixed inset-0 bg-[#3B2314]/75 z-[999] flex items-center justify-center p-4">
+            <div class="bg-[#FFF8F1] w-full max-w-md rounded-3xl p-7 shadow-2xl relative border border-[#C9A45C]">
+                <button type="button"
+                    onclick="this.closest('#flash-success-modal').remove()"
+                    class="absolute top-4 right-4 w-9 h-9 rounded-full border border-[#E9DDD2]"
+                    aria-label="Tutup">
+                    <i class="fa-solid fa-xmark"></i>
                 </button>
 
-                <div class="space-y-1 text-center">
-                    <div class="w-16 h-16 rounded-2xl bg-[#00A896]/10 text-[#00A896] flex items-center justify-center mx-auto mb-3 rotate-3">
-                        <i class="fa-solid fa-circle-check text-3xl"></i>
-                    </div>
-                    <h3 class="text-2xl font-extrabold text-[#3B2314]">Booking Berhasil!</h3>
-                    <p class="text-xs sm:text-sm text-[#6B4630] mt-1">{{ session('success') }}</p>
+                <div class="text-center">
+                    <i class="fa-solid fa-circle-check text-4xl text-[#C9A45C]"></i>
+                    <h3 class="jl-serif text-2xl mt-3">Booking Berhasil</h3>
+                    <p class="text-sm text-[#8E7B6D] mt-2">{{ session('success') }}</p>
                 </div>
-
-                <div class="p-4 bg-[#F3A833]/10 rounded-2xl border border-[#F3A833]/30 flex items-start gap-3 text-[#6B4630]">
-                    <i class="fa-regular fa-clock text-lg text-[#F3A833] mt-0.5 shrink-0"></i>
-                    <div class="text-xs space-y-1">
-                        <span class="font-bold block text-[#3B2314]">Bukti Booking PDF Telah Dikirim!</span>
-                        <p class="text-[11px] leading-relaxed">
-                            Silakan cek kotak masuk email Anda untuk melihat rincian booking & tiket PDF. Konfirmasi lanjutan akan diproses oleh pengelola kos.
-                        </p>
-                    </div>
-                </div>
-
-                <button type="button" onclick="closeSuccessModal()" class="w-full py-3.5 bg-[#3B2314] hover:bg-[#E60049] text-white font-extrabold rounded-2xl transition-all shadow-md active:scale-95 text-xs sm:text-sm">
-                    Mengerti & Tutup
-                </button>
             </div>
         </div>
     @endif
 
+    {{-- FAILED NOTIFICATION --}}
     @if (session('failed'))
-        <div id="flash-failed-modal" onclick="if(event.target===this) closeFailedModal()" class="fixed inset-0 bg-[#3B2314]/70 backdrop-blur-sm z-[999] flex items-center justify-center p-4">
-            <div class="bg-[#FFFCF8] w-full max-w-md rounded-[2.5rem] p-6 sm:p-8 shadow-2xl relative space-y-5 border border-[#E60049]/20 animate-in fade-in zoom-in duration-200">
-                <button type="button" onclick="closeFailedModal()" class="absolute top-5 right-5 w-9 h-9 rounded-full bg-[#3B2314]/5 flex items-center justify-center text-[#6B4630] hover:bg-[#E60049] hover:text-white transition-all" aria-label="Tutup modal">
-                    <i class="fa-solid fa-xmark text-sm"></i>
+        <div id="flash-failed-modal" class="fixed inset-0 bg-[#3B2314]/75 z-[999] flex items-center justify-center p-4">
+            <div class="bg-[#FFF8F1] w-full max-w-md rounded-3xl p-7 shadow-2xl relative border border-[#D99AA8]">
+                <button type="button"
+                    onclick="this.closest('#flash-failed-modal').remove()"
+                    class="absolute top-4 right-4 w-9 h-9 rounded-full border border-[#E9DDD2]"
+                    aria-label="Tutup">
+                    <i class="fa-solid fa-xmark"></i>
                 </button>
 
-                <div class="space-y-1 text-center">
-                    <div class="w-16 h-16 rounded-2xl bg-[#E60049]/10 text-[#E60049] flex items-center justify-center mx-auto mb-3 -rotate-3">
-                        <i class="fa-solid fa-circle-exclamation text-3xl"></i>
-                    </div>
-                    <h3 class="text-2xl font-extrabold text-[#3B2314]">Pemesanan Belum Berhasil</h3>
-                    <p class="text-xs sm:text-sm text-[#E60049] mt-1">{{ session('failed') }}</p>
+                <div class="text-center">
+                    <i class="fa-solid fa-circle-exclamation text-4xl text-[#D99AA8]"></i>
+                    <h3 class="jl-serif text-2xl mt-3">Pemesanan Belum Berhasil</h3>
+                    <p class="text-sm text-[#8E7B6D] mt-2">{{ session('failed') }}</p>
                 </div>
-
-                <button type="button" onclick="closeFailedModal()" class="w-full py-3.5 bg-[#3B2314] hover:bg-[#E60049] text-white font-extrabold rounded-2xl transition-all shadow-md active:scale-95 text-xs sm:text-sm">
-                    Coba Lagi
-                </button>
             </div>
         </div>
     @endif
 
-    <!-- 1. LOADING BAR -->
-    <div id="page-loader" class="fixed top-0 left-0 w-full h-1 bg-gradient-to-r from-[#F3A833] via-[#E60049] to-[#00A896] z-[100] transition-all duration-500 ease-out"></div>
+    {{-- STICKY NAVBAR --}}
+        @include('frontend.navbar')
 
-    <!-- 2. NAVBAR -->
-    @include('frontend.navbar')
+    @php
+        $property = isset($kosanList) ? $kosanList->first() : null;
 
-    <main class="w-full flex-grow">
+        $propertyImage = null;
 
-        <!-- 3. HERO SECTION 2.0 (MODERN, IMPACTFUL & HIGH-CONVERTING) -->
-        <section class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 pb-16 md:pb-24 overflow-hidden">
-            
-            <!-- Atmospheric ambient glows -->
-            <div class="absolute -top-12 -right-20 w-96 h-96 bg-[#F3A833]/15 rounded-full blur-3xl pointer-events-none"></div>
-            <div class="absolute top-1/2 -left-20 w-80 h-80 bg-[#00A896]/10 rounded-full blur-3xl pointer-events-none"></div>
+        if ($property) {
+            $propertyImageModel = $property->productImageKosan->first();
 
-            <div class="relative rounded-[2.5rem] sm:rounded-[3rem] overflow-hidden shadow-2xl reveal min-h-[520px] sm:min-h-[580px] border border-[#E9DDD2]">
-                <!-- Hero Photo Background with warm gradient overlay -->
-                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=85" alt="Sinar Citra Lestari Modern Living" class="absolute inset-0 w-full h-full object-cover">
-                <div class="absolute inset-0 bg-gradient-to-r from-[#24150D]/95 via-[#24150D]/75 to-transparent"></div>
+            if ($propertyImageModel) {
+                $propertyImage = asset('storage/' . $propertyImageModel->image);
+            }
+        }
 
-                <!-- Floating Glassmorphic Stat Chips (Desktop) -->
-                <div class="hidden lg:flex absolute top-10 right-10 z-20 items-center gap-3 px-4 py-2.5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-white shadow-xl scl-float">
-                    <div class="w-10 h-10 rounded-xl bg-[#F3A833] text-[#3B2314] flex items-center justify-center font-black text-sm">
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-                    <div>
-                        <div class="text-xs font-black">4.9 / 5.0 Rating</div>
-                        <div class="text-[10px] text-white/70">500+ Review Penghuni Puas</div>
-                    </div>
-                </div>
+        $heroImage = $propertyImage ?: asset('logo.jpeg');
 
-                <div class="hidden lg:flex absolute bottom-12 right-12 z-20 items-center gap-3 px-4 py-2.5 rounded-2xl bg-[#00A896]/20 backdrop-blur-md border border-[#00A896]/30 text-white shadow-xl scl-float-delayed">
-                    <div class="w-10 h-10 rounded-xl bg-[#00A896] text-white flex items-center justify-center text-sm">
-                        <i class="fa-solid fa-shield-halved"></i>
-                    </div>
-                    <div>
-                        <div class="text-xs font-black">100% Terverifikasi</div>
-                        <div class="text-[10px] text-white/70">Bebas Biaya Tersembunyi</div>
-                    </div>
-                </div>
+        $waNumber = '6282146138847';
 
-                <!-- Main Hero Content -->
-                <div class="relative z-10 flex flex-col justify-center items-start min-h-[520px] sm:min-h-[580px] px-6 sm:px-12 lg:px-16 py-12 text-white max-w-3xl">
-                    
-                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-[#F3A833] text-xs font-black uppercase tracking-wider mb-5">
-                        <i class="fa-solid fa-sparkles text-[11px]"></i>
-                        <span>Platform Sewa Kos Pilihan #1 di Bali</span>
-                    </div>
+        if (isset($globalSosmed)) {
+            $waSosmed = $globalSosmed->first(function ($s) {
+                $title = strtolower($s->title ?? $s->name ?? $s->platform ?? '');
 
-                    <h1 class="text-2xl sm:text-5xl lg:text-6xl font-black leading-[1.1] tracking-tight text-white">
-                        Hunian Kos Modern, <br class="hidden sm:inline">
-                        <span class="text-[#F3A833]">Nyaman</span> & Bebas Ribet.
-                    </h1>
+                return str_contains($title, 'whatsapp') || $title === 'wa';
+            });
 
-                    <p class="text-xs sm:text-sm text-white/80 mt-4 leading-relaxed max-w-xl">
-                        Temukan kamar sewa idaman dengan fasilitas lengkap siap huni, lokasi strategis dekat fasilitas publik, dan sistem reservasi instan bergaransi e-Ticket resmi.
-                    </p>
+            if ($waSosmed) {
+                $digits = preg_replace('/[^0-9]/', '', $waSosmed->url ?? $waSosmed->link ?? '');
 
-                    <!-- SMART SEARCH FORM -->
-                    <div class="mt-8 w-full">
-                        <form action="{{ route('kosan.index') }}" method="GET" class="bg-white/95 backdrop-blur-md rounded-3xl p-3 sm:p-4 shadow-2xl border border-white/40 text-[#3B2314]">
-                            <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5">
-                                
-                                <!-- WILAYAH DROPDOWN -->
-                                @php
-                                    $wilayahList = $kamarList->pluck('productKosan.wilayah')
-                                        ->merge(isset($kosanList) ? $kosanList->pluck('wilayah') : [])
-                                        ->filter()
-                                        ->unique()
-                                        ->values();
-                                @endphp
-                                <div class="sm:col-span-4 relative flex items-center bg-[#FFF8F1] rounded-2xl px-3 py-2.5 border border-[#E9DDD2] hover:border-[#F3A833] transition-colors">
-                                    <i class="fa-solid fa-location-dot text-[#E60049] text-sm shrink-0 mr-2.5"></i>
-                                    <div class="flex-1 min-w-0">
-                                        <label for="search-wilayah" class="block text-[9px] uppercase font-black text-[#8E7B6D] tracking-wider cursor-pointer">Wilayah</label>
-                                        <select id="search-wilayah" name="wilayah" class="w-full bg-transparent text-xs font-bold text-[#3B2314] focus:outline-none cursor-pointer">
-                                            <option value="semua">Semua Wilayah</option>
-                                            @foreach($wilayahList as $w)
-                                                <option value="{{ $w }}">{{ $w }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
+                if ($digits) {
+                    if (str_starts_with($digits, '0')) {
+                        $digits = '62' . substr($digits, 1);
+                    } elseif (str_starts_with($digits, '8')) {
+                        $digits = '62' . $digits;
+                    }
 
-                                <!-- BUDGET RANGE DROPDOWN -->
-                                <div class="sm:col-span-4 relative flex items-center bg-[#FFF8F1] rounded-2xl px-3 py-2.5 border border-[#E9DDD2] hover:border-[#F3A833] transition-colors">
-                                    <i class="fa-solid fa-wallet text-[#F3A833] text-sm shrink-0 mr-2.5"></i>
-                                    <div class="flex-1 min-w-0">
-                                        <label for="search-price-range" class="block text-[9px] uppercase font-black text-[#8E7B6D] tracking-wider cursor-pointer">Rentang Budget</label>
-                                        <select id="search-price-range" name="price_range" class="w-full bg-transparent text-xs font-bold text-[#3B2314] focus:outline-none cursor-pointer">
-                                            <option value="">Semua Budget</option>
-                                            <option value="under-500">&lt; Rp 500rb / bln</option>
-                                            <option value="500-1000">Rp 500rb - 1 Juta</option>
-                                            <option value="1000-1500">Rp 1 - 1.5 Juta</option>
-                                            <option value="1500-2500">Rp 1.5 - 2.5 Juta</option>
-                                            <option value="over-2500">&gt; Rp 2.5 Juta</option>
-                                        </select>
-                                    </div>
-                                </div>
+                    $waNumber = $digits;
+                }
+            }
+        }
 
-                                <!-- KEYWORDS SEARCH & SUBMIT -->
-                                <div class="sm:col-span-4 flex items-center gap-2">
-                                    <div class="flex-1 relative flex items-center bg-[#FFF8F1] rounded-2xl px-3 py-2.5 border border-[#E9DDD2] hover:border-[#F3A833] transition-colors">
-                                        <i class="fa-solid fa-magnifying-glass text-[#00A896] text-sm shrink-0 mr-2"></i>
-                                        <div class="flex-1 min-w-0">
-                                            <label for="hero-search-input" class="block text-[9px] uppercase font-black text-[#8E7B6D] tracking-wider cursor-pointer">Kata Kunci</label>
-                                            <input
-                                                type="text"
-                                                id="hero-search-input"
-                                                name="search"
-                                                placeholder="Nama kos / fasilitas..."
-                                                class="w-full bg-transparent text-xs font-bold text-[#3B2314] placeholder-[#8E7B6D]/60 focus:outline-none"
-                                            >
-                                        </div>
-                                    </div>
+        $waUrl = 'https://wa.me/' . $waNumber . '?text=' . rawurlencode(
+            'Halo Admin Jumala Living, saya tertarik untuk menanyakan pilihan kamar dan reservasi.'
+        );
 
-                                    <button
-                                        type="submit"
-                                        class="shine px-5 py-4 bg-[#E60049] hover:bg-[#C90040] text-white rounded-2xl font-black text-xs transition-all shadow-md active:scale-95 shrink-0 flex items-center gap-2"
-                                        title="Cari Kos"
-                                        aria-label="Cari Kos"
-                                    >
-                                        <span>Cari</span>
-                                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
-                                    </button>
-                                </div>
+        $mapsUrl = 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode(
+            'Jumala Living Jl. Kenanga No. 3, Lowokwaru, Malang, Jawa Timur 65141'
+        );
 
-                            </div>
-                        </form>
+        $roomFacilities = collect();
+        $propertyFacilities = collect();
 
-                        <!-- QUICK SEARCH TAGS -->
-                        <div class="flex flex-wrap items-center gap-2 mt-3 text-xs">
-                            <span class="text-[11px] font-bold text-white/70">🔥 Populer:</span>
-                            <button type="button" onclick="setQuickSearch('AC')" class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white text-[11px] font-semibold transition-colors border border-white/15">AC Dingin</button>
-                            <button type="button" onclick="setQuickSearch('WiFi')" class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white text-[11px] font-semibold transition-colors border border-white/15">Wi-Fi Cepat</button>
-                            <button type="button" onclick="setQuickSearch('Kamar Mandi')" class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white text-[11px] font-semibold transition-colors border border-white/15">KM Dalam</button>
-                            <button type="button" onclick="setQuickSearch('Parkir')" class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white text-[11px] font-semibold transition-colors border border-white/15">Parkir Mobil</button>
+        if ($property) {
+            $propertyFacilities = collect(
+                array_filter(array_map('trim', explode(',', $property->fasilitas ?? '')))
+            );
+        }
+
+        foreach ($kamarList as $room) {
+            $roomFacilities = $roomFacilities->merge(
+                array_filter(array_map('trim', explode(',', $room->fasilitas ?? '')))
+            );
+        }
+
+        $roomFacilities = $roomFacilities->filter()->unique()->take(12);
+        $propertyFacilities = $propertyFacilities->filter()->unique()->take(12);
+
+        $getFacilityIcon = function ($facility) {
+            $value = strtolower($facility);
+
+            if (str_contains($value, 'ac')) return 'fa-snowflake';
+            if (str_contains($value, 'mandi') || str_contains($value, 'toilet')) return 'fa-bath';
+            if (str_contains($value, 'wifi') || str_contains($value, 'internet')) return 'fa-wifi';
+            if (str_contains($value, 'kasur') || str_contains($value, 'bed')) return 'fa-bed';
+            if (str_contains($value, 'lemari')) return 'fa-door-closed';
+            if (str_contains($value, 'meja') || str_contains($value, 'kursi')) return 'fa-chair';
+            if (str_contains($value, 'dapur') || str_contains($value, 'kitchen')) return 'fa-kitchen-set';
+            if (str_contains($value, 'parkir')) return 'fa-car';
+            if (str_contains($value, 'laundry') || str_contains($value, 'cuci')) return 'fa-soap';
+
+            return 'fa-check';
+        };
+    @endphp
+
+    <main class="flex-grow">
+
+        {{-- =====================================================
+             HERO SECTION
+        ====================================================== --}}
+        <section class="jl-hero text-white">
+
+            <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24">
+
+                <div class="grid lg:grid-cols-[1.1fr_.9fr] gap-12 lg:gap-16 items-center">
+
+                    {{-- HERO TEXT --}}
+                    <div class="relative z-10 text-center lg:text-left">
+
+                        <div class="inline-flex items-center gap-3 text-[#C9A45C] text-[10px] sm:text-xs font-bold uppercase tracking-[.22em] mb-6">
+                            <span class="jl-accent-line"></span>
+                            Exclusive Female Residence
+                            <span class="jl-accent-line"></span>
                         </div>
-                    </div>
 
-                </div>
+                        <h1 class="jl-serif jl-hero-title text-4xl sm:text-5xl lg:text-[64px] font-semibold max-w-3xl mx-auto lg:mx-0">
+                            Ruang Nyaman,
+                            <span class="block text-[#C9A45C] italic mt-2">
+                                Cerita Istimewa.
+                            </span>
+                        </h1>
 
-            </div>
-        </section>
-
-        <!-- 4. TRUST BAR / METRIC HIGHLIGHTS -->
-        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 sm:-mt-10 mb-16 relative z-30 reveal">
-            <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-[#E9DDD2] grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 text-center">
-                <div class="py-2 sm:py-0 border-r border-[#E9DDD2]">
-                    <div class="text-2xl sm:text-3xl font-black text-[#3B2314]">100%</div>
-                    <div class="text-xs text-[#7B6759] font-bold mt-1">Unit Asli & Terverifikasi</div>
-                </div>
-                <div class="py-2 sm:py-0 md:border-r border-[#E9DDD2]">
-                    <div class="text-2xl sm:text-3xl font-black text-[#00A896]">500+</div>
-                    <div class="text-xs text-[#7B6759] font-bold mt-1">Penghuni Aktif & Puas</div>
-                </div>
-                <div class="py-2 sm:py-0 border-r border-[#E9DDD2]">
-                    <div class="text-2xl sm:text-3xl font-black text-[#F3A833]">24/7</div>
-                    <div class="text-xs text-[#7B6759] font-bold mt-1">Keamanan CCTV Terpadu</div>
-                </div>
-                <div class="py-2 sm:py-0">
-                    <div class="text-2xl sm:text-3xl font-black text-[#E60049]">Rp 0</div>
-                    <div class="text-xs text-[#7B6759] font-bold mt-1">Biaya Survei / Bebas Pungli</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 5. MENGAPA SINAR CITRA LESTARI? (VALUE PROPOSITIONS) -->
-        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 reveal">
-            <div class="text-center max-w-2xl mx-auto mb-12">
-                <span class="text-[10px] font-black uppercase tracking-[.25em] text-[#00A896] block mb-1">Keunggulan Layanan</span>
-                <h2 class="text-3xl sm:text-4xl font-black text-[#3B2314]">Kenapa Memilih Sinar Citra Lestari?</h2>
-                <p class="text-xs sm:text-sm text-[#7B6759] mt-2 leading-relaxed">
-                    Kami menghadirkan standar hunian kos modern dengan jaminan kenyamanan, kepastian hukum sewa, dan kemudahan transaksi.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- CARD 1 -->
-                <div class="bg-white p-6 sm:p-7 rounded-[2rem] border border-[#E9DDD2] shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between group">
-                    <div>
-                        <div class="w-14 h-14 rounded-2xl bg-[#00A896]/10 text-[#00A896] flex items-center justify-center text-2xl mb-5 group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-shield-halved"></i>
-                        </div>
-                        <h3 class="text-lg font-black text-[#3B2314]">Keamanan & Privasi 24 Jam</h3>
-                        <p class="text-xs text-[#7B6759] mt-2.5 leading-relaxed">
-                            Dilengkapi pantauan CCTV modern, pintu akses aman, dan lingkungan tenang yang mendukung istirahat serta aktivitas belajar Anda.
+                        <p class="mt-7 max-w-xl mx-auto lg:mx-0 text-sm sm:text-base leading-8 text-white/75">
+                            Lebih dari sekadar tempat tinggal. Temukan hunian khusus putri yang menghadirkan kenyamanan, privasi, dan suasana hangat untuk setiap perjalanan hidupmu.
                         </p>
-                    </div>
-                    <div class="mt-6 pt-4 border-t border-[#E9DDD2]/60 text-[11px] font-bold text-[#00A896] flex items-center gap-1.5">
-                        <span>Aman & Terjaga</span>
-                        <i class="fa-solid fa-check text-[10px]"></i>
-                    </div>
-                </div>
 
-                <!-- CARD 2 -->
-                <div class="bg-white p-6 sm:p-7 rounded-[2rem] border border-[#E9DDD2] shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between group">
-                    <div>
-                        <div class="w-14 h-14 rounded-2xl bg-[#E60049]/10 text-[#E60049] flex items-center justify-center text-2xl mb-5 group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-map-location-dot"></i>
+                        <div class="flex flex-wrap justify-center lg:justify-start gap-x-6 gap-y-3 mt-7 text-xs sm:text-sm text-white/85">
+
+                            <span>
+                                <i class="fa-solid fa-female text-[#C9A45C] mr-2"></i>
+                                Khusus Perempuan
+                            </span>
+
+                            <span>
+                                <i class="fa-solid fa-location-dot text-[#C9A45C] mr-2"></i>
+                                Lowokwaru, Malang
+                            </span>
+
+                            <span>
+                                <i class="fa-solid fa-door-open text-[#C9A45C] mr-2"></i>
+                                Berbagai Tipe Kamar
+                            </span>
+
                         </div>
-                        <h3 class="text-lg font-black text-[#3B2314]">Lokasi Sangat Strategis</h3>
-                        <p class="text-xs text-[#7B6759] mt-2.5 leading-relaxed">
-                            Dekat pusat pendidikan, perkantoran, rumah sakit, minimarket 24 jam, dan sentra kuliner. Akses jalan mudah dan bebas banjir.
-                        </p>
-                    </div>
-                    <div class="mt-6 pt-4 border-t border-[#E9DDD2]/60 text-[11px] font-bold text-[#E60049] flex items-center gap-1.5">
-                        <span>Akses Mudah</span>
-                        <i class="fa-solid fa-check text-[10px]"></i>
-                    </div>
-                </div>
 
-                <!-- CARD 3 -->
-                <div class="bg-white p-6 sm:p-7 rounded-[2rem] border border-[#E9DDD2] shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between group">
-                    <div>
-                        <div class="w-14 h-14 rounded-2xl bg-[#F3A833]/15 text-[#3B2314] flex items-center justify-center text-2xl mb-5 group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-receipt"></i>
+                        <div class="flex flex-col sm:flex-row justify-center lg:justify-start gap-3 mt-9">
+
+                            <a href="#pilihan-kamar"
+                                class="jl-button inline-flex items-center justify-center gap-3 px-7 py-4 rounded-xl bg-[#C9A45C] text-[#3B2314] text-sm font-bold hover:bg-[#D99AA8]">
+
+                                Jelajahi Pilihan Kamar
+                                <i class="fa-solid fa-arrow-right text-xs"></i>
+                            </a>
+
+                            <a href="{{ $waUrl }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="jl-button inline-flex items-center justify-center gap-3 px-7 py-4 rounded-xl border border-[#C9A45C]/60 text-white text-sm font-bold hover:bg-[#FFF8F1]/10">
+
+                                <i class="fa-brands fa-whatsapp text-[#C9A45C]"></i>
+                                Konsultasi WhatsApp
+                            </a>
+
                         </div>
-                        <h3 class="text-lg font-black text-[#3B2314]">Transparansi & Invoice PDF</h3>
-                        <p class="text-xs text-[#7B6759] mt-2.5 leading-relaxed">
-                            Tanpa pungutan liar. Setiap reservasi disertai rincian biaya transparan, tiket digital (#BOOK-XXXXX), serta invoice resmi berformat PDF.
-                        </p>
-                    </div>
-                    <div class="mt-6 pt-4 border-t border-[#E9DDD2]/60 text-[11px] font-bold text-[#F3A833] flex items-center gap-1.5">
-                        <span>Pasti & Resmi</span>
-                        <i class="fa-solid fa-check text-[10px]"></i>
-                    </div>
-                </div>
 
-                <!-- CARD 4 -->
-                <div class="bg-white p-6 sm:p-7 rounded-[2rem] border border-[#E9DDD2] shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between group">
-                    <div>
-                        <div class="w-14 h-14 rounded-2xl bg-[#3B2314]/10 text-[#3B2314] flex items-center justify-center text-2xl mb-5 group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-couch"></i>
-                        </div>
-                        <h3 class="text-lg font-black text-[#3B2314]">Unit Kamar Siap Huni</h3>
-                        <p class="text-xs text-[#7B6759] mt-2.5 leading-relaxed">
-                            Dilengkapi perabot lengkap (kasur springbed, lemari, meja kerja), penyejuk ruangan (AC), dan internet berkecepatan tinggi.
-                        </p>
-                    </div>
-                    <div class="mt-6 pt-4 border-t border-[#E9DDD2]/60 text-[11px] font-bold text-[#3B2314] flex items-center gap-1.5">
-                        <span>Tinggal Masuk</span>
-                        <i class="fa-solid fa-check text-[10px]"></i>
-                    </div>
-                </div>
-            </div>
-        </section>
+                        <div class="flex items-center justify-center lg:justify-start gap-4 mt-10 pt-7 border-t border-white/15">
 
-        <!-- 6. SHOWCASE PROPERTI KOSAN TERSEDIA -->
-        @if(isset($kosanList) && $kosanList->count() > 0)
-            <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14 reveal">
-                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
-                    <div>
-                        <span class="text-[10px] font-black uppercase tracking-[.25em] text-[#E60049] block mb-1">Properti Pilihan</span>
-                        <h2 class="text-3xl sm:text-4xl font-black text-[#3B2314]">Eksplorasi Properti Kosan</h2>
-                    </div>
-                    <a href="{{ route('kosan.index') }}" class="inline-flex items-center gap-2 text-xs font-black text-[#E60049] hover:text-[#3B2314] transition-colors">
-                        <span>Lihat Semua Properti</span>
-                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
-                    </a>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    @foreach($kosanList as $kos)
-                        @php
-                            $kosImg = $kos->productImageKosan->first();
-                            $kosImgUrl = $kosImg ? asset('storage/' . $kosImg->image) : 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=800&q=80';
-                        @endphp
-                        <div class="bg-white rounded-[2rem] border border-[#E9DDD2] shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col sm:flex-row">
-                            <div class="sm:w-5/12 relative h-56 sm:h-auto overflow-hidden bg-[#EDE4DC] shrink-0">
-                                <img src="{{ $kosImgUrl }}" alt="{{ $kos->title }}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                                <span class="absolute top-3 left-3 px-3 py-1 bg-[#3B2314]/90 text-white rounded-full text-[10px] font-black max-w-[75%] truncate">
-                                    {{ $kos->kabupaten ?: ($kos->wilayah ?? 'Indonesia') }}
+                            <div class="flex -space-x-2">
+                                <span class="w-9 h-9 rounded-full bg-[#C9A45C] border-2 border-[#3B2314] flex items-center justify-center text-[#3B2314]">
+                                    <i class="fa-solid fa-house text-xs"></i>
                                 </span>
-                                @if($kos->has_video)
-                                    <span class="absolute bottom-3 right-3 px-2.5 py-1 bg-[#E60049]/95 text-white rounded-full text-[10px] font-black flex items-center gap-1 shadow">
-                                        <i class="fa-solid fa-play text-[8px]"></i> Video
-                                    </span>
-                                @endif
+
+                                <span class="w-9 h-9 rounded-full bg-[#D99AA8] border-2 border-[#3B2314] flex items-center justify-center text-[#3B2314]">
+                                    <i class="fa-solid fa-heart text-xs"></i>
+                                </span>
+
+                                <span class="w-9 h-9 rounded-full bg-[#FFF8F1] border-2 border-[#3B2314] flex items-center justify-center text-[#3B2314]">
+                                    <i class="fa-solid fa-star text-xs"></i>
+                                </span>
                             </div>
-                            <div class="p-6 flex-1 flex flex-col justify-between">
+
+                            <p class="text-xs sm:text-sm text-white/65">
+                                Hunian yang dirancang untuk kenyamanan sehari-hari.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    {{-- HERO IMAGE --}}
+                    <div class="relative max-w-md mx-auto w-full">
+
+                        <div class="jl-hero-image aspect-[4/5] max-h-[550px]">
+
+                            <img
+                                src="{{ $heroImage }}"
+                                alt="{{ $property ? $property->title : 'Jumala Living' }}"
+                                fetchpriority="high">
+
+                        </div>
+
+                        <div class="jl-hero-label absolute -bottom-5 -left-4 sm:-left-8 rounded-2xl p-4 sm:p-5 shadow-xl border border-[#C9A45C]/40 max-w-[230px]">
+
+                            <div class="flex items-center gap-3">
+
+                                <div class="w-11 h-11 rounded-xl bg-[#D99AA8]/30 flex items-center justify-center text-[#3B2314]">
+                                    <i class="fa-solid fa-house text-lg"></i>
+                                </div>
+
                                 <div>
-                                    <span class="inline-flex items-center gap-1 text-[11px] font-bold text-[#00A896]">
-                                        <i class="fa-solid fa-door-open"></i> {{ $kos->productKamarKosan->count() }} Tipe Kamar
-                                    </span>
-                                    <h3 class="text-lg font-black text-[#3B2314] mt-1 group-hover:text-[#E60049] transition-colors">
-                                        <a href="{{ route('kosan.detail', $kos->slug) }}">{{ $kos->title }}</a>
-                                    </h3>
-                                    <p class="text-xs text-[#7B6759] mt-2 line-clamp-2 leading-relaxed">
-                                        {{ strip_tags($kos->description ?? 'Properti hunian kos nyaman dengan fasilitas unggulan dan lokasi aman.') }}
+                                    <p class="text-[10px] uppercase tracking-wider text-[#8E7B6D] font-bold">
+                                        Your New Space
+                                    </p>
+
+                                    <p class="text-sm font-bold text-[#3B2314]">
+                                        Jumala Living
                                     </p>
                                 </div>
-                                <div class="pt-4 mt-4 border-t border-[#E9DDD2] flex items-center justify-between gap-2">
-                                    <span class="text-[11px] text-[#8E7B6D] font-bold truncate" title="{{ $kos->full_location }}">
-                                        <i class="fa-solid fa-location-dot text-[#E60049] mr-1"></i> {{ $kos->full_location }}
-                                    </span>
-                                    <a href="{{ route('kosan.detail', $kos->slug) }}" class="px-4 py-2 bg-[#3B2314] hover:bg-[#E60049] text-white text-xs font-black rounded-xl transition-all active:scale-95 flex items-center gap-1.5" aria-label="Lihat kos {{ $kos->title }}">
-                                        <span>Lihat Kos</span>
-                                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
-                                    </a>
-                                </div>
+
                             </div>
+
                         </div>
+
+                        <div class="absolute -top-5 -right-3 sm:-right-8 bg-[#D99AA8] text-[#3B2314] rounded-full w-20 h-20 sm:w-24 sm:h-24 flex flex-col items-center justify-center shadow-lg rotate-12">
+
+                            <i class="fa-solid fa-heart text-lg mb-1"></i>
+
+                            <span class="text-[9px] font-bold uppercase tracking-wider">
+                                Feel at Home
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        {{-- =====================================================
+             QUICK SEARCH
+        ====================================================== --}}
+        <section class="relative z-20 max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 -mt-7">
+
+            <form action="{{ route('kosan.index') }}"
+                method="GET"
+                class="bg-[#FFFCF8] border border-[#E9DDD2] rounded-2xl shadow-lg p-4 sm:p-5">
+
+                <div class="grid grid-cols-1 md:grid-cols-[minmax(180px,.8fr)_minmax(220px,1.2fr)_auto] gap-3">
+
+                    <div class="rounded-xl border border-[#E9DDD2] px-4 py-3">
+                        <label for="hero-price" class="block text-[10px] uppercase tracking-wider font-bold text-[#8E7B6D]">
+                            Budget Bulanan
+                        </label>
+
+                        <select id="hero-price"
+                            name="price_range"
+                            class="jl-filter w-full mt-1 bg-transparent text-sm font-semibold">
+
+                            <option value="">Semua Budget</option>
+                            <option value="under-500">Di bawah Rp500.000</option>
+                            <option value="500-1000">Rp500.000–Rp1.000.000</option>
+                            <option value="1000-1500">Rp1.000.000–Rp1.500.000</option>
+                            <option value="1500-2500">Rp1.500.000–Rp2.500.000</option>
+                            <option value="over-2500">Di atas Rp2.500.000</option>
+
+                        </select>
+                    </div>
+
+                    <div class="rounded-xl border border-[#E9DDD2] px-4 py-3">
+
+                        <label for="hero-search" class="block text-[10px] uppercase tracking-wider font-bold text-[#8E7B6D]">
+                            Nama Kamar atau Fasilitas
+                        </label>
+
+                        <input id="hero-search"
+                            name="search"
+                            type="text"
+                            placeholder="Contoh: AC, WiFi, kamar mandi"
+                            class="jl-filter w-full mt-1 bg-transparent text-sm font-semibold placeholder:text-[#A99A8F]">
+
+                    </div>
+
+                    <button type="submit"
+                        class="jl-button min-h-14 px-6 rounded-xl bg-[#3B2314] text-white font-bold text-sm hover:bg-[#C9A45C] hover:text-[#3B2314]">
+
+                        <i class="fa-solid fa-magnifying-glass mr-2 text-[#C9A45C]"></i>
+                        Cari Kamar
+
+                    </button>
+
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2 mt-4 px-1">
+
+                    <span class="text-xs text-[#8E7B6D] mr-1">
+                        Pencarian cepat:
+                    </span>
+
+                    @foreach(['AC', 'WiFi', 'Kamar Mandi', 'Lemari', 'Kasur'] as $tag)
+
+                        <button type="button"
+                            data-search-tag="{{ $tag }}"
+                            class="jl-button px-3 py-2 rounded-full border border-[#E9DDD2] text-xs font-semibold hover:border-[#C9A45C] hover:bg-[#D99AA8]/20">
+
+                            {{ $tag }}
+
+                        </button>
+
                     @endforeach
-                </div>
-            </section>
-        @endif
 
-        <!-- 7. REKOMENDASI UNIT KAMAR (MODERNIZED WITH DUAL CTA & DYNAMIC FILTER) -->
-        <section class="py-16 md:py-20 bg-[#3B2314] overflow-hidden reveal text-white">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                
-                <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-6 mb-10">
-                    <div>
-                        <span class="text-[#F3A833] text-xs font-black uppercase tracking-[.25em] block mb-1">Pilihan Unit Populer</span>
-                        <h2 class="text-3xl sm:text-4xl font-black text-white">Kamar Kos Siap Huni</h2>
-                        <p class="text-xs text-white/70 mt-1">Pilih kamar yang sesuai dengan kebutuhan dan segera amankan pesanan Anda.</p>
-                    </div>
-
-                    <!-- Filter Wilayah Buttons -->
-                    <div class="rounded-2xl bg-white/10 p-1.5 border border-white/10 self-start xl:self-auto">
-                        <div class="flex flex-wrap gap-1.5" id="filter-buttons">
-                            <button data-filter="semua" class="filter-btn active px-4 py-2 bg-[#F3A833] text-[#3B2314] text-xs font-black rounded-xl shadow-md transition-all">
-                                Semua Wilayah
-                            </button>
-                            @foreach($wilayahList as $w)
-                                <button data-filter="{{ Str::slug($w) }}" class="filter-btn px-4 py-2 bg-white/5 text-white/75 hover:bg-[#E60049] hover:text-white text-xs font-bold rounded-xl transition-all border border-white/10">
-                                    {{ $w }}
-                                </button>
-                            @endforeach
-                        </div>
-                    </div>
                 </div>
 
-                @php
-                    $getFasilitasIcon = function($fas) {
-                        $f = strtolower(trim($fas));
-                        if (str_contains($f, 'ac')) return 'fa-snowflake';
-                        if (str_contains($f, 'mandi') || str_contains($f, 'toilet') || str_contains($f, 'km ') || $f === 'km') return 'fa-bath';
-                        if (str_contains($f, 'heater') || str_contains($f, 'hangat')) return 'fa-temperature-arrow-up';
-                        if (str_contains($f, 'kasur') || str_contains($f, 'springbed') || str_contains($f, 'bed')) return 'fa-bed';
-                        if (str_contains($f, 'lemari') || str_contains($f, 'wardrobe')) return 'fa-door-closed';
-                        if (str_contains($f, 'meja') || str_contains($f, 'kursi') || str_contains($f, 'kerja')) return 'fa-chair';
-                        if (str_contains($f, 'tv')) return 'fa-tv';
-                        if (str_contains($f, 'wifi') || str_contains($f, 'wi-fi') || str_contains($f, 'internet')) return 'fa-wifi';
-                        if (str_contains($f, 'mobil')) return 'fa-car';
-                        if (str_contains($f, 'motor') || str_contains($f, 'parkir')) return 'fa-motorcycle';
-                        if (str_contains($f, 'dapur') || str_contains($f, 'kitchen') || str_contains($f, 'masak')) return 'fa-kitchen-set';
-                        if (str_contains($f, 'cctv') || str_contains($f, 'keamanan')) return 'fa-video';
-                        if (str_contains($f, 'cuci') || str_contains($f, 'laundry')) return 'fa-soap';
-                        if (str_contains($f, 'balkon')) return 'fa-mountain-sun';
-                        if (str_contains($f, 'wastafel') || str_contains($f, 'sink')) return 'fa-sink';
-                        return 'fa-check';
-                    };
-                @endphp
+            </form>
 
-                @if($kamarList->count() > 0)
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="kos-card-container">
-                        @foreach ($kamarList as $kamar)
-                            @php
-                                $firstImg = $kamar->productKamarImageKosan->first();
-                                if ($firstImg) {
-                                    $imgUrl = asset('storage/' . $firstImg->image);
-                                } elseif ($kamar->productKosan && $kamar->productKosan->productImageKosan->first()) {
-                                    $imgUrl = asset('storage/' . $kamar->productKosan->productImageKosan->first()->image);
-                                } else {
-                                    $imgUrl = 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80';
-                                }
+        </section>
 
-                                $fasKamarArr = array_filter(array_map('trim', explode(',', $kamar->fasilitas ?? '')));
-                                $fasKosanArr = array_filter(array_map('trim', explode(',', $kamar->productKosan?->fasilitas ?? '')));
-                                $fasilitasArr = array_unique(array_merge($fasKamarArr, $fasKosanArr));
 
-                                $monthlyPriceObj = $kamar->priceKamar->first(function($price) {
-                                    return strtolower($price->kategori) === 'bulan';
-                                });
-                                $monthlyPrice = $monthlyPriceObj ? (float)$monthlyPriceObj->price : null;
-                                $discPercent = $monthlyPriceObj && $monthlyPriceObj->discount > 0
-                                    ? (float)$monthlyPriceObj->discount
-                                    : (float)($kamar->cumulative_discount ?? 0);
-                                $finalMonthlyPrice = $monthlyPrice;
-                                if ($monthlyPrice && $discPercent > 0) {
-                                    $finalMonthlyPrice = max(0, round($monthlyPrice - ($monthlyPrice * ($discPercent / 100))));
-                                }
+        {{-- =====================================================
+             TRUST
+        ====================================================== --}}
+        <section class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-12 jl-reveal">
 
-                                $wilayahNama = $kamar->productKosan->wilayah ?? '-';
-                                $kosanJudul = $kamar->productKosan->title ?? 'Kost Properti';
-                                $roomStatus = $kamar->room_status ?? 'kosong';
-                            @endphp
+            <div class="grid grid-cols-2 lg:grid-cols-4 border-y border-[#E9DDD2] divide-x divide-[#E9DDD2]">
 
-                            <div class="kos-card bg-white rounded-[2rem] shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col overflow-hidden group border border-[#E9DDD2] text-[#3B2314]" data-wilayah="{{ Str::slug($wilayahNama) }}">
-                                
-                                <div class="relative overflow-hidden h-52 bg-[#EDE4DC]">
-                                    <img src="{{ $imgUrl }}" alt="{{ $kamar->room }}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                @foreach([
+                    ['fa-female', 'Hunian Khusus Putri'],
+                    ['fa-door-open', 'Berbagai Tipe Kamar'],
+                    ['fa-map-location-dot', 'Lokasi Strategis'],
+                    ['fa-calendar-check', 'Reservasi Online']
+                ] as $item)
 
-                                    @if($roomStatus === 'terisi')
-                                        <div class="absolute top-3 left-3 bg-[#3B2314]/90 text-white text-[10px] font-black px-3 py-1.5 rounded-full uppercase tracking-wider flex items-center gap-1.5 shadow-md">
-                                            <span class="w-1.5 h-1.5 rounded-full bg-[#E60049]"></span> Terisi
-                                        </div>
-                                    @elseif($roomStatus === 'pending')
-                                        <div class="absolute top-3 left-3 bg-[#3B2314]/90 text-white text-[10px] font-black px-3 py-1.5 rounded-full uppercase tracking-wider flex items-center gap-1.5 shadow-md">
-                                            <span class="w-1.5 h-1.5 rounded-full bg-[#F3A833] animate-pulse"></span> Booking Pending
-                                        </div>
+                    <div class="px-3 sm:px-6 py-6 text-center group">
+
+                        <i class="fa-solid {{ $item[0] }} text-[#C9A45C] text-xl mb-3 transition-transform group-hover:scale-110"></i>
+
+                        <p class="text-xs sm:text-sm font-bold">
+                            {{ $item[1] }}
+                        </p>
+
+                    </div>
+
+                @endforeach
+
+            </div>
+
+        </section>
+
+
+        {{-- =====================================================
+             ABOUT
+        ====================================================== --}}
+        <section id="tentang"
+            class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-10 sm:py-16 jl-reveal">
+
+            <div class="grid lg:grid-cols-[1fr_.92fr] gap-10 lg:gap-16 items-center">
+
+                <div class="relative min-h-[340px] sm:min-h-[430px] rounded-[1.5rem] overflow-x-clip bg-[#D99AA8]/20 border border-[#E9DDD2]">
+
+                    <img
+                        src="{{ $heroImage }}"
+                        alt="{{ $property ? $property->title : 'Jumala Living' }}"
+                        loading="lazy"
+                        class="absolute inset-0 w-full h-full object-cover">
+
+                    <div class="absolute bottom-5 left-5 right-5 bg-[#FFFCF8]/95 backdrop-blur-sm rounded-xl p-4 border border-white/70">
+
+                        <p class="text-[10px] uppercase tracking-[.18em] text-[#8E7B6D] font-bold">
+                            Lokasi Hunian
+                        </p>
+
+                        <p class="text-sm font-bold mt-1">
+                            Jl. Kenanga No. 3, Lowokwaru, Malang
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div>
+
+                    <div class="flex items-center gap-3 text-[#C9A45C] text-xs font-bold uppercase tracking-[.22em]">
+                        <span class="jl-accent-line"></span>
+                        Tentang Jumala Living
+                    </div>
+
+                    <h2 class="jl-serif jl-section-title text-3xl sm:text-5xl mt-4">
+                        Lebih dari Sekadar
+                        <span class="text-[#C9A45C] italic">Tempat Tinggal.</span>
+                    </h2>
+
+                    <p class="mt-6 text-sm sm:text-base leading-8 text-[#8E7B6D]">
+                        Jumala Living merupakan hunian kos khusus putri yang menghadirkan lingkungan nyaman, privat, dan mendukung aktivitas sehari-hari.
+                    </p>
+
+                    <p class="mt-4 text-sm sm:text-base leading-8 text-[#8E7B6D]">
+                        Dengan pilihan kamar dan fasilitas yang beragam, kami ingin memberikan pengalaman tinggal yang lebih menyenangkan.
+                    </p>
+
+                    <div class="mt-6 p-4 rounded-xl bg-[#D99AA8]/15 border-l-4 border-[#D99AA8]">
+
+                        <p class="text-sm font-semibold leading-7">
+                            <i class="fa-solid fa-location-dot text-[#C9A45C] mr-2"></i>
+                            Jumala Living Jl. Kenanga No. 3, Lowokwaru, Kec. Lowokwaru, Malang, Jawa Timur 65141.
+                        </p>
+
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-3 mt-7">
+
+                        <a href="{{ $mapsUrl }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="jl-button inline-flex justify-center items-center gap-2 px-5 py-3.5 rounded-xl border border-[#3B2314] text-sm font-bold hover:bg-[#3B2314] hover:text-white">
+
+                            <i class="fa-solid fa-map-location-dot"></i>
+                            Lihat Lokasi
+
+                        </a>
+
+                        <a href="{{ $waUrl }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="jl-button inline-flex justify-center items-center gap-2 px-5 py-3.5 rounded-xl bg-[#3B2314] text-white text-sm font-bold hover:bg-[#C9A45C] hover:text-[#3B2314]">
+
+                            <i class="fa-brands fa-whatsapp text-[#C9A45C]"></i>
+                            Konsultasi WhatsApp
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        {{-- =====================================================
+             WHY CHOOSE US
+        ====================================================== --}}
+        <section id="fasilitas" class="bg-[#FFFCF8] border-y border-[#E9DDD2] py-16 sm:py-20">
+
+            <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 jl-reveal">
+
+                <div class="max-w-2xl">
+
+                    <div class="flex items-center gap-3 text-[#C9A45C] text-xs font-bold uppercase tracking-[.22em]">
+                        <span class="jl-accent-line"></span>
+                        Keunggulan Hunian
+                    </div>
+
+                    <h2 class="jl-serif jl-section-title text-3xl sm:text-4xl mt-4">
+                        Kenapa Memilih
+                        <span class="text-[#C9A45C]">Jumala Living?</span>
+                    </h2>
+
+                    <p class="text-sm leading-7 text-[#8E7B6D] mt-4">
+                        Kami menghadirkan lingkungan hunian yang dirancang untuk menunjang kenyamanan dan kebutuhan sehari-hari.
+                    </p>
+
+                </div>
+
+                <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-10">
+
+                    @foreach([
+                        ['fa-female', 'Hunian Khusus Putri', 'Lingkungan hunian yang dikhususkan untuk penghuni perempuan.'],
+                        ['fa-lock', 'Kenyamanan dan Privasi', 'Hunian yang dirancang untuk memberi suasana tinggal yang lebih tenang dan privat.'],
+                        ['fa-door-open', 'Pilihan Kamar Beragam', 'Beragam tipe dan ukuran kamar dengan harga serta fasilitas yang dapat dipilih.'],
+                        ['fa-couch', 'Fasilitas Penunjang', 'Fasilitas kamar dan bersama ditampilkan sesuai data hunian yang tersedia.'],
+                        ['fa-map-location-dot', 'Lokasi Strategis', 'Berada di Lowokwaru, Malang, dekat lingkungan aktivitas sehari-hari.'],
+                        ['fa-calendar-check', 'Reservasi Praktis', 'Pilih kamar, tentukan jadwal check-in, dan ikuti proses reservasi online.']
+                    ] as $feature)
+
+                        <article class="jl-card bg-[#FFF8F1] border border-[#E9DDD2] rounded-2xl p-6">
+
+                            <div class="w-12 h-12 rounded-xl bg-[#C9A45C]/15 flex items-center justify-center">
+
+                                <i class="fa-solid {{ $feature[0] }} text-[#C9A45C] text-xl"></i>
+
+                            </div>
+
+                            <h3 class="jl-serif text-xl mt-5">
+                                {{ $feature[1] }}
+                            </h3>
+
+                            <p class="text-sm leading-7 text-[#8E7B6D] mt-3">
+                                {{ $feature[2] }}
+                            </p>
+
+                        </article>
+
+                    @endforeach
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        {{-- =====================================================
+             ROOM COLLECTION
+        ====================================================== --}}
+        <section id="pilihan-kamar"
+            class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-16 sm:py-20 jl-reveal">
+
+            <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-9">
+
+                <div>
+
+                    <div class="flex items-center gap-3 text-[#C9A45C] text-xs font-bold uppercase tracking-[.22em]">
+                        <span class="jl-accent-line"></span>
+                        Pilihan Kamar
+                    </div>
+
+                    <h2 class="jl-serif jl-section-title text-3xl sm:text-4xl mt-4">
+                        Temukan Ruangan
+                        <span class="text-[#C9A45C] italic">yang Tepat Untukmu.</span>
+                    </h2>
+
+                    <p class="text-sm text-[#8E7B6D] mt-3">
+                        Pilih kamar sesuai kebutuhan dan kenyamananmu.
+                    </p>
+
+                </div>
+
+                <div class="flex flex-col sm:flex-row flex-wrap gap-2">
+
+                    <label for="availability-filter" class="sr-only">
+                        Filter ketersediaan
+                    </label>
+
+                    <select id="availability-filter"
+                        class="jl-filter rounded-xl border border-[#E9DDD2] bg-[#FFFCF8] px-4 py-3 text-sm font-semibold">
+
+                        <option value="semua">Semua Status</option>
+                        <option value="kosong">Kosong</option>
+                        <option value="pending">Pending</option>
+                        <option value="terisi">Terisi</option>
+
+                    </select>
+
+                    <label for="room-sort" class="sr-only">
+                        Urutkan kamar
+                    </label>
+
+                    <select id="room-sort"
+                        class="jl-filter rounded-xl border border-[#E9DDD2] bg-[#FFFCF8] px-4 py-3 text-sm font-semibold">
+
+                        <option value="default">Urutan Default</option>
+                        <option value="price-asc">Harga Terendah</option>
+                        <option value="price-desc">Harga Tertinggi</option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+            @if($kamarList->count() > 0)
+
+                <div id="room-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+                    @foreach($kamarList as $kamar)
+
+                        @php
+                            $firstImage = $kamar->productKamarImageKosan->first();
+
+                            if ($firstImage) {
+                                $roomImage = asset('storage/' . $firstImage->image);
+                            } elseif ($kamar->productKosan && $kamar->productKosan->productImageKosan->first()) {
+                                $roomImage = asset('storage/' . $kamar->productKosan->productImageKosan->first()->image);
+                            } else {
+                                $roomImage = asset('logo.jpeg');
+                            }
+
+                            $monthly = $kamar->priceKamar->first(
+                                fn($price) => strtolower($price->kategori) === 'bulan'
+                            );
+
+                            $monthlyPrice = $monthly ? (float) $monthly->price : null;
+
+                            $discount = $monthly && (float) $monthly->discount > 0
+                                ? (float) $monthly->discount
+                                : (float) ($kamar->cumulative_discount ?? 0);
+
+                            $finalPrice = $monthlyPrice;
+
+                            if ($monthlyPrice && $discount > 0) {
+                                $finalPrice = max(
+                                    0,
+                                    round($monthlyPrice - ($monthlyPrice * $discount / 100))
+                                );
+                            }
+
+                            $status = in_array(
+                                $kamar->room_status ?? 'kosong',
+                                ['kosong', 'pending', 'terisi']
+                            )
+                                ? ($kamar->room_status ?? 'kosong')
+                                : 'kosong';
+
+                            $facilities = array_filter(
+                                array_map('trim', explode(',', $kamar->fasilitas ?? ''))
+                            );
+
+                            $propertyFacilitiesRoom = array_filter(
+                                array_map('trim', explode(',', $kamar->productKosan?->fasilitas ?? ''))
+                            );
+
+                            $facilities = array_slice(
+                                array_unique(array_merge($facilities, $propertyFacilitiesRoom)),
+                                0,
+                                4
+                            );
+                        @endphp
+
+                        <article class="room-card jl-card bg-[#FFFCF8] border border-[#E9DDD2] rounded-2xl overflow-hidden flex flex-col"
+                            data-status="{{ $status }}"
+                            data-price="{{ $finalPrice ?: ($monthlyPrice ?: 0) }}">
+
+                            {{-- ROOM IMAGE --}}
+                            <div class="jl-room-image relative h-52 sm:h-56 bg-[#E9DDD2] overflow-hidden">
+
+                                <img
+                                    src="{{ $roomImage }}"
+                                    alt="Kamar {{ $kamar->room }}"
+                                    loading="lazy"
+                                    class="w-full h-full object-cover">
+
+                                @if($status === 'kosong')
+
+                                    <span class="absolute top-3 left-3 bg-[#FFF8F1] text-[#3B2314] rounded-full px-3 py-1.5 text-[10px] font-bold border border-[#E9DDD2]">
+                                        <span class="inline-block w-1.5 h-1.5 rounded-full bg-[#C9A45C] mr-1.5"></span>
+                                        Kosong
+                                    </span>
+
+                                @elseif($status === 'pending')
+
+                                    <span class="absolute top-3 left-3 bg-[#FFF8F1] text-[#3B2314] rounded-full px-3 py-1.5 text-[10px] font-bold border border-[#D99AA8]">
+                                        <span class="inline-block w-1.5 h-1.5 rounded-full bg-[#D99AA8] mr-1.5"></span>
+                                        Pending
+                                    </span>
+
+                                @else
+
+                                    <span class="absolute top-3 left-3 bg-[#3B2314] text-white rounded-full px-3 py-1.5 text-[10px] font-bold">
+                                        <span class="inline-block w-1.5 h-1.5 rounded-full bg-[#D99AA8] mr-1.5"></span>
+                                        Terisi
+                                    </span>
+
+                                @endif
+
+                            </div>
+
+                            {{-- ROOM CONTENT --}}
+                            <div class="p-5 flex-1 flex flex-col">
+
+                                <h3 class="jl-serif text-xl font-semibold">
+                                    {{ $kamar->room }}
+                                </h3>
+
+                                {{-- FACILITIES --}}
+                                <div class="flex flex-wrap gap-1.5 mt-4 min-h-8">
+
+                                    @forelse($facilities as $facility)
+
+                                        @php
+                                            $icon = $getFacilityIcon($facility);
+                                        @endphp
+
+                                        <span class="inline-flex items-center gap-1.5 px-2 py-1.5 rounded-lg bg-[#FFF8F1] border border-[#E9DDD2] text-[10px] text-[#8E7B6D]">
+
+                                            <i class="fa-solid {{ $icon }} text-[#C9A45C]"></i>
+
+                                            {{ $facility }}
+
+                                        </span>
+
+                                    @empty
+
+                                        <span class="text-xs text-[#8E7B6D]">
+                                            Fasilitas belum ditampilkan
+                                        </span>
+
+                                    @endforelse
+
+                                </div>
+
+                                {{-- PRICE --}}
+                                <div class="mt-auto pt-5">
+
+                                    @if($monthlyPrice)
+
+                                        @if($discount > 0)
+
+                                            <div class="flex items-center gap-2">
+
+                                                <span class="text-xs line-through text-[#8E7B6D]">
+                                                    Rp {{ number_format($monthlyPrice, 0, ',', '.') }}
+                                                </span>
+
+                                                <span class="text-[10px] font-bold text-[#D99AA8] bg-[#D99AA8]/15 px-2 py-1 rounded-full">
+                                                    -{{ round($discount) }}%
+                                                </span>
+
+                                            </div>
+
+                                        @endif
+
+                                        <p class="text-xl font-bold mt-1">
+                                            Rp {{ number_format($finalPrice, 0, ',', '.') }}
+
+                                            <span class="text-xs font-normal text-[#8E7B6D]">
+                                                / bulan
+                                            </span>
+                                        </p>
+
+                                    @elseif($kamar->priceKamar->isNotEmpty())
+
+                                        @php
+                                            $alternate = $kamar->priceKamar->first();
+                                        @endphp
+
+                                        <p class="text-lg font-bold mt-1">
+
+                                            Rp {{ number_format($alternate->price, 0, ',', '.') }}
+
+                                            <span class="text-xs font-normal text-[#8E7B6D]">
+                                                / {{ strtolower($alternate->kategori) }}
+                                            </span>
+
+                                        </p>
+
                                     @else
-                                        <div class="absolute top-3 left-3 bg-[#3B2314]/90 text-white text-[10px] font-black px-3 py-1.5 rounded-full uppercase tracking-wider flex items-center gap-1.5 shadow-md">
-                                            <span class="w-1.5 h-1.5 rounded-full bg-[#00A896]"></span> Siap Huni
-                                        </div>
+
+                                        <p class="text-sm font-bold mt-1 text-[#8E7B6D]">
+                                            Hubungi untuk mengetahui harga
+                                        </p>
+
                                     @endif
 
-                                    <div class="absolute top-3 right-3 bg-white/90 text-[#3B2314] text-[10px] font-extrabold px-2.5 py-1.5 rounded-full shadow-sm flex items-center gap-1">
-                                        <i class="fa-solid fa-eye text-[#E60049]"></i> {{ number_format($kamar->views ?? 0) }}
-                                    </div>
+                                    {{-- BUTTONS --}}
+                                    <div class="grid grid-cols-2 gap-2 mt-5">
 
-                                    <div class="absolute bottom-3 left-3 right-3 flex justify-between items-center gap-2">
-                                        <span class="inline-block bg-[#F3A833] text-[#3B2314] text-[10px] font-black px-3 py-1 rounded-full shadow truncate">
-                                            <i class="fa-solid fa-location-dot mr-1"></i> {{ $wilayahNama }}
-                                        </span>
-                                        @if($kamar->has_video)
-                                            <span class="inline-flex items-center gap-1 bg-[#E60049]/95 text-white text-[10px] font-black px-2.5 py-1 rounded-full shadow shrink-0">
-                                                <i class="fa-solid fa-play text-[8px]"></i> Video
-                                            </span>
-                                        @endif
-                                    </div>
-                                </div>
+                                        <a href="{{ route('kamar.detail', $kamar->id) }}"
+                                            class="jl-button text-center px-3 py-3.5 rounded-xl border border-[#E9DDD2] text-xs font-bold hover:border-[#C9A45C] hover:bg-[#C9A45C]/10">
 
-                                <div class="p-5 sm:p-6 flex-1 flex flex-col justify-between">
-                                    <div>
-                                        <span class="text-[10px] font-black text-[#00A896] uppercase tracking-wider block mb-1 truncate">
-                                            {{ $kosanJudul }}
-                                        </span>
+                                            Detail
 
-                                        <h3 class="font-black text-lg text-[#3B2314] hover:text-[#E60049] transition-colors line-clamp-1">
-                                            <a href="{{ route('kamar.detail', $kamar->id) }}">{{ $kamar->room }}</a>
-                                        </h3>
+                                        </a>
 
-                                        <div class="flex flex-wrap items-center gap-1.5 my-3.5 min-h-[28px]">
-                                            @forelse(array_slice($fasilitasArr, 0, 3) as $fas)
-                                                @php $iconClass = $getFasilitasIcon($fas); @endphp
-                                                <span class="bg-[#FFF8F1] text-[#7B6759] border border-[#E9DDD2] px-2.5 py-1 rounded-lg flex items-center gap-1 text-[10px] font-bold">
-                                                    <i class="fa-solid {{ $iconClass }} text-[#00A896]"></i> {{ $fas }}
-                                                </span>
-                                            @empty
-                                                <span class="text-[#8E7B6D] text-[11px]">Fasilitas lengkap</span>
-                                            @endforelse
+                                        <a href="{{ route('form.booking.kamar', $kamar->id) }}"
+                                            class="jl-button text-center px-3 py-3.5 rounded-xl bg-[#3B2314] text-white text-xs font-bold hover:bg-[#C9A45C] hover:text-[#3B2314]">
 
-                                            @if(count($fasilitasArr) > 3)
-                                                <span class="text-[10px] text-[#7B6759] bg-[#F3A833]/15 px-2 py-1 rounded-lg font-black border border-[#F3A833]/30">
-                                                    +{{ count($fasilitasArr) - 3 }}
-                                                </span>
-                                            @endif
-                                        </div>
-                                    </div>
+                                            {{ $status === 'terisi' ? 'Booking Periode Nanti' : 'Pesan' }}
 
-                                    <div>
-                                        <div class="flex items-baseline justify-between pt-3 border-t border-[#E9DDD2]">
-                                            <span class="text-[10px] uppercase font-bold text-[#8E7B6D]">Tarif Sewa</span>
-                                            @if($monthlyPrice)
-                                                <div class="text-right">
-                                                    @if($discPercent > 0)
-                                                        <div class="flex items-center justify-end gap-1.5 mb-0.5">
-                                                            <span class="text-[10px] text-[#8E7B6D] line-through">Rp {{ number_format($monthlyPrice, 0, ',', '.') }}</span>
-                                                            <span class="text-[9px] font-black bg-[#E60049]/10 text-[#E60049] px-1.5 py-0.5 rounded-md">-{{ round($discPercent) }}%</span>
-                                                        </div>
-                                                    @endif
-                                                    <div>
-                                                        <span class="text-lg font-black text-[#E60049]">Rp {{ number_format($finalMonthlyPrice, 0, ',', '.') }}</span>
-                                                        <span class="text-[10px] text-[#7B6759] font-medium">/bln</span>
-                                                    </div>
-                                                </div>
-                                            @elseif($kamar->priceKamar->isNotEmpty())
-                                                @php $altPrice = $kamar->priceKamar->first(); @endphp
-                                                <div>
-                                                    <span class="text-lg font-black text-[#E60049]">Rp {{ number_format($altPrice->price, 0, ',', '.') }}</span>
-                                                    <span class="text-[10px] text-[#7B6759] font-medium">/{{ strtolower($altPrice->kategori) }}</span>
-                                                </div>
-                                            @else
-                                                <span class="text-xs font-extrabold text-[#7B6759]">Hubungi Admin</span>
-                                            @endif
-                                        </div>
+                                        </a>
 
-                                        <!-- DUAL ACTION SHORTCUT BUTTONS -->
-                                        <div class="grid grid-cols-2 gap-2 mt-4">
-                                            <a
-                                                href="{{ route('kamar.detail', $kamar->id) }}"
-                                                class="px-3 py-2.5 bg-white hover:bg-[#FFF8F1] text-[#3B2314] border border-[#E9DDD2] text-xs font-black rounded-xl text-center transition-all shadow-sm active:scale-95"
-                                            >
-                                                Detail
-                                            </a>
-                                            <a
-                                                href="{{ route('form.booking.kamar', $kamar->id) }}"
-                                                class="shine px-3 py-2.5 {{ $roomStatus === 'terisi' ? 'bg-[#3B2314] hover:bg-[#24150D]' : 'bg-[#E60049] hover:bg-[#C90040]' }} text-white text-xs font-black rounded-xl text-center transition-all shadow-md active:scale-95 flex items-center justify-center gap-1"
-                                                title="{{ $roomStatus === 'terisi' ? 'Kamar terisi saat ini, booking sekarang untuk periode mendatang' : 'Pesan kamar ini sekarang' }}"
-                                            >
-                                                <i class="fa-solid fa-bolt text-[#F3A833] text-[10px]"></i>
-                                                <span>{{ $roomStatus === 'terisi' ? 'Booking Nanti' : 'Pesan' }}</span>
-                                            </a>
-                                        </div>
                                     </div>
 
                                 </div>
+
                             </div>
+
+                        </article>
+
+                    @endforeach
+
+                </div>
+
+                {{-- EMPTY FILTER --}}
+                <div id="room-empty"
+                    class="hidden rounded-2xl border border-[#E9DDD2] bg-[#FFFCF8] p-10 text-center">
+
+                    <i class="fa-solid fa-bed text-3xl text-[#C9A45C]"></i>
+
+                    <h3 class="jl-serif text-xl mt-4">
+                        Tidak Ada Kamar Sesuai Filter
+                    </h3>
+
+                    <p class="text-sm text-[#8E7B6D] mt-2">
+                        Silakan pilih status atau urutan lain.
+                    </p>
+
+                </div>
+
+            @else
+
+                <div class="rounded-2xl border border-[#E9DDD2] bg-[#FFFCF8] p-10 text-center">
+
+                    <i class="fa-solid fa-bed text-3xl text-[#C9A45C]"></i>
+
+                    <h3 class="jl-serif text-xl mt-4">
+                        Belum Ada Kamar Tersedia
+                    </h3>
+
+                    <p class="text-sm text-[#8E7B6D] mt-2">
+                        Data kamar sedang diperbarui. Silakan hubungi admin untuk informasi terkini.
+                    </p>
+
+                </div>
+
+            @endif
+
+        </section>
+
+
+        {{-- =====================================================
+             FACILITIES
+        ====================================================== --}}
+        @if($roomFacilities->count() > 0 || $propertyFacilities->count() > 0)
+
+            <section class="border-y border-[#E9DDD2] bg-[#FFFCF8] py-16 sm:py-20 jl-reveal">
+
+                <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+
+                    <div class="flex items-center gap-3 text-[#C9A45C] text-xs font-bold uppercase tracking-[.22em]">
+                        <span class="jl-accent-line"></span>
+                        Fasilitas Hunian
+                    </div>
+
+                    <h2 class="jl-serif jl-section-title text-3xl sm:text-4xl mt-4">
+                        Fasilitas untuk
+                        <span class="text-[#C9A45C] italic">Kenyamananmu.</span>
+                    </h2>
+
+                    <div class="grid lg:grid-cols-2 gap-8 mt-10">
+
+                        @if($roomFacilities->count() > 0)
+
+                            <div>
+
+                                <h3 class="text-sm font-bold mb-5">
+                                    <i class="fa-solid fa-bed text-[#C9A45C] mr-2"></i>
+                                    Fasilitas Kamar
+                                </h3>
+
+                                <div class="grid sm:grid-cols-2 gap-3">
+
+                                    @foreach($roomFacilities as $facility)
+
+                                        @php
+                                            $icon = $getFacilityIcon($facility);
+                                        @endphp
+
+                                        <div class="jl-card flex items-center gap-3 rounded-xl border border-[#E9DDD2] bg-[#FFF8F1] px-4 py-4 text-sm">
+
+                                            <i class="fa-solid {{ $icon }} text-[#C9A45C] w-5"></i>
+
+                                            {{ $facility }}
+
+                                        </div>
+
+                                    @endforeach
+
+                                </div>
+
+                            </div>
+
+                        @endif
+
+                        @if($propertyFacilities->count() > 0)
+
+                            <div>
+
+                                <h3 class="text-sm font-bold mb-5">
+                                    <i class="fa-solid fa-house text-[#C9A45C] mr-2"></i>
+                                    Fasilitas Bersama
+                                </h3>
+
+                                <div class="grid sm:grid-cols-2 gap-3">
+
+                                    @foreach($propertyFacilities as $facility)
+
+                                        @php
+                                            $icon = $getFacilityIcon($facility);
+                                        @endphp
+
+                                        <div class="jl-card flex items-center gap-3 rounded-xl border border-[#E9DDD2] bg-[#FFF8F1] px-4 py-4 text-sm">
+
+                                            <i class="fa-solid {{ $icon }} text-[#C9A45C] w-5"></i>
+
+                                            {{ $facility }}
+
+                                        </div>
+
+                                    @endforeach
+
+                                </div>
+
+                            </div>
+
+                        @endif
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        @endif
+
+
+        {{-- =====================================================
+             BOOKING PROCESS
+        ====================================================== --}}
+        <section class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-16 sm:py-20 jl-reveal">
+
+            <div class="text-center max-w-2xl mx-auto">
+
+                <div class="flex items-center justify-center gap-3 text-[#C9A45C] text-xs font-bold uppercase tracking-[.22em]">
+                    <span class="jl-accent-line"></span>
+                    Cara Booking
+                    <span class="jl-accent-line"></span>
+                </div>
+
+                <h2 class="jl-serif jl-section-title text-3xl sm:text-4xl mt-4">
+                    Tiga Langkah Menuju
+                    <span class="text-[#C9A45C] italic">Hunian Baru.</span>
+                </h2>
+
+                <p class="text-sm leading-7 text-[#8E7B6D] mt-4">
+                    Proses reservasi yang praktis untuk memulai pengalaman tinggal bersama Jumala Living.
+                </p>
+
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-5 mt-10">
+
+                @foreach([
+                    ['01', 'Pilih Kamar', 'Jelajahi pilihan kamar dan lihat fasilitas serta harga yang tersedia.', 'fa-door-open'],
+                    ['02', 'Reservasi', 'Isi data pemesanan, pilih tanggal check-in, dan metode pembayaran yang tersedia.', 'fa-calendar-check'],
+                    ['03', 'Konfirmasi dan Check-in', 'Ikuti proses konfirmasi booking dan serah terima kunci.', 'fa-key']
+                ] as $step)
+
+                    <article class="jl-card relative bg-[#FFFCF8] border border-[#E9DDD2] rounded-2xl p-7 overflow-hidden">
+
+                        <div class="flex justify-between items-start">
+
+                            <span class="jl-serif text-5xl text-[#C9A45C]/60">
+                                {{ $step[0] }}
+                            </span>
+
+                            <div class="w-12 h-12 rounded-xl bg-[#D99AA8]/20 flex items-center justify-center">
+
+                                <i class="fa-solid {{ $step[3] }} text-[#C9A45C] text-lg"></i>
+
+                            </div>
+
+                        </div>
+
+                        <h3 class="jl-serif text-xl mt-7">
+                            {{ $step[1] }}
+                        </h3>
+
+                        <p class="text-sm leading-7 text-[#8E7B6D] mt-3">
+                            {{ $step[2] }}
+                        </p>
+
+                    </article>
+
+                @endforeach
+
+            </div>
+
+        </section>
+
+
+        {{-- =====================================================
+             TESTIMONIALS
+        ====================================================== --}}
+        <section class="bg-[#3B2314] text-white py-16 sm:py-20 jl-reveal">
+
+            <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+
+                <div class="max-w-2xl">
+
+                    <div class="flex items-center gap-3 text-[#C9A45C] text-xs font-bold uppercase tracking-[.22em]">
+                        <span class="jl-accent-line"></span>
+                        Pengalaman Penghuni
+                    </div>
+
+                    <h2 class="jl-serif jl-section-title text-3xl sm:text-4xl mt-4">
+                        Cerita dari
+                        <span class="text-[#C9A45C] italic">Penghuni Kami.</span>
+                    </h2>
+
+                </div>
+
+                @if(isset($testimonis) && $testimonis->count() > 0)
+
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-10">
+
+                        @foreach($testimonis as $review)
+
+                            @php
+                                $rating = max(1, min(5, (int)($review->rating ?? 5)));
+                            @endphp
+
+                            <article class="jl-card bg-[#FFF8F1] text-[#3B2314] border border-[#C9A45C]/20 rounded-2xl p-6">
+
+                                <div class="text-[#C9A45C] text-xs">
+
+                                    @for($i = 0; $i < $rating; $i++)
+                                        <i class="fa-solid fa-star"></i>
+                                    @endfor
+
+                                    @for($i = $rating; $i < 5; $i++)
+                                        <i class="fa-regular fa-star"></i>
+                                    @endfor
+
+                                </div>
+
+                                <p class="text-sm leading-7 text-[#8E7B6D] mt-5">
+                                    "{{ $review->review }}"
+                                </p>
+
+                                <div class="flex items-center gap-3 mt-6 pt-4 border-t border-[#E9DDD2]">
+
+                                    @if($review->image_profile)
+
+                                        <img
+                                            src="{{ asset('storage/' . $review->image_profile) }}"
+                                            alt="{{ $review->name }}"
+                                            loading="lazy"
+                                            class="w-11 h-11 rounded-full object-cover">
+
+                                    @else
+
+                                        <i class="fa-solid fa-circle-user text-3xl text-[#C9A45C]"></i>
+
+                                    @endif
+
+                                    <div>
+
+                                        <p class="text-sm font-bold">
+                                            {{ $review->name }}
+                                        </p>
+
+                                        <p class="text-[10px] text-[#8E7B6D] mt-1">
+                                            {{ $review->created_at?->translatedFormat('d M Y') }}
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                            </article>
+
                         @endforeach
 
-                        <!-- Empty state when filtered by Wilayah tab -->
-                        <div id="no-kamar-filter" class="hidden col-span-1 sm:col-span-2 lg:col-span-3 bg-white/5 rounded-3xl p-10 text-center border border-white/10 text-white/70">
-                            <i class="fa-solid fa-location-dot text-2xl text-[#F3A833] mb-2 block"></i>
-                            <p class="text-xs font-bold text-white">Tidak ada kamar pada wilayah ini saat ini.</p>
-                            <p class="text-[11px] text-white/60 mt-1">Silakan pilih "Semua Wilayah" atau hubungi kami untuk ketersediaan unit terbaru.</p>
-                        </div>
                     </div>
+
                 @else
-                    <div class="bg-white/5 rounded-3xl p-12 text-center max-w-lg mx-auto border border-white/10 text-white/70">
-                        <i class="fa-solid fa-bed text-3xl text-[#F3A833] mb-3 block"></i>
-                        <h4 class="font-bold text-white text-sm">Belum Ada Kamar Tersedia</h4>
-                        <p class="text-xs mt-1">Data kamar sedang diperbarui oleh pengelola. Silakan hubungi admin untuk ketersediaan unit terbaru.</p>
+
+                    <div class="mt-9 border border-[#C9A45C]/30 rounded-2xl px-6 py-12 text-center">
+
+                        <i class="fa-regular fa-comment-dots text-3xl text-[#C9A45C]"></i>
+
+                        <p class="mt-4 text-sm text-white/80">
+                            Pengalaman dan cerita penghuni Jumala Living.
+                        </p>
+
+                        <p class="mt-2 text-xs text-white/50">
+                            Belum ada ulasan. Jadilah salah satu penghuni pertama yang berbagi pengalaman.
+                        </p>
+
                     </div>
+
                 @endif
 
             </div>
+
         </section>
 
-        <!-- 8. 3 LANGKAH MUDAH SEWA KOS (HOW IT WORKS) -->
-        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20 reveal">
-            <div class="text-center max-w-xl mx-auto mb-12">
-                <span class="text-[10px] font-black uppercase tracking-[.25em] text-[#E60049] block mb-1">Panduan Praktis</span>
-                <h2 class="text-3xl sm:text-4xl font-black text-[#3B2314]">3 Langkah Mudah Sewa Kos</h2>
-                <p class="text-xs sm:text-sm text-[#7B6759] mt-2">
-                    Proses pemesanan transparan tanpa birokrasi rumit, mulai dari pemilihan kamar hingga serah terima kunci.
-                </p>
-            </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
-                <!-- STEP 1 -->
-                <div class="bg-white p-7 rounded-[2.5rem] border border-[#E9DDD2] shadow-sm relative overflow-hidden group hover:shadow-xl transition-all">
-                    <div class="text-4xl font-black text-[#F3A833]/20 absolute top-5 right-6 select-none pointer-events-none">01</div>
-                    <div class="w-12 h-12 rounded-2xl bg-[#E60049]/10 text-[#E60049] flex items-center justify-center text-xl font-black mb-5">
-                        <i class="fa-solid fa-magnifying-glass"></i>
+        {{-- =====================================================
+             LOCATION
+        ====================================================== --}}
+        <section id="lokasi"
+            class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-16 sm:py-20 jl-reveal">
+
+            <div class="grid lg:grid-cols-[.85fr_1.15fr] gap-6 items-stretch">
+
+                <div class="bg-[#FFFCF8] border border-[#E9DDD2] rounded-2xl p-6 sm:p-8 flex flex-col justify-center">
+
+                    <div class="flex items-center gap-3 text-[#C9A45C] text-xs font-bold uppercase tracking-[.22em]">
+                        <span class="jl-accent-line"></span>
+                        Lokasi
                     </div>
-                    <h3 class="text-lg font-black text-[#3B2314]">1. Pilih Kamar Idaman</h3>
-                    <p class="text-xs text-[#7B6759] mt-2 leading-relaxed">
-                        Jelajahi foto asli, cek fasilitas lengkap, tarif sewa bulanan/tahunan, serta peta fasilitas sekitar kos secara transparan.
+
+                    <h2 class="jl-serif text-3xl mt-4">
+                        Jumala Living
+                    </h2>
+
+                    <p class="text-sm leading-8 text-[#8E7B6D] mt-5">
+                        Jl. Kenanga No. 3, Lowokwaru, Kec. Lowokwaru, Malang, Jawa Timur 65141.
                     </p>
-                </div>
 
-                <!-- STEP 2 -->
-                <div class="bg-white p-7 rounded-[2.5rem] border border-[#E9DDD2] shadow-sm relative overflow-hidden group hover:shadow-xl transition-all">
-                    <div class="text-4xl font-black text-[#F3A833]/20 absolute top-5 right-6 select-none pointer-events-none">02</div>
-                    <div class="w-12 h-12 rounded-2xl bg-[#F3A833]/15 text-[#3B2314] flex items-center justify-center text-xl font-black mb-5">
-                        <i class="fa-solid fa-credit-card"></i>
-                    </div>
-                    <h3 class="text-lg font-black text-[#3B2314]">2. Reservasi & Bayar Fleksibel</h3>
-                    <p class="text-xs text-[#7B6759] mt-2 leading-relaxed">
-                        Tentukan tanggal check-in, lalu bayar secara aman dengan opsi metode pembayaran yang tersedia:
-                    </p>
-                    @php
-                        $homeActiveMethods = \App\Models\PaymentMethod::where('is_active', true)->orderBy('sort_order', 'asc')->get();
-                    @endphp
-                    <div class="mt-3 flex flex-wrap gap-1.5 pt-2 border-t border-[#E9DDD2]/60">
-                        @forelse($homeActiveMethods as $pm)
-                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-bold bg-[#FFF8F1] border border-[#E9DDD2] text-[#3B2314] shadow-2xs">
-                                @if($pm->type === 'qris')
-                                    <i class="fa-solid fa-qrcode text-[#E60049]"></i>
-                                @elseif($pm->type === 'cash')
-                                    <i class="fa-solid fa-hand-holding-dollar text-[#00A896]"></i>
-                                @elseif($pm->type === 'ewallet')
-                                    <i class="fa-solid fa-wallet text-[#00A896]"></i>
-                                @else
-                                    <i class="fa-solid fa-building-columns text-[#F3A833]"></i>
-                                @endif
-                                <span>{{ $pm->name }}</span>
-                            </span>
-                        @empty
-                            <span class="text-[10px] text-[#7B6759]">QRIS, Transfer Bank, Tunai / COD</span>
-                        @endforelse
-                    </div>
-                </div>
+                    <div class="flex flex-col sm:flex-row gap-3 mt-7">
 
-                <!-- STEP 3 -->
-                <div class="bg-white p-7 rounded-[2.5rem] border border-[#E9DDD2] shadow-sm relative overflow-hidden group hover:shadow-xl transition-all">
-                    <div class="text-4xl font-black text-[#F3A833]/20 absolute top-5 right-6 select-none pointer-events-none">03</div>
-                    <div class="w-12 h-12 rounded-2xl bg-[#00A896]/10 text-[#00A896] flex items-center justify-center text-xl font-black mb-5">
-                        <i class="fa-solid fa-key"></i>
-                    </div>
-                    <h3 class="text-lg font-black text-[#3B2314]">3. Terima e-Ticket & Check-In</h3>
-                    <p class="text-xs text-[#7B6759] mt-2 leading-relaxed">
-                        Dapatkan tiket reservasi digital & invoice PDF seketika. Tunjukkan kode booking kepada petugas saat serah terima kunci kos.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- 9. TESTIMONIALS SECTION -->
-        <section class="bg-[#FFF1E2] py-16 md:py-20 overflow-hidden reveal border-y border-[#E9DDD2]">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                
-                <div class="flex flex-col md:flex-row md:items-end justify-between gap-5 mb-8">
-                    <div>
-                        <span class="text-[#00A896] text-xs font-black uppercase tracking-[.25em] block mb-1">Pengalaman Penghuni</span>
-                        <h2 class="text-3xl sm:text-4xl font-black text-[#3B2314]">Apa Kata Penghuni Kami?</h2>
-                    </div>
-
-                    <div class="flex items-center gap-2">
-                        <button type="button" class="manual-testimoni-scroll prev w-10 h-10 rounded-xl bg-white text-[#3B2314] hover:bg-[#E60049] hover:text-white transition-all shadow-sm border border-[#E9DDD2] flex items-center justify-center active:scale-95" aria-label="Testimoni sebelumnya">
-                            <i class="fa-solid fa-chevron-left text-xs"></i>
-                        </button>
-                        <button type="button" class="manual-testimoni-scroll next w-10 h-10 rounded-xl bg-white text-[#3B2314] hover:bg-[#E60049] hover:text-white transition-all shadow-sm border border-[#E9DDD2] flex items-center justify-center active:scale-95" aria-label="Testimoni berikutnya">
-                            <i class="fa-solid fa-chevron-right text-xs"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="overflow-x-auto no-scrollbar scroll-smooth pb-3" id="testimonial-scroller">
-                    <div class="flex gap-5 py-2">
-                        @forelse($testimonis as $t)
-                            @php
-                                $profileImg = $t->image_profile
-                                    ? asset('storage/' . $t->image_profile)
-                                    : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80';
-                                $ratingVal = max(1, min(5, (int) $t->rating));
-                            @endphp
-
-                            <div class="w-80 bg-white p-6 rounded-[2rem] shadow-sm hover:shadow-md transition-shadow shrink-0 space-y-4 border border-[#E9DDD2]">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex text-[#F3A833] text-xs gap-1">
-                                        @for($i = 1; $i <= $ratingVal; $i++)
-                                            <i class="fa-solid fa-star"></i>
-                                        @endfor
-                                        @for($j = $ratingVal + 1; $j <= 5; $j++)
-                                            <i class="fa-regular fa-star text-[#E9DDD2]"></i>
-                                        @endfor
-                                    </div>
-                                    <i class="fa-solid fa-quote-right text-[#E60049]/20 text-xl"></i>
-                                </div>
-
-                                <p class="text-[#7B6759] text-xs leading-relaxed font-medium line-clamp-4">
-                                    "{{ $t->review }}"
-                                </p>
-
-                                <div class="flex items-center gap-3 pt-4 border-t border-[#E9DDD2]">
-                                    <img src="{{ $profileImg }}" alt="{{ $t->name }}" loading="lazy" class="w-10 h-10 rounded-full object-cover shadow-sm border-2 border-[#F3A833]/40">
-                                    <div>
-                                        <h4 class="font-black text-[#3B2314] text-xs">{{ $t->name }}</h4>
-                                        <span class="text-[10px] text-[#00A896] font-bold">Penghuni Terverifikasi</span>
-                                    </div>
-                                </div>
-                            </div>
-                        @empty
-                            <div class="w-80 bg-white p-6 rounded-[2rem] shadow-sm shrink-0 space-y-3 border border-[#E9DDD2]">
-                                <div class="flex text-[#F3A833] text-xs gap-1">
-                                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                                </div>
-                                <p class="text-[#7B6759] text-xs leading-relaxed font-medium">
-                                    "Sangat mudah menemukan kos yang nyaman dan fasilitas lengkap di Sinar Citra Lestari. Pelayanannya cepat dan terpercaya!"
-                                </p>
-                                <div class="flex items-center gap-3 pt-3 border-t border-[#E9DDD2]">
-                                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Penghuni SCL" class="w-9 h-9 rounded-full object-cover">
-                                    <div>
-                                        <h4 class="font-black text-[#3B2314] text-xs">Penghuni SCL</h4>
-                                        <span class="text-[10px] text-[#00A896] font-bold">Penghuni Terverifikasi</span>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforelse
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- 10. NEWS & ARTIKEL SECTION -->
-        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20 reveal">
-            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-9">
-                <div>
-                    <span class="text-[#E60049] text-xs font-black uppercase tracking-[.25em] block mb-1">Kabar & Informasi</span>
-                    <h2 class="text-3xl sm:text-4xl font-black text-[#3B2314]">Artikel & Tips Hunian</h2>
-                </div>
-
-                <a href="{{ route('news.index') }}" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#3B2314] text-white text-xs font-black hover:bg-[#E60049] transition-all shadow-sm group">
-                    <span>Lihat Semua Artikel</span>
-                    <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
-                </a>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                @forelse($artikels as $index => $art)
-                    @php
-                        $artImg = $art->image
-                            ? asset('storage/' . $art->image)
-                            : 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=600&q=80';
-                    @endphp
-
-                    @if($index === 0)
-                        <div class="lg:col-span-7 bg-[#3B2314] rounded-[2.5rem] overflow-hidden min-h-[400px] relative group shadow-xl">
-                            <img src="{{ $artImg }}" alt="{{ $art->title }}" loading="lazy" class="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700">
-                            <div class="absolute inset-0 bg-gradient-to-t from-[#24150D] via-[#24150D]/30 to-transparent"></div>
-                            <div class="relative min-h-[400px] flex flex-col justify-end p-6 sm:p-8">
-                                <span class="self-start bg-[#F3A833] text-[#3B2314] text-[10px] font-black px-3 py-1 rounded-full mb-3">
-                                    Informasi Terbaru
-                                </span>
-                                <div class="text-white/70 text-xs font-semibold">
-                                    {{ $art->created_at ? $art->created_at->translatedFormat('d F Y') : 'Terbaru' }}
-                                </div>
-                                <h3 class="mt-1 font-black text-white text-xl sm:text-2xl leading-tight">
-                                    <a href="{{ route('news.detail', $art->slug) }}" class="hover:text-[#F3A833] transition-colors">{{ $art->title }}</a>
-                                </h3>
-                                <p class="text-white/70 text-xs mt-2 max-w-xl line-clamp-2 leading-relaxed">
-                                    {{ Str::limit(strip_tags($art->deskripsi ?? 'Baca selengkapnya artikel menarik seputar hunian.'), 120) }}
-                                </p>
-                                <a href="{{ route('news.detail', $art->slug) }}" class="mt-4 inline-flex items-center gap-1.5 text-xs font-black text-[#F3A833] hover:text-white transition-colors" aria-label="Baca selengkapnya artikel {{ $art->title }}">
-                                    <span>Baca Selengkapnya</span>
-                                    <i class="fa-solid fa-arrow-right text-[10px]"></i>
-                                </a>
-                            </div>
-                        </div>
-                    @else
-                        <div class="lg:col-span-5 bg-white rounded-[2rem] border border-[#E9DDD2] shadow-sm hover:shadow-md transition-all overflow-hidden group flex flex-col sm:flex-row lg:flex-col">
-                            <div class="relative overflow-hidden h-48 sm:h-auto lg:h-44 sm:w-5/12 lg:w-full shrink-0 bg-[#EDE4DC]">
-                                <img src="{{ $artImg }}" alt="{{ $art->title }}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                                <span class="absolute top-3 left-3 bg-[#E60049] text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full">Kabar</span>
-                            </div>
-
-                            <div class="p-5 flex flex-col justify-center">
-                                <div class="text-[10px] text-[#8E7B6D] font-bold mb-1">
-                                    {{ $art->created_at ? $art->created_at->translatedFormat('d F Y') : 'Terbaru' }}
-                                </div>
-                                <h3 class="font-black text-[#3B2314] text-base line-clamp-2 hover:text-[#E60049] transition-colors">
-                                    <a href="{{ route('news.detail', $art->slug) }}">{{ $art->title }}</a>
-                                </h3>
-                                <p class="text-[#7B6759] text-xs mt-2 line-clamp-2 leading-relaxed">
-                                    {{ Str::limit(strip_tags($art->deskripsi ?? 'Baca selengkapnya artikel menarik seputar hunian.'), 90) }}
-                                </p>
-                                <a href="{{ route('news.detail', $art->slug) }}" class="mt-3 text-xs font-black text-[#00A896] hover:text-[#E60049] transition-colors inline-flex items-center gap-1" aria-label="Baca artikel {{ $art->title }}">
-                                    <span>Baca</span>
-                                    <i class="fa-solid fa-arrow-right text-[9px]"></i>
-                                </a>
-                            </div>
-                        </div>
-                    @endif
-                @empty
-                    <div class="bg-white rounded-[2rem] border border-[#E9DDD2] p-10 text-center lg:col-span-12 shadow-sm text-[#8E7B6D]">
-                        <i class="fa-solid fa-newspaper text-3xl text-[#F3A833] mb-3 block"></i>
-                        <h4 class="font-bold text-sm">Belum Ada Artikel</h4>
-                        <p class="text-xs mt-1">Tips seputar hunian kos akan segera kami hadirkan.</p>
-                    </div>
-                @endforelse
-            </div>
-        </section>
-
-        <!-- 11. HIGH-CONVERTING PRE-FOOTER CTA BANNER -->
-        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 md:pb-20 reveal">
-            <div class="bg-[#3B2314] rounded-[2.5rem] sm:rounded-[3rem] p-8 sm:p-12 lg:p-16 text-white relative overflow-hidden shadow-2xl border border-white/10">
-                <div class="absolute -right-16 -bottom-16 w-80 h-80 bg-[#F3A833]/15 rounded-full blur-3xl pointer-events-none"></div>
-                <div class="absolute -left-16 -top-16 w-80 h-80 bg-[#E60049]/15 rounded-full blur-3xl pointer-events-none"></div>
-
-                <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
-                    <div class="max-w-2xl">
-                        <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 text-[#F3A833] text-xs font-black uppercase tracking-wider mb-4 border border-white/10">
-                            <i class="fa-brands fa-whatsapp text-sm"></i> Layanan Konsultasi Gratis
-                        </span>
-                        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
-                            Butuh Rekomendasi Kamar atau Ingin Survei Lokasi?
-                        </h2>
-                        <p class="text-xs sm:text-sm text-white/75 mt-3 leading-relaxed">
-                            Hubungi tim reservasi kami di WhatsApp. Kami siap merekomendasikan unit kamar terbaik sesuai preferensi anggaran dan kebutuhan mobilitas Anda.
-                        </p>
-                    </div>
-
-                    <div class="flex flex-col sm:flex-row gap-3 shrink-0">
-                        @php
-                            $adminWa = '6282146138847';
-                            if (isset($globalSosmed)) {
-                                $waItem = $globalSosmed->first(function ($s) {
-                                    $t = strtolower($s->title ?? $s->name ?? $s->platform ?? '');
-                                    return str_contains($t, 'whatsapp') || $t === 'wa' || str_contains($t, 'wa ');
-                                });
-                                if ($waItem && !empty($waItem->url ?? $waItem->link ?? '')) {
-                                    $digits = preg_replace('/[^0-9]/', '', $waItem->url ?? $waItem->link ?? '');
-                                    if (!empty($digits)) {
-                                        if (str_starts_with($digits, '0')) {
-                                            $digits = '62' . substr($digits, 1);
-                                        } elseif (str_starts_with($digits, '8')) {
-                                            $digits = '62' . $digits;
-                                        }
-                                        $adminWa = $digits;
-                                    }
-                                }
-                            }
-                            $waText = "Halo Admin Sinar Citra Lestari, saya tertarik untuk mencari kamar kos dan ingin konsultasi/survei lokasi. Mohon informasinya.";
-                            $waUrl = "https://wa.me/" . $adminWa . "?text=" . rawurlencode($waText);
-                        @endphp
-                        <a
-                            href="{{ $waUrl }}"
+                        <a href="{{ $mapsUrl }}"
                             target="_blank"
                             rel="noopener noreferrer"
-                            class="shine px-7 py-4 bg-[#00A896] hover:bg-[#008f80] text-white font-black text-xs sm:text-sm rounded-2xl transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2.5"
-                        >
-                            <i class="fa-brands fa-whatsapp text-lg"></i>
-                            <span>Chat WhatsApp Admin</span>
+                            class="jl-button inline-flex justify-center items-center gap-2 px-5 py-3.5 rounded-xl bg-[#3B2314] text-white text-sm font-bold hover:bg-[#C9A45C] hover:text-[#3B2314]">
+
+                            <i class="fa-solid fa-map-location-dot text-[#C9A45C]"></i>
+                            Google Maps
+
                         </a>
 
-                        <a
-                            href="{{ route('kosan.index') }}"
-                            class="px-6 py-4 bg-white/10 hover:bg-white/20 text-white font-black text-xs sm:text-sm rounded-2xl transition-all border border-white/20 active:scale-95 flex items-center justify-center gap-2"
-                        >
-                            <span>Jelajahi Katalog Kos</span>
-                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        <a href="{{ $waUrl }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="jl-button inline-flex justify-center items-center gap-2 px-5 py-3.5 rounded-xl border border-[#E9DDD2] text-sm font-bold hover:bg-[#D99AA8]/20">
+
+                            <i class="fa-brands fa-whatsapp text-[#C9A45C]"></i>
+                            WhatsApp
+
                         </a>
+
                     </div>
+
                 </div>
+
+                <div class="min-h-[360px] rounded-2xl overflow-hidden border border-[#E9DDD2] bg-[#E9DDD2]">
+
+                    <iframe
+                        title="Peta Jumala Living"
+                        src="https://www.google.com/maps?q={{ rawurlencode('Jumala Living Jl. Kenanga No. 3 Lowokwaru Malang Jawa Timur 65141') }}&output=embed"
+                        class="w-full h-full min-h-[360px]"
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                        allowfullscreen>
+                    </iframe>
+
+                </div>
+
             </div>
+
+        </section>
+
+
+        {{-- =====================================================
+             FINAL CTA
+        ====================================================== --}}
+        <section class="pb-16 sm:pb-20">
+
+            <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+
+                <div class="relative overflow-hidden rounded-[1.75rem] bg-[#3B2314] px-7 py-12 sm:px-12 sm:py-16 text-white border border-[#C9A45C]/30">
+
+                    <div class="absolute right-0 top-0 h-full w-1/3 bg-[#D99AA8]/10 pointer-events-none"></div>
+
+                    <div class="absolute -right-10 -bottom-24 w-64 h-64 rounded-full border border-[#C9A45C]/20 pointer-events-none"></div>
+
+                    <div class="relative max-w-2xl">
+
+                        <div class="flex items-center gap-3 text-[#C9A45C] text-xs font-bold uppercase tracking-[.22em]">
+
+                            <span class="jl-accent-line"></span>
+                            Mulai Perjalananmu
+
+                        </div>
+
+                        <h2 class="jl-serif text-3xl sm:text-5xl leading-tight mt-5">
+
+                            Temukan Ruang Nyaman
+                            <span class="text-[#C9A45C] italic">
+                                untuk Cerita Barumu.
+                            </span>
+
+                        </h2>
+
+                        <p class="text-sm leading-7 text-white/70 mt-5">
+                            Mulai perjalanan tinggal yang lebih nyaman bersama Jumala Living.
+                        </p>
+
+                        <div class="flex flex-col sm:flex-row gap-3 mt-8">
+
+                            <a href="#pilihan-kamar"
+                                class="jl-button inline-flex justify-center items-center gap-2 px-6 py-4 rounded-xl bg-[#C9A45C] text-[#3B2314] text-sm font-bold hover:bg-[#D99AA8]">
+
+                                Lihat Pilihan Kamar
+                                <i class="fa-solid fa-arrow-right text-xs"></i>
+
+                            </a>
+
+                            <a href="{{ $waUrl }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="jl-button inline-flex justify-center items-center gap-2 px-6 py-4 rounded-xl border border-white/25 text-white text-sm font-bold hover:bg-white/10">
+
+                                <i class="fa-brands fa-whatsapp text-[#C9A45C]"></i>
+                                Hubungi WhatsApp
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
         </section>
 
     </main>
 
-    <!-- FOOTER -->
+    {{-- FOOTER --}}
     @include('frontend.footer')
 
-    <!-- JAVASCRIPT LOGIC -->
+
+    {{-- =====================================================
+         JAVASCRIPT INTERACTION
+    ====================================================== --}}
     <script>
-        // Page Loading Bar
-        window.addEventListener('load', () => {
-            const loader = document.getElementById('page-loader');
-            if (loader) {
-                loader.style.width = '100%';
-                setTimeout(() => {
-                    loader.style.opacity = '0';
-                }, 300);
+        document.addEventListener('DOMContentLoaded', function () {
+
+            /* ==========================================
+               STICKY NAVBAR SHADOW
+            ========================================== */
+
+            const navbarWrapper = document.getElementById('jl-navbar-wrapper');
+
+            function updateNavbar() {
+                if (!navbarWrapper) return;
+
+                navbarWrapper.classList.toggle('scrolled', window.scrollY > 20);
             }
-        });
 
-        // Scroll Reveal Animation
-        const revealElements = document.querySelectorAll('.reveal');
-        const revealOnScroll = () => {
-            const windowHeight = window.innerHeight;
-            revealElements.forEach(el => {
-                const elementTop = el.getBoundingClientRect().top;
-                if (elementTop < windowHeight - 80) {
-                    el.classList.add('active');
-                }
-            });
-        };
-        window.addEventListener('scroll', revealOnScroll, { passive: true });
-        window.addEventListener('load', revealOnScroll);
+            window.addEventListener('scroll', updateNavbar, { passive: true });
 
-        // Filter Wilayah Tabs for Kamar
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        const kosCards = document.querySelectorAll('.kos-card');
-        const noFilterAlert = document.getElementById('no-kamar-filter');
+            updateNavbar();
 
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                filterBtns.forEach(b => {
-                    b.classList.remove('bg-[#F3A833]', 'text-[#3B2314]', 'shadow-md');
-                    b.classList.add('bg-white/5', 'text-white/75');
+
+            /* ==========================================
+               QUICK SEARCH TAGS
+            ========================================== */
+
+            document.querySelectorAll('[data-search-tag]').forEach(button => {
+
+                button.addEventListener('click', () => {
+
+                    const input = document.getElementById('hero-search');
+
+                    if (!input) return;
+
+                    input.value = button.dataset.searchTag;
+
+                    input.closest('form').submit();
+
                 });
 
-                btn.classList.remove('bg-white/5', 'text-white/75');
-                btn.classList.add('bg-[#F3A833]', 'text-[#3B2314]', 'shadow-md');
+            });
 
-                const filter = btn.getAttribute('data-filter');
-                let visibleCount = 0;
 
-                kosCards.forEach(card => {
-                    const show = filter === 'semua' || card.getAttribute('data-wilayah') === filter;
-                    if (show) {
-                        card.style.display = 'flex';
-                        requestAnimationFrame(() => {
-                            card.style.opacity = '1';
-                            card.style.transform = 'translateY(0)';
-                        });
-                        visibleCount++;
-                    } else {
-                        card.style.display = 'none';
-                    }
+            /* ==========================================
+               REVEAL ANIMATION
+            ========================================== */
+
+            const revealElements = document.querySelectorAll('.jl-reveal');
+
+            if ('IntersectionObserver' in window) {
+
+                const revealObserver = new IntersectionObserver(entries => {
+
+                    entries.forEach(entry => {
+
+                        if (entry.isIntersecting) {
+
+                            entry.target.classList.add('active');
+
+                            revealObserver.unobserve(entry.target);
+
+                        }
+
+                    });
+
+                }, {
+                    threshold: 0.08,
+                    rootMargin: '0px 0px -30px 0px'
                 });
 
-                if (noFilterAlert) {
-                    if (visibleCount === 0) {
-                        noFilterAlert.classList.remove('hidden');
-                    } else {
-                        noFilterAlert.classList.add('hidden');
-                    }
+                revealElements.forEach(element => {
+                    revealObserver.observe(element);
+                });
+
+            } else {
+
+                revealElements.forEach(element => {
+                    element.classList.add('active');
+                });
+
+            }
+
+
+            /* ==========================================
+               ROOM FILTER AND SORT
+            ========================================== */
+
+            const availabilityFilter = document.getElementById('availability-filter');
+            const roomSort = document.getElementById('room-sort');
+            const roomGrid = document.getElementById('room-grid');
+            const roomEmpty = document.getElementById('room-empty');
+
+            function updateRoomView() {
+
+                if (!roomGrid) return;
+
+                const cards = Array.from(
+                    roomGrid.querySelectorAll('.room-card')
+                );
+
+                const status = availabilityFilter?.value || 'semua';
+
+                let visible = 0;
+
+                cards.forEach(card => {
+ 
+                    const show = status === 'semua' ||
+                        card.dataset.status === status;
+
+                    card.style.display = show ? 'flex' : 'none';
+
+                    if (show) visible++;
+
+                });
+
+                if (roomSort?.value && roomSort.value !== 'default') {
+
+                    const sortedCards = [...cards].sort((a, b) => {
+
+                        const av = Number(a.dataset.price || 0);
+                        const bv = Number(b.dataset.price || 0);
+
+                        return roomSort.value === 'price-asc'
+                            ? av - bv
+                            : bv - av;
+
+                    });
+
+                    sortedCards.forEach(card => {
+                        roomGrid.appendChild(card);
+                    });
+
                 }
-            });
-        });
 
-        // Quick search keyword helper
-        function setQuickSearch(keyword) {
-            const input = document.getElementById('hero-search-input');
-            if (input) {
-                input.value = keyword;
-                input.closest('form').submit();
+                if (roomEmpty) {
+
+                    roomEmpty.classList.toggle('hidden', visible !== 0);
+
+                }
+
             }
-        }
 
-        // Testimonial Scroller
-        const testimonialScroller = document.getElementById('testimonial-scroller');
-        const testimonialPrev = document.querySelector('.manual-testimoni-scroll.prev');
-        const testimonialNext = document.querySelector('.manual-testimoni-scroll.next');
+            availabilityFilter?.addEventListener('change', updateRoomView);
 
-        if (testimonialScroller && testimonialPrev && testimonialNext) {
-            testimonialPrev.addEventListener('click', () => {
-                testimonialScroller.scrollBy({ left: -320, behavior: 'smooth' });
+            roomSort?.addEventListener('change', updateRoomView);
+
+
+            /* ==========================================
+               CLOSE FLASH MODALS
+            ========================================== */
+
+            const flashModals = [
+                document.getElementById('flash-success-modal'),
+                document.getElementById('flash-failed-modal')
+            ];
+
+            flashModals.forEach(modal => {
+
+                if (!modal) return;
+
+                modal.addEventListener('click', event => {
+
+                    if (event.target === modal) {
+                        modal.remove();
+                    }
+
+                });
+
             });
-            testimonialNext.addEventListener('click', () => {
-                testimonialScroller.scrollBy({ left: 320, behavior: 'smooth' });
+
+            document.addEventListener('keydown', event => {
+
+                if (event.key === 'Escape') {
+
+                    flashModals.forEach(modal => {
+                        modal?.remove();
+                    });
+
+                }
+
             });
-        }
 
-        // Flash Modal Close
-        function closeSuccessModal() {
-            const modal = document.getElementById('flash-success-modal');
-            if (modal) modal.remove();
-        }
 
-        function closeFailedModal() {
-            const modal = document.getElementById('flash-failed-modal');
-            if (modal) modal.remove();
-        }
+            /* ==========================================
+               SMOOTH ANCHOR NAVIGATION
+            ========================================== */
 
-        // Keyboard Escape listener for modals
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeSuccessModal();
-                closeFailedModal();
-            }
+            document.querySelectorAll('a[href^="#"]').forEach(link => {
+
+                link.addEventListener('click', function (event) {
+
+                    const targetId = this.getAttribute('href');
+
+                    if (!targetId || targetId === '#') return;
+
+                    const target = document.querySelector(targetId);
+
+                    if (!target) return;
+
+                    event.preventDefault();
+
+                    target.scrollIntoView({
+                        behavior: window.matchMedia(
+                            '(prefers-reduced-motion: reduce)'
+                        ).matches ? 'auto' : 'smooth',
+                        block: 'start'
+                    });
+
+                });
+
+            });
+
         });
     </script>
 

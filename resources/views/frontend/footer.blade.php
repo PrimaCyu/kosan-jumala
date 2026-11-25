@@ -1,37 +1,70 @@
-<footer class="bg-[#3B2314] text-[#F8EFE6] border-t border-[#F3A833]/30">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-7">
+<footer class="jl-footer">
 
-        <div class="flex flex-col sm:flex-row items-center justify-between gap-5">
+    <div class="jl-footer-container">
 
-            <!-- LOGO -->
+        {{-- MAIN FOOTER CONTENT --}}
+        <div class="jl-footer-main">
+
+            {{-- BRAND IDENTITY --}}
             <a
-                href="{{ route('home') }}"
-                aria-label="Beranda Sinar Citra Lestari"
-                class="group flex items-center gap-3 transition-all duration-300 hover:-translate-y-1"
+                href="{{ url('/') }}"
+                aria-label="Beranda Jumala Living"
+                class="jl-footer-brand"
             >
-                <div class="w-11 h-11 sm:w-12 sm:h-12 flex items-center justify-center rounded-2xl bg-white p-1.5 shadow-[0_5px_15px_rgba(0,0,0,0.18)] transition-all duration-300 group-hover:scale-105">
+
+                <div class="jl-footer-logo">
                     <img
-                        src="{{ asset('scl.png') }}"
-                        alt="Sinar Citra Lestari Logo"
+                        src="{{ asset('logo.jpeg') }}"
+                        alt="Jumala Living Logo"
                         loading="lazy"
-                        class="w-full h-full object-contain pointer-events-none"
                     >
                 </div>
 
-                <span class="text-base sm:text-lg font-black tracking-wide text-white transition-colors duration-300 group-hover:text-[#F3A833]">
-                    SINAR CITRA LESTARI
-                </span>
+                <div class="jl-footer-brand-info">
+                    <span class="jl-footer-brand-name">
+                        JUMALA <span>LIVING</span>
+                    </span>
+
+                    <span class="jl-footer-brand-subtitle">
+                        PREMIUM FEMALE RESIDENCE
+                    </span>
+
+                    <span class="jl-footer-brand-description">
+                        A Comfortable Place to Call Home
+                    </span>
+                </div>
+
             </a>
 
-
-            <!-- SOCIAL MEDIA -->
-            <div class="flex flex-col items-center sm:items-end gap-2">
-
-                <span class="text-[10px] font-bold uppercase tracking-[0.18em] text-[#F8EFE6]/60">
-                    Ikuti Kami
+            <div class="jl-footer-brand-info" style="max-width:330px;">
+                <span class="jl-footer-brand-description">
+                    Hunian kos khusus putri di Lowokwaru, Malang.
                 </span>
+                <span class="jl-footer-brand-description" style="margin-top:8px;">
+                    Jl. Kenanga No. 3, Lowokwaru, Malang, Jawa Timur 65141
+                </span>
+                <div style="display:flex;gap:14px;margin-top:12px;font-size:12px;">
+                    <a href="{{ url('/#tentang') }}" style="color:inherit;">Tentang</a>
+                    <a href="{{ url('/#pilihan-kamar') }}" style="color:inherit;">Pilihan Kamar</a>
+                    <a href="{{ url('/#lokasi') }}" style="color:inherit;">Lokasi</a>
+                </div>
+            </div>
 
-                <div class="flex items-center gap-2.5">
+
+            {{-- SOCIAL MEDIA --}}
+            <div class="jl-footer-social">
+
+                <div class="jl-footer-social-heading">
+                    <span class="jl-footer-social-title">
+                        Ikuti Kami
+                    </span>
+
+                    <span class="jl-footer-social-subtitle">
+                        Connect With Us
+                    </span>
+                </div>
+
+                <div class="jl-footer-social-list">
 
                     @php
                         $sosmedIconMap = [
@@ -58,7 +91,8 @@
                         @foreach($globalSosmed as $sm)
 
                             @php
-                                $titleLower = strtolower(trim($sm->title));
+                                $titleLower = strtolower(trim($sm->title ?? ''));
+
                                 $iconClass = 'fa-globe';
                                 $iconPrefix = 'fa-solid';
 
@@ -77,85 +111,386 @@
                                 rel="noopener noreferrer"
                                 aria-label="{{ $sm->title }}"
                                 title="{{ $sm->title }}"
-                                class="group w-10 h-10 rounded-xl
-                                       bg-[#F8EFE6]/10
-                                       border border-[#F8EFE6]/10
-                                       flex items-center justify-center
-                                       text-[#F8EFE6]
-                                       cursor-pointer
-                                       transition-all duration-300 ease-out
-                                       hover:-translate-y-1
-                                       hover:scale-105
-                                       hover:bg-[#F3A833]
-                                       hover:text-[#3B2314]
-                                       hover:border-[#F3A833]
-                                       hover:shadow-[0_8px_18px_rgba(243,168,51,0.30)]
-                                       active:scale-90"
+                                class="jl-social-link"
                             >
-                                <i
-                                    class="{{ $iconPrefix }} {{ $iconClass }}
-                                           text-sm
-                                           pointer-events-none
-                                           select-none
-                                           transition-transform duration-300
-                                           group-hover:scale-110"
-                                ></i>
+                                <i class="{{ $iconPrefix }} {{ $iconClass }}"></i>
                             </a>
 
                         @endforeach
 
                     @else
-
-                        <a
-                            href="https://instagram.com"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="Instagram"
-                            class="group w-10 h-10 rounded-xl bg-[#F8EFE6]/10 border border-[#F8EFE6]/10 flex items-center justify-center text-[#F8EFE6] cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:scale-105 hover:bg-[#F3A833] hover:text-[#3B2314] hover:border-[#F3A833] hover:shadow-[0_8px_18px_rgba(243,168,51,0.30)] active:scale-90"
-                        >
-                            <i class="fa-brands fa-instagram text-sm pointer-events-none select-none"></i>
-                        </a>
-
-                        <a
-                            href="https://facebook.com"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="Facebook"
-                            class="group w-10 h-10 rounded-xl bg-[#F8EFE6]/10 border border-[#F8EFE6]/10 flex items-center justify-center text-[#F8EFE6] cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:scale-105 hover:bg-[#F3A833] hover:text-[#3B2314] hover:border-[#F3A833] hover:shadow-[0_8px_18px_rgba(243,168,51,0.30)] active:scale-90"
-                        >
-                            <i class="fa-brands fa-facebook-f text-sm pointer-events-none select-none"></i>
-                        </a>
-
-                        <a
-                            href="https://twitter.com"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="Twitter"
-                            class="group w-10 h-10 rounded-xl bg-[#F8EFE6]/10 border border-[#F8EFE6]/10 flex items-center justify-center text-[#F8EFE6] cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:scale-105 hover:bg-[#F3A833] hover:text-[#3B2314] hover:border-[#F3A833] hover:shadow-[0_8px_18px_rgba(243,168,51,0.30)] active:scale-90"
-                        >
-                            <i class="fa-brands fa-twitter text-sm pointer-events-none select-none"></i>
-                        </a>
-
+                        <span style="font-size:12px;color:var(--jl-footer-muted);">Belum ada tautan sosial</span>
                     @endif
 
                 </div>
+
             </div>
 
         </div>
 
-        
-        @php
-            $footerPaymentMethods = \App\Models\PaymentMethod::where('is_active', true)->orderBy('sort_order', 'asc')->get();
-        @endphp
-        @if($footerPaymentMethods->isNotEmpty())
-        
-        @endif
 
-        <div class="mt-4 pt-3 border-t border-[#F3A833]/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
-            <p class="text-[10px] sm:text-xs text-[#F8EFE6]/50 mb-0">
-                &copy; {{ date('Y') }} Sinar Citra Lestari. Seluruh hak cipta dilindungi.
+        {{-- DECORATIVE DIVIDER --}}
+        <div class="jl-footer-divider">
+            <span></span>
+            <i class="fa-solid fa-star"></i>
+            <span></span>
+        </div>
+
+
+        {{-- COPYRIGHT --}}
+        <div class="jl-footer-bottom">
+
+            <p class="jl-footer-copyright">
+                &copy; {{ date('Y') }}
+                <span>Jumala Living</span>.
+                Seluruh hak cipta dilindungi.
             </p>
+
+            <p class="jl-footer-made">
+                Made with <i class="fa-solid fa-heart"></i>
+                for your comfort.
+            </p>
+
         </div>
 
     </div>
+
 </footer>
+
+
+{{-- =========================================================
+     FOOTER STYLING
+========================================================= --}}
+
+<style>
+
+    :root {
+        --jl-footer-brown: #2D170F;
+        --jl-footer-brown-light: #3B1D12;
+        --jl-footer-gold: #C6A15B;
+        --jl-footer-gold-light: #E1C98E;
+        --jl-footer-ivory: #FFF8EF;
+        --jl-footer-muted: #BBAA98;
+        --jl-footer-border: rgba(198, 161, 91, .25);
+    }
+
+
+    /* FOOTER BASE */
+
+    .jl-footer {
+        position: relative;
+        width: 100%;
+        background: var(--jl-footer-brown);
+        color: var(--jl-footer-ivory);
+        border-top: 1px solid var(--jl-footer-border);
+    }
+
+    .jl-footer-container {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 35px 24px 19px;
+    }
+
+
+    /* MAIN CONTENT */
+
+    .jl-footer-main {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 30px;
+    }
+
+
+    /* BRAND */
+
+    .jl-footer-brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 15px;
+        text-decoration: none;
+        transition: transform .25s ease;
+    }
+
+    .jl-footer-brand:hover {
+        transform: translateY(-2px);
+    }
+
+    .jl-footer-logo {
+        width: 68px;
+        height: 68px;
+        padding: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        overflow: hidden;
+        background: var(--jl-footer-ivory);
+        border: 1px solid var(--jl-footer-gold);
+        border-radius: 13px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, .2);
+    }
+
+    .jl-footer-logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        border-radius: 8px;
+    }
+
+    .jl-footer-brand-info {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .jl-footer-brand-name {
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: 23px;
+        font-weight: 700;
+        letter-spacing: 1.3px;
+        color: var(--jl-footer-ivory);
+    }
+
+    .jl-footer-brand-name span {
+        color: var(--jl-footer-gold);
+    }
+
+    .jl-footer-brand-subtitle {
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 1.7px;
+        color: var(--jl-footer-gold-light);
+    }
+
+    .jl-footer-brand-description {
+        margin-top: 3px;
+        font-size: 10px;
+        letter-spacing: .3px;
+        color: var(--jl-footer-muted);
+    }
+
+
+    /* SOCIAL MEDIA */
+
+    .jl-footer-social {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 12px;
+    }
+
+    .jl-footer-social-heading {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 3px;
+    }
+
+    .jl-footer-social-title {
+        color: var(--jl-footer-gold-light);
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+    .jl-footer-social-subtitle {
+        color: var(--jl-footer-muted);
+        font-size: 10px;
+        letter-spacing: .5px;
+    }
+
+    .jl-footer-social-list {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        flex-wrap: wrap;
+    }
+
+    .jl-social-link {
+        width: 42px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--jl-footer-border);
+        border-radius: 11px;
+        background: rgba(255, 248, 239, .05);
+        color: var(--jl-footer-gold-light);
+        font-size: 16px;
+        text-decoration: none;
+        transition: all .25s ease;
+    }
+
+    .jl-social-link:hover {
+        background: var(--jl-footer-gold);
+        border-color: var(--jl-footer-gold);
+        color: var(--jl-footer-brown);
+        transform: translateY(-4px);
+        box-shadow: 0 5px 14px rgba(198, 161, 91, .18);
+    }
+
+    .jl-social-link:active {
+        transform: scale(.94);
+    }
+
+
+    /* DIVIDER */
+
+    .jl-footer-divider {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 13px;
+        margin: 28px 0 19px;
+    }
+
+    .jl-footer-divider span {
+        width: 65px;
+        height: 1px;
+        background: var(--jl-footer-border);
+    }
+
+    .jl-footer-divider i {
+        color: var(--jl-footer-gold);
+        font-size: 9px;
+    }
+
+
+    /* COPYRIGHT */
+
+    .jl-footer-bottom {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+    }
+
+    .jl-footer-copyright {
+        margin: 0;
+        font-size: 11px;
+        color: var(--jl-footer-muted);
+        line-height: 1.7;
+    }
+
+    .jl-footer-copyright span {
+        color: var(--jl-footer-gold-light);
+        font-weight: 800;
+    }
+
+    .jl-footer-made {
+        margin: 0;
+        font-size: 10px;
+        color: var(--jl-footer-muted);
+        letter-spacing: .3px;
+    }
+
+    .jl-footer-made i {
+        color: var(--jl-footer-gold);
+        font-size: 10px;
+        margin: 0 2px;
+    }
+
+
+    /* RESPONSIVE */
+
+    @media (max-width: 767.98px) {
+
+        .jl-footer-container {
+            padding: 30px 18px 18px;
+        }
+
+        .jl-footer-main {
+            flex-direction: column;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .jl-footer-brand {
+            flex-direction: column;
+            text-align: center;
+            gap: 11px;
+        }
+
+        .jl-footer-logo {
+            width: 76px;
+            height: 76px;
+        }
+
+        .jl-footer-brand-name {
+            font-size: 22px;
+        }
+
+        .jl-footer-brand-subtitle {
+            font-size: 8px;
+            letter-spacing: 1.5px;
+        }
+
+        .jl-footer-social {
+            align-items: center;
+        }
+
+        .jl-footer-social-heading {
+            align-items: center;
+        }
+
+        .jl-footer-social-list {
+            justify-content: center;
+        }
+
+        .jl-footer-divider {
+            margin: 25px 0 17px;
+        }
+
+        .jl-footer-bottom {
+            flex-direction: column;
+            text-align: center;
+            gap: 7px;
+        }
+
+        .jl-footer-copyright {
+            font-size: 10px;
+        }
+
+    }
+
+
+    @media (max-width: 380px) {
+
+        .jl-footer-container {
+            padding-left: 14px;
+            padding-right: 14px;
+        }
+
+        .jl-footer-logo {
+            width: 70px;
+            height: 70px;
+        }
+
+        .jl-footer-brand-name {
+            font-size: 20px;
+        }
+
+        .jl-social-link {
+            width: 39px;
+            height: 39px;
+        }
+
+    }
+
+
+    /* ACCESSIBILITY */
+
+    @media (prefers-reduced-motion: reduce) {
+
+        .jl-footer *,
+        .jl-footer *::before,
+        .jl-footer *::after {
+            transition-duration: .01ms !important;
+            animation-duration: .01ms !important;
+        }
+
+    }
+
+</style>

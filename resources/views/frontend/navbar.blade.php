@@ -1,21 +1,26 @@
-<!-- NAVBAR CONTAINER (RESPONSIVE STICKY HEADER) -->
 @php
-    $waNumber = '6282146138847'; // default fallback
+    $waNumber = '6282146138847';
+
     if (isset($globalSosmed)) {
         $waSosmed = $globalSosmed->first(function ($s) {
             $t = strtolower($s->title ?? $s->name ?? $s->platform ?? '');
-            return str_contains($t, 'whatsapp') || $t === 'wa' || str_contains($t, 'wa ');
+
+            return str_contains($t, 'whatsapp')
+                || $t === 'wa'
+                || str_contains($t, 'wa ');
         });
+
         if ($waSosmed && !empty($waSosmed->url ?? $waSosmed->link ?? '')) {
             $link = $waSosmed->url ?? $waSosmed->link ?? '';
-            // Extract angka dari URL wa.me atau dari field langsung
             $extracted = preg_replace('/[^0-9]/', '', $link);
+
             if (!empty($extracted)) {
                 if (str_starts_with($extracted, '0')) {
                     $extracted = '62' . substr($extracted, 1);
                 } elseif (str_starts_with($extracted, '8')) {
                     $extracted = '62' . $extracted;
                 }
+
                 $waNumber = $extracted;
             }
         }
@@ -23,211 +28,608 @@
 @endphp
 
 <style>
-    /* DESKTOP / PC (Layar >= 768px): Menu horizontal selalu tampil, hamburger SELALU tersembunyi */
+    /* =====================================================
+       JUMALA LIVING COLOR SYSTEM
+    ===================================================== */
+
+    :root {
+        --jl-brown: #3B1D12;
+        --jl-brown-dark: #29130C;
+        --jl-gold: #C6A15B;
+        --jl-gold-light: #E1C98E;
+        --jl-ivory: #FFF8EF;
+        --jl-beige: #E9DDCD;
+        --jl-muted: #8E7968;
+    }
+
+    /* =====================================================
+       NAVBAR BASE
+    ===================================================== */
+
+    .jl-navbar {
+        position: sticky;
+        top: 0;
+        z-index: 999;
+        width: 100%;
+        background: var(--jl-ivory);
+        border-bottom: 1px solid var(--jl-beige);
+        box-shadow: 0 4px 20px rgba(59, 29, 18, 0.07);
+    }
+
+    .jl-navbar-inner {
+        max-width: 1280px;
+        margin: auto;
+        padding: 0 24px;
+    }
+
+    .jl-navbar-content {
+        min-height: 88px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+    }
+
+    /* =====================================================
+       BRAND / LOGO
+    ===================================================== */
+
+    .jl-brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 13px;
+        text-decoration: none;
+        flex-shrink: 0;
+        transition: transform .25s ease;
+    }
+
+    .jl-brand:hover {
+        transform: translateY(-1px);
+    }
+
+    .jl-logo-wrapper {
+        width: 62px;
+        height: 62px;
+        padding: 3px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        background: var(--jl-brown);
+        border: 1px solid var(--jl-gold);
+        border-radius: 13px;
+        box-shadow: 0 3px 10px rgba(59, 29, 18, .13);
+    }
+
+    .jl-logo-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+        border-radius: 9px;
+    }
+
+    .jl-brand-info {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.2;
+    }
+
+    .jl-brand-name {
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: 23px;
+        font-weight: 700;
+        letter-spacing: .5px;
+        color: var(--jl-brown);
+        white-space: nowrap;
+    }
+
+    .jl-brand-name span {
+        color: #A9823F;
+    }
+
+    .jl-brand-subtitle {
+        margin-top: 5px;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 1.8px;
+        text-transform: uppercase;
+        color: var(--jl-muted);
+        white-space: nowrap;
+    }
+
+    /* =====================================================
+       DESKTOP NAVIGATION
+    ===================================================== */
+
+    .jl-desktop-nav {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 7px;
+    }
+
+    .jl-nav-link {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 11px 17px;
+        border-radius: 9px;
+        color: var(--jl-brown);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: .2px;
+        transition: all .25s ease;
+    }
+
+    .jl-nav-link:hover {
+        background: #F0E5D5;
+        color: #96713B;
+    }
+
+    .jl-nav-link.active {
+        background: var(--jl-brown);
+        color: var(--jl-gold-light);
+        box-shadow: 0 3px 9px rgba(59, 29, 18, .13);
+    }
+
+    /* =====================================================
+       WHATSAPP BUTTON
+    ===================================================== */
+
+    .jl-contact-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        padding: 12px 19px;
+        margin-left: 8px;
+        border: 1px solid var(--jl-gold);
+        border-radius: 9px;
+        background: var(--jl-brown);
+        color: var(--jl-ivory);
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: .4px;
+        white-space: nowrap;
+        box-shadow: 0 4px 10px rgba(59, 29, 18, .12);
+        transition: all .25s ease;
+    }
+
+    .jl-contact-btn i {
+        color: var(--jl-gold-light);
+        font-size: 17px;
+    }
+
+    .jl-contact-btn:hover {
+        background: var(--jl-brown-dark);
+        border-color: var(--jl-gold-light);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(59, 29, 18, .19);
+        color: white;
+    }
+
+    /* =====================================================
+       MOBILE HAMBURGER
+    ===================================================== */
+
+    .jl-mobile-toggle {
+        display: none;
+        width: 43px;
+        height: 43px;
+        align-items: center;
+        justify-content: center;
+        background: var(--jl-brown);
+        border: 1px solid var(--jl-gold);
+        border-radius: 10px;
+        color: var(--jl-gold-light);
+        font-size: 18px;
+        cursor: pointer;
+        transition: all .2s ease;
+    }
+
+    .jl-mobile-toggle:hover {
+        background: var(--jl-brown-dark);
+    }
+
+    /* =====================================================
+       MOBILE DRAWER
+    ===================================================== */
+
+    .jl-mobile-menu {
+        display: none;
+        padding: 15px 0 20px;
+        border-top: 1px solid var(--jl-beige);
+    }
+
+    .jl-mobile-menu.open {
+        display: block;
+        animation: jlMenuAppear .22s ease;
+    }
+
+    @keyframes jlMenuAppear {
+        from {
+            opacity: 0;
+            transform: translateY(-7px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .jl-mobile-link {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 13px 16px;
+        margin-bottom: 7px;
+        border-radius: 9px;
+        color: var(--jl-brown);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 700;
+        transition: all .2s ease;
+    }
+
+    .jl-mobile-link i {
+        width: 19px;
+        text-align: center;
+        color: #A9823F;
+        font-size: 15px;
+    }
+
+    .jl-mobile-link:hover {
+        background: #F0E5D5;
+    }
+
+    .jl-mobile-link.active {
+        background: var(--jl-brown);
+        color: var(--jl-gold-light);
+    }
+
+    .jl-mobile-link.active i {
+        color: var(--jl-gold-light);
+    }
+
+    .jl-mobile-contact {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 9px;
+        margin-top: 12px;
+        padding: 14px;
+        border: 1px solid var(--jl-gold);
+        border-radius: 9px;
+        background: var(--jl-brown);
+        color: var(--jl-ivory);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 800;
+        transition: all .2s ease;
+    }
+
+    .jl-mobile-contact i {
+        color: var(--jl-gold-light);
+        font-size: 17px;
+    }
+
+    .jl-mobile-contact:hover {
+        background: var(--jl-brown-dark);
+        color: white;
+    }
+
+    /* =====================================================
+       RESPONSIVE TABLET & MOBILE
+    ===================================================== */
+
     @media (min-width: 768px) {
-        .scl-desktop-nav {
-            display: flex !important;
+        .jl-desktop-nav {
+            display: flex;
         }
-        .scl-mobile-toggle {
-            display: none !important;
-        }
-        .scl-mobile-menu {
+
+        .jl-mobile-toggle,
+        .jl-mobile-menu {
             display: none !important;
         }
     }
 
-    /* DEVICE SELAIN PC (HP / Layar Kecil < 768px): Menu horizontal sembunyi, hamburger otomatis muncul */
     @media (max-width: 767.98px) {
-        .scl-desktop-nav {
+        .jl-navbar-inner {
+            padding: 0 16px;
+        }
+
+        .jl-navbar-content {
+            min-height: 74px;
+            gap: 12px;
+        }
+
+        .jl-desktop-nav {
             display: none !important;
         }
-        .scl-mobile-toggle {
-            display: flex !important;
+
+        .jl-mobile-toggle {
+            display: flex;
+            flex-shrink: 0;
+        }
+
+        .jl-logo-wrapper {
+            width: 53px;
+            height: 53px;
+            border-radius: 11px;
+        }
+
+        .jl-brand {
+            gap: 10px;
+        }
+
+        .jl-brand-name {
+            font-size: 19px;
+        }
+
+        .jl-brand-subtitle {
+            font-size: 8px;
+            letter-spacing: 1.1px;
         }
     }
+
+    @media (max-width: 380px) {
+        .jl-navbar-inner {
+            padding: 0 12px;
+        }
+
+        .jl-logo-wrapper {
+            width: 46px;
+            height: 46px;
+        }
+
+        .jl-brand-name {
+            font-size: 17px;
+        }
+
+        .jl-brand-subtitle {
+            font-size: 7px;
+            letter-spacing: .7px;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .jl-navbar *,
+        .jl-navbar *::before,
+        .jl-navbar *::after {
+            animation-duration: .01ms !important;
+            transition-duration: .01ms !important;
+        }
+    }
+
+    /* FIX STICKY NAVBAR */
+.jl-navbar {
+    position: -webkit-sticky !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 9999 !important;
+    width: 100%;
+    align-self: flex-start;
+}
+
+/* Pastikan navbar tidak terpotong */
+body {
+    overflow-x: clip;
+}
 </style>
 
-<header class="sticky top-0 z-50 bg-[#FFF8F1]/95 backdrop-blur-md border-b border-[#E9DDD2] shadow-[0_4px_25px_rgba(59,35,20,0.06)] transition-all duration-300">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16 sm:h-20">
 
-            <!-- Brand Logo & Title -->
-            <a href="{{ url('/') }}" class="flex items-center gap-2.5 sm:gap-3.5 group transition-all duration-300 shrink-0" title="Sinar Citra Lestari">
-                <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-2xl bg-white flex items-center justify-center p-1.5 shadow-sm border border-[#E9DDD2] group-hover:border-[#E60049]/60 group-hover:scale-105 transition-all duration-300">
-                    <img src="{{ asset('scl.png') }}" alt="Sinar Citra Lestari Logo" loading="lazy" class="w-full h-full object-contain">
+{{-- =========================================================
+     NAVBAR HTML
+========================================================= --}}
+
+<header class="jl-navbar">
+    <div class="jl-navbar-inner">
+
+        <div class="jl-navbar-content">
+
+            {{-- BRAND LOGO --}}
+            <a href="{{ url('/') }}"
+               class="jl-brand"
+               title="Jumala Living - Premium Female Residence">
+
+                <div class="jl-logo-wrapper">
+                    <img
+                        src="{{ asset('logo.jpeg') }}"
+                        alt="Jumala Living Logo"
+                        loading="eager"
+                    >
                 </div>
-                <div class="flex flex-col leading-tight">
-                    <span class="text-sm sm:text-base md:text-lg font-black tracking-tight text-[#3B2314] group-hover:text-[#E60049] transition-colors">
-                        Sinar Citra <span class="text-[#E60049]">Lestari</span>
+
+                <div class="jl-brand-info">
+                    <span class="jl-brand-name">
+                        Jumala <span>Living</span>
                     </span>
-                    <span class="text-[9px] sm:text-[10px] font-bold text-[#8E7B6D] tracking-widest uppercase hidden sm:inline-block">
-                        Residence &amp; Living
+
+                    <span class="jl-brand-subtitle">
+                        Premium Female Residence
                     </span>
                 </div>
             </a>
 
-            <!-- Desktop Navigation Menu (Tampil otomatis di PC) -->
-            <nav class="scl-desktop-nav hidden md:flex items-center space-x-1 sm:space-x-2 shrink-0">
-                <a
-                    href="{{ url('/') }}"
-                    class="group relative inline-flex items-center justify-center overflow-hidden
-                           px-3.5 py-2 sm:px-4 sm:py-2.5
-                           text-xs sm:text-sm font-extrabold
-                           rounded-xl transition-all duration-200
-                           {{ Request::is('/') 
-                               ? 'bg-[#E60049] text-white shadow-md shadow-[#E60049]/25' 
-                               : 'text-[#3B2314] hover:text-[#E60049] hover:bg-[#F3A833]/15' }}"
-                >
+
+            {{-- DESKTOP NAVIGATION --}}
+            <nav class="jl-desktop-nav" aria-label="Navigasi utama">
+
+                <a href="{{ url('/') }}"
+                   class="jl-nav-link {{ Request::is('/') ? 'active' : '' }}">
                     Beranda
                 </a>
-                <a
-                    href="{{ route('kosan.index') }}"
-                    class="group relative inline-flex items-center justify-center
-                           px-3.5 py-2 sm:px-4 sm:py-2.5
-                           text-xs sm:text-sm font-extrabold
-                           rounded-xl transition-all duration-200
-                           {{ Request::is('kosan*') || Request::is('kamar*') 
-                               ? 'bg-[#00A896] text-white shadow-md shadow-[#00A896]/25' 
-                               : 'text-[#3B2314] hover:text-[#00A896] hover:bg-[#00A896]/10' }}"
-                >
-                    Katalog Kos
+
+                <a href="{{ url('/#tentang') }}" class="jl-nav-link">
+                    Tentang Kami
                 </a>
-                <a
-                    href="{{ route('news.index') }}"
-                    class="group relative inline-flex items-center justify-center
-                           px-3.5 py-2 sm:px-4 sm:py-2.5
-                           text-xs sm:text-sm font-extrabold
-                           rounded-xl transition-all duration-200
-                           {{ Request::is('news*') 
-                               ? 'bg-[#F3A833] text-[#3B2314] shadow-md shadow-[#F3A833]/25' 
-                               : 'text-[#3B2314] hover:text-[#F3A833] hover:bg-[#F3A833]/12' }}"
-                >
-                    Berita
+
+                <a href="{{ url('/#pilihan-kamar') }}"
+                   class="jl-nav-link {{ Request::is('kosan*') || Request::is('kamar*') ? 'active' : '' }}">
+                    Pilihan Kamar
                 </a>
-                <a
-                    href="https://wa.me/{{ $waNumber }}"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="ml-1 sm:ml-2 px-3.5 py-2 sm:px-5 sm:py-2.5 bg-[#3B2314] hover:bg-[#E60049] text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 flex items-center gap-1.5 sm:gap-2"
-                >
-                    <i class="fa-brands fa-whatsapp text-[#F3A833] text-sm"></i>
+
+                <a href="{{ url('/#fasilitas') }}" class="jl-nav-link">
+                    Fasilitas
+                </a>
+
+                <a href="{{ url('/#lokasi') }}" class="jl-nav-link">
+                    Lokasi
+                </a>
+
+                <a href="https://wa.me/{{ $waNumber }}"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="jl-contact-btn">
+
+                    <i class="fa-brands fa-whatsapp"></i>
                     <span>Hubungi Kami</span>
+
                 </a>
+
             </nav>
 
-            <!-- Mobile Hamburger Button (Otomatis hanya muncul di device selain PC / layar kecil) -->
+
+            {{-- MOBILE HAMBURGER --}}
             <button
                 type="button"
-                id="scl-hamburger-btn"
-                onclick="toggleMobileNav()"
-                class="scl-mobile-toggle md:hidden w-10 h-10 rounded-xl bg-white hover:bg-[#E60049]/10 border border-[#E9DDD2] flex items-center justify-center text-[#3B2314] hover:text-[#E60049] transition-all duration-200 shadow-sm active:scale-95"
-                aria-label="Buka Menu Navigasi"
+                id="jl-hamburger"
+                class="jl-mobile-toggle"
+                aria-label="Buka menu navigasi"
                 aria-expanded="false"
-                aria-controls="mobile-nav"
+                aria-controls="jl-mobile-menu"
             >
-                <i id="scl-hamburger-icon" class="fa-solid fa-bars text-base transition-transform duration-200"></i>
+                <i id="jl-hamburger-icon" class="fa-solid fa-bars"></i>
             </button>
 
         </div>
 
-        <!-- Mobile Navigation Drawer (Hanya terbuka ketika tombol hamburger diklik di mobile) -->
-        <div id="mobile-nav" class="scl-mobile-menu hidden md:hidden pb-4 border-t border-[#E9DDD2] mt-1 pt-3 space-y-2">
-            <a
-                href="{{ url('/') }}"
-                class="block px-4 py-2.5 rounded-xl text-sm font-extrabold transition-all duration-200
-                       {{ Request::is('/') 
-                           ? 'bg-[#E60049] text-white shadow-md' 
-                           : 'text-[#3B2314] hover:bg-[#F3A833]/15' }}"
-            >
-                <i class="fa-solid fa-house mr-2 text-xs"></i>Beranda
+
+        {{-- MOBILE NAVIGATION --}}
+        <div id="jl-mobile-menu" class="jl-mobile-menu">
+
+            <a href="{{ url('/') }}"
+               class="jl-mobile-link {{ Request::is('/') ? 'active' : '' }}">
+
+                <i class="fa-solid fa-house"></i>
+                <span>Beranda</span>
+
             </a>
-            <a
-                href="{{ route('kosan.index') }}"
-                class="block px-4 py-2.5 rounded-xl text-sm font-extrabold transition-all duration-200
-                       {{ Request::is('kosan*') || Request::is('kamar*') 
-                           ? 'bg-[#00A896] text-white shadow-md' 
-                           : 'text-[#3B2314] hover:bg-[#00A896]/10' }}"
-            >
-                <i class="fa-solid fa-building mr-2 text-xs"></i>Katalog Kos
+
+            <a href="{{ url('/#tentang') }}" class="jl-mobile-link">
+                <i class="fa-solid fa-circle-info"></i>
+                <span>Tentang Kami</span>
             </a>
-            <a
-                href="{{ route('news.index') }}"
-                class="block px-4 py-2.5 rounded-xl text-sm font-extrabold transition-all duration-200
-                       {{ Request::is('news*') 
-                           ? 'bg-[#F3A833] text-[#3B2314] shadow-md' 
-                           : 'text-[#3B2314] hover:bg-[#F3A833]/12' }}"
-            >
-                <i class="fa-solid fa-newspaper mr-2 text-xs"></i>Berita
+
+            <a href="{{ url('/#pilihan-kamar') }}"
+               class="jl-mobile-link {{ Request::is('kosan*') || Request::is('kamar*') ? 'active' : '' }}">
+
+                <i class="fa-solid fa-building"></i>
+                <span>Pilihan Kamar</span>
+
             </a>
-            <a
-                href="https://wa.me/{{ $waNumber }}"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="block px-4 py-3 bg-[#3B2314] hover:bg-[#E60049] text-white font-extrabold text-sm rounded-xl shadow-md transition-all duration-200 text-center"
-            >
-                <i class="fa-brands fa-whatsapp text-[#F3A833] mr-2"></i>Hubungi Kami
+
+            <a href="{{ url('/#fasilitas') }}" class="jl-mobile-link">
+                <i class="fa-solid fa-list-check"></i>
+                <span>Fasilitas</span>
             </a>
+
+            <a href="{{ url('/#lokasi') }}" class="jl-mobile-link">
+                <i class="fa-solid fa-location-dot"></i>
+                <span>Lokasi</span>
+            </a>
+
+            <a href="https://wa.me/{{ $waNumber }}"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="jl-mobile-contact">
+
+                <i class="fa-brands fa-whatsapp"></i>
+                <span>Hubungi Kami</span>
+
+            </a>
+
         </div>
+
     </div>
 </header>
 
+
+{{-- =========================================================
+     MOBILE NAVIGATION SCRIPT
+========================================================= --}}
+
 <script>
-    function toggleMobileNav() {
-        const nav = document.getElementById('mobile-nav');
-        const icon = document.getElementById('scl-hamburger-icon');
-        const btn = document.getElementById('scl-hamburger-btn');
-        if (nav) {
-            const isHidden = nav.classList.contains('hidden');
-            if (isHidden) {
-                nav.classList.remove('hidden');
-                if (btn) {
-                    btn.setAttribute('aria-expanded', 'true');
-                    btn.setAttribute('aria-label', 'Tutup Menu Navigasi');
-                }
-                if (icon) {
-                    icon.classList.remove('fa-bars');
-                    icon.classList.add('fa-xmark');
-                }
+    document.addEventListener('DOMContentLoaded', function () {
+
+        const button = document.getElementById('jl-hamburger');
+        const menu = document.getElementById('jl-mobile-menu');
+        const icon = document.getElementById('jl-hamburger-icon');
+
+        if (!button || !menu || !icon) return;
+
+        function openMenu() {
+            menu.classList.add('open');
+            button.setAttribute('aria-expanded', 'true');
+            button.setAttribute('aria-label', 'Tutup menu navigasi');
+
+            icon.classList.remove('fa-bars');
+            icon.classList.add('fa-xmark');
+        }
+
+        function closeMenu() {
+            menu.classList.remove('open');
+            button.setAttribute('aria-expanded', 'false');
+            button.setAttribute('aria-label', 'Buka menu navigasi');
+
+            icon.classList.remove('fa-xmark');
+            icon.classList.add('fa-bars');
+        }
+
+        button.addEventListener('click', function () {
+            const isOpen = menu.classList.contains('open');
+
+            if (isOpen) {
+                closeMenu();
             } else {
-                nav.classList.add('hidden');
-                if (btn) {
-                    btn.setAttribute('aria-expanded', 'false');
-                    btn.setAttribute('aria-label', 'Buka Menu Navigasi');
-                }
-                if (icon) {
-                    icon.classList.remove('fa-xmark');
-                    icon.classList.add('fa-bars');
-                }
+                openMenu();
             }
-        }
-    }
+        });
 
-    // Close mobile nav on Escape key or viewport resize
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            const nav = document.getElementById('mobile-nav');
-            if (nav && !nav.classList.contains('hidden')) {
-                toggleMobileNav();
+        // Close menu when clicking outside
+        document.addEventListener('click', function (event) {
+            if (
+                menu.classList.contains('open') &&
+                !menu.contains(event.target) &&
+                !button.contains(event.target)
+            ) {
+                closeMenu();
             }
-        }
-    });
+        });
 
-    window.addEventListener('resize', function() {
-        if (window.innerWidth >= 768) {
-            const nav = document.getElementById('mobile-nav');
-            const icon = document.getElementById('scl-hamburger-icon');
-            const btn = document.getElementById('scl-hamburger-btn');
-            if (nav && !nav.classList.contains('hidden')) {
-                nav.classList.add('hidden');
-                if (btn) {
-                    btn.setAttribute('aria-expanded', 'false');
-                    btn.setAttribute('aria-label', 'Buka Menu Navigasi');
-                }
-                if (icon) {
-                    icon.classList.remove('fa-xmark');
-                    icon.classList.add('fa-bars');
-                }
+        // Close menu using Escape key
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                closeMenu();
             }
-        }
+        });
+
+        // Close menu when navigating to desktop viewport
+        window.addEventListener('resize', function () {
+            if (window.innerWidth >= 768) {
+                closeMenu();
+            }
+        });
+
+        // Close menu after clicking navigation links
+        menu.querySelectorAll('a').forEach(function (link) {
+            link.addEventListener('click', closeMenu);
+        });
+
     });
 </script>

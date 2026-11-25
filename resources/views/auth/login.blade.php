@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Login Pengelola - Sinar Citra Lestari</title>
-    <link rel="icon" href="{{ asset('logo.png') }}">
+    <link rel="icon" href="{{ asset('logo.jpeg') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -351,9 +351,9 @@
         <!-- HEADER -->
         <div class="login-header">
             <div class="login-logo">
-                <img src="{{ asset('logo.png') }}" alt="Sinar Citra Lestari Logo">
+                <img src="{{ asset('logo.jpeg') }}" alt="Jumala Living Logo">
             </div>
-            <h1 class="login-title">Sinar Citra Lestari</h1>
+            <h1 class="login-title">Jumala Living</h1>
             <p class="login-subtitle">Portal Masuk Pengelola Kos</p>
         </div>
 
