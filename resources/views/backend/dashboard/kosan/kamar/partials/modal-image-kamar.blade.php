@@ -62,9 +62,9 @@
                 <!-- Form Upload Foto Baru (Dropzone) -->
                 <div class="d-flex align-items-center justify-content-between mb-2 pt-2">
                     <h6 class="fw-bold fs-7 mb-0 text-dark">
-                        <i class="bi bi-cloud-arrow-up-fill text-teal me-1"></i> Unggah Foto Kamar Baru
+                        <i class="bi bi-cloud-arrow-up text-primary me-1"></i> Unggah Foto Kamar Baru
                     </h6>
-                    <span class="badge badge-subtle-success fs-8">Maks. 5 MB / File • Multi-Upload</span>
+                    <span class="badge badge-subtle-success fs-8">Maks. 5 MB / File &bull; Multi-Upload</span>
                 </div>
 
                 <form action="{{ route('admin.product.kosan.kamar.image.insert',['product_kosan' => $product_kosan, 'product_kamar_kosan' => $item->id]) }}" method="POST" enctype="multipart/form-data" class="gallery-upload-form" id="galleryUploadFormKamar{{ $item->id }}">
@@ -87,14 +87,14 @@
 
                     <div class="d-flex justify-content-between align-items-center mt-3 pt-2">
                         <small class="text-muted fs-8" id="fileCountTextKamar{{ $item->id }}">Belum ada file dipilih.</small>
-                        <button type="submit" class="btn btn-sm btn-primary px-4 py-2 rounded-pill shadow-sm" id="btnUploadKamar{{ $item->id }}" disabled>
-                            <i class="bi bi-cloud-arrow-up-fill me-1"></i> Upload Foto Kamar
+                        <button type="submit" class="btn btn-sm btn-primary px-4" id="btnUploadKamar{{ $item->id }}" disabled>
+                            <i class="bi bi-cloud-arrow-up"></i> Upload Foto Kamar
                         </button>
                     </div>
                 </form>
             </div>
-            <div class="modal-footer bg-light py-2">
-                <button type="button" class="btn btn-sm btn-secondary rounded-pill px-3" data-bs-dismiss="modal">Tutup</button>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary px-3" data-bs-dismiss="modal">Tutup</button>
             </div>
         </div>
     </div>

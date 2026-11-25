@@ -30,13 +30,13 @@
         <div class="page-header-box">
             <div>
                 <h1 class="page-title">
-                    <i class="bi bi-chat-left-quote text-secondary"></i> Kelola Testimoni & Review
+                    <i class="bi bi-chat-square-quote"></i> Kelola Testimoni & Review
                 </h1>
                 <p class="page-subtitle">Kelola ulasan kepuasan, pengalaman penghuni kos, dan rating bintang.</p>
             </div>
-            <div>
+            <div class="page-header-actions">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambahTestimoni">
-                    <i class="bi bi-plus-lg me-1"></i> Tambah Testimoni
+                    <i class="bi bi-plus-lg"></i> Tambah Testimoni
                 </button>
             </div>
         </div>

@@ -3,8 +3,8 @@
     <div class="card mb-4">
         <div class="card-header d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3">
             <div>
-                <h5 class="card-title mb-0 fs-6 fw-bold">
-                    <i class="bi bi-house-door text-secondary me-2"></i>Daftar Properti Kosan
+                <h5 class="card-title mb-0">
+                    <i class="bi bi-buildings"></i> Daftar Properti Kosan
                 </h5>
                 <p class="text-muted fs-8 mb-0">Total {{ $product_kosan->total() }} properti kos terdaftar.</p>
             </div>
@@ -93,30 +93,30 @@
                                     @endif
                                 </td>
                                 <td class="text-center text-nowrap">
-                                    <div class="d-inline-flex align-items-center gap-1.5">
+                                    <div class="action-btn-group">
                                         <!-- Kamar Button (Primary CTA) -->
-                                        <a href="{{ route('admin.product.kosan.kamar.index', $item->id) }}" class="btn btn-sm btn-outline-primary py-1 px-2.5 rounded-2" style="font-size: 0.8rem;" title="Kelola Unit Kamar">
-                                            <i class="bi bi-door-open me-1"></i>Kamar
+                                        <a href="{{ route('admin.product.kosan.kamar.index', $item->id) }}" class="btn btn-sm btn-outline-primary" title="Kelola Unit Kamar">
+                                            <i class="bi bi-door-open"></i> Kamar
                                         </a>
 
                                         <!-- Edit Button (Direct CTA) -->
-                                        <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2.5 rounded-2" style="font-size: 0.8rem;" data-bs-toggle="modal" data-bs-target="#modalEdit{{ $item->id }}" title="Edit Info Kosan">
-                                            <i class="bi bi-pencil me-1"></i>Edit
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalEdit{{ $item->id }}" title="Edit Info Kosan">
+                                            <i class="bi bi-pencil"></i> Edit
                                         </button>
 
                                         <!-- Galeri Foto (Icon button minimalis) -->
-                                        <button type="button" class="btn btn-sm btn-light border py-1 px-2 rounded-2 text-secondary" data-bs-toggle="modal" data-bs-target="#modalImageKosan{{ $item->id }}" title="Kelola Galeri Foto">
+                                        <button type="button" class="btn btn-sm btn-light border text-secondary" data-bs-toggle="modal" data-bs-target="#modalImageKosan{{ $item->id }}" title="Kelola Galeri Foto">
                                             <i class="bi bi-images"></i>
                                         </button>
 
                                         <!-- Buka di Web (Icon button minimalis) -->
-                                        <a href="{{ route('kosan.detail', $item->slug) }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-light border py-1 px-2 rounded-2 text-secondary" title="Lihat Halaman Web">
+                                        <a href="{{ route('kosan.detail', $item->slug) }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-light border text-secondary" title="Lihat Halaman Web">
                                             <i class="bi bi-box-arrow-up-right"></i>
                                         </a>
 
                                         @if(Auth::user()->isSuperAdmin())
-                                        <!-- Hapus Kosan (Icon button merah lembut) -->
-                                        <button type="button" class="btn btn-sm btn-light border border-danger-subtle py-1 px-2 rounded-2 text-danger" data-bs-toggle="modal" data-bs-target="#modalDelete{{ $item->id }}" title="Hapus Kosan">
+                                        <!-- Hapus Kosan -->
+                                        <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#modalDelete{{ $item->id }}" title="Hapus Kosan">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                         @endif
@@ -143,8 +143,8 @@
                                             @endif
                                         </p>
                                         @if(Auth::user()->isSuperAdmin())
-                                            <button type="button" class="btn btn-sm btn-primary px-3 rounded-pill" data-bs-toggle="modal" data-bs-target="#modalTambah">
-                                                <i class="bi bi-plus-lg me-1"></i> Tambah Kosan Sekarang
+                                            <button type="button" class="btn btn-sm btn-primary px-3" data-bs-toggle="modal" data-bs-target="#modalTambah">
+                                                <i class="bi bi-plus-lg"></i> Tambah Kosan Sekarang
                                             </button>
                                         @endif
                                     </div>
@@ -399,9 +399,9 @@
                             <!-- Form Upload Foto Baru (Modern Drag & Drop Zone) -->
                             <div class="d-flex align-items-center justify-content-between mb-2 pt-2">
                                 <h6 class="fw-bold fs-7 mb-0 text-dark">
-                                    <i class="bi bi-cloud-arrow-up-fill text-teal me-1"></i> Unggah Foto Baru
+                                    <i class="bi bi-cloud-arrow-up text-primary me-1"></i> Unggah Foto Baru
                                 </h6>
-                                <span class="badge badge-subtle-success fs-8">Maks. 5 MB / File • Multi-Upload</span>
+                                <span class="badge badge-subtle-success fs-8">Maks. 5 MB / File &bull; Multi-Upload</span>
                             </div>
 
                             <form action="{{ route('admin.product.kosan.image.insert', $item->id) }}" method="POST" enctype="multipart/form-data" class="gallery-upload-form" id="galleryUploadForm{{ $item->id }}">
@@ -424,14 +424,14 @@
 
                                 <div class="d-flex justify-content-between align-items-center mt-3 pt-2">
                                     <small class="text-muted fs-8" id="fileCountTextKosan{{ $item->id }}">Belum ada file dipilih.</small>
-                                    <button type="submit" class="btn btn-sm btn-primary px-4 py-2 rounded-pill shadow-sm" id="btnUploadKosan{{ $item->id }}" disabled>
-                                        <i class="bi bi-cloud-arrow-up-fill me-1"></i> Upload Foto Sekarang
+                                    <button type="submit" class="btn btn-sm btn-primary px-4" id="btnUploadKosan{{ $item->id }}" disabled>
+                                        <i class="bi bi-cloud-arrow-up"></i> Upload Foto Sekarang
                                     </button>
                                 </div>
                             </form>
                         </div>
-                        <div class="modal-footer bg-light py-2">
-                            <button type="button" class="btn btn-sm btn-secondary rounded-pill px-3" data-bs-dismiss="modal">Tutup</button>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-secondary px-3" data-bs-dismiss="modal">Tutup</button>
                         </div>
                     </div>
                 </div>

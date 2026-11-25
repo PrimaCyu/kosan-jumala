@@ -6,14 +6,14 @@
         <div class="page-header-box">
             <div>
                 <h1 class="page-title">
-                    <i class="bi bi-house-door text-secondary"></i> Kelola Properti Kos-kosan
+                    <i class="bi bi-buildings"></i> Kelola Properti Kos-kosan
                 </h1>
                 <p class="page-subtitle">Manajemen daftar properti kos, spesifikasi wilayah, fasilitas, dan unit kamar.</p>
             </div>
-            <div>
+            <div class="page-header-actions">
                 @if(Auth::user()->isSuperAdmin())
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambah">
-                        <i class="bi bi-plus-lg me-1"></i> Tambah Kosan Baru
+                        <i class="bi bi-plus-lg"></i> Tambah Kosan Baru
                     </button>
                 @else
                     <span class="badge badge-subtle-secondary">

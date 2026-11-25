@@ -31,8 +31,8 @@
             </span>
           @endif
         </div>
-        <h3 class="mb-0">{{ $greeting }}, {{ Auth::user()->name ?? 'Pengelola' }}</h3>
-        <p class="text-muted">Ringkasan kapasitas hunian, tren pendapatan sewa, dan aktivitas operasional cabang.</p>
+        <h1 class="page-title mb-0">{{ $greeting }}, {{ Auth::user()->name ?? 'Pengelola' }}</h1>
+        <p class="page-subtitle">Ringkasan kapasitas hunian, tren pendapatan sewa, dan aktivitas operasional cabang.</p>
       </div>
       <div class="page-header-actions">
         <a href="{{ route('admin.product.kosan.index') }}" class="btn btn-light border px-3">
@@ -312,6 +312,11 @@
     const labels = {!! json_encode(array_column($revenueTrend, 'month')) !!};
     const values = {!! json_encode(array_column($revenueTrend, 'revenue')) !!};
 
+    const chartCtx = ctx.getContext('2d');
+    const areaGradient = chartCtx.createLinearGradient(0, 0, 0, 260);
+    areaGradient.addColorStop(0, 'rgba(29, 78, 216, 0.14)');
+    areaGradient.addColorStop(1, 'rgba(29, 78, 216, 0.0)');
+
     new Chart(ctx, {
       type: 'line',
       data: {
@@ -319,31 +324,38 @@
         datasets: [{
           label: 'Pendapatan',
           data: values,
-          borderColor: '#0f766e',
-          borderWidth: 2,
-          backgroundColor: 'rgba(15, 118, 110, 0.05)',
+          borderColor: '#0B2E7A',
+          borderWidth: 2.5,
+          backgroundColor: areaGradient,
           fill: true,
-          tension: 0.3,
+          tension: 0.38,
           pointBackgroundColor: '#ffffff',
-          pointBorderColor: '#0f766e',
-          pointBorderWidth: 2,
-          pointRadius: 3.5,
-          pointHoverRadius: 5.5,
-          pointHoverBackgroundColor: '#0f766e',
+          pointBorderColor: '#1D4ED8',
+          pointBorderWidth: 2.5,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          pointHoverBackgroundColor: '#1D4ED8',
           pointHoverBorderColor: '#ffffff',
+          pointHoverBorderWidth: 2,
         }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        interaction: {
+          mode: 'index',
+          intersect: false
+        },
         plugins: {
           legend: { display: false },
           tooltip: {
-            backgroundColor: '#0f172a',
-            titleFont: { family: 'Plus Jakarta Sans', size: 12, weight: 600 },
-            bodyFont: { family: 'Plus Jakarta Sans', size: 12 },
-            padding: 10,
-            cornerRadius: 6,
+            backgroundColor: '#0B2E7A',
+            titleColor: '#DBEAFE',
+            bodyColor: '#FFFFFF',
+            titleFont: { family: 'Plus Jakarta Sans', size: 11, weight: 600 },
+            bodyFont: { family: 'Plus Jakarta Sans', size: 13, weight: 700 },
+            padding: 12,
+            cornerRadius: 8,
             displayColors: false,
             callbacks: {
               label: function(context) {
@@ -355,22 +367,24 @@
         scales: {
           x: {
             grid: { display: false },
-            border: { color: '#e2e8f0' },
+            border: { color: '#E3EAF4' },
             ticks: {
-              color: '#64748b',
-              font: { family: 'Plus Jakarta Sans', size: 11 }
+              color: '#64748B',
+              font: { family: 'Plus Jakarta Sans', size: 11, weight: 500 },
+              padding: 6
             }
           },
           y: {
             beginAtZero: true,
             grid: {
-              color: '#f1f5f9',
+              color: '#EFF3F9',
               drawBorder: false
             },
             border: { dash: [4, 4], color: 'transparent' },
             ticks: {
-              color: '#64748b',
-              font: { family: 'Plus Jakarta Sans', size: 11 },
+              color: '#64748B',
+              font: { family: 'Plus Jakarta Sans', size: 11, weight: 500 },
+              padding: 8,
               callback: function(value) {
                 if (value >= 1000000) {
                   return 'Rp ' + (value / 1000000).toFixed(1) + ' jt';

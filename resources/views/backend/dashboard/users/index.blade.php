@@ -5,8 +5,10 @@
   <div class="container-fluid">
     <div class="page-header-box">
       <div>
-        <h3 class="mb-0">Kelola Admin & Cabang</h3>
-        <p class="text-muted">Atur akun pengelola dan tentukan cabang kos yang menjadi tanggung jawab masing-masing admin.</p>
+        <h1 class="page-title">
+          <i class="bi bi-people"></i> Kelola Admin & Cabang
+        </h1>
+        <p class="page-subtitle">Atur akun pengelola dan tentukan cabang kos yang menjadi tanggung jawab masing-masing admin.</p>
       </div>
       <div class="page-header-actions">
         <button type="button" class="btn btn-primary px-3" data-bs-toggle="modal" data-bs-target="#modalTambahAdmin">
@@ -265,7 +267,7 @@
             </div>
             <div class="col-md-6">
               <label class="form-label">Alamat Email <span class="text-danger">*</span></label>
-              <input type="email" name="email" class="form-control" placeholder="budi@sinarcitralestari.com" value="{{ old('email') }}" required>
+              <input type="email" name="email" class="form-control" placeholder="budi@kosanjumala.com" value="{{ old('email') }}" required>
             </div>
             <div class="col-md-6">
               <label class="form-label">Password <span class="text-danger">*</span></label>

@@ -5,8 +5,10 @@
   <div class="container-fluid">
     <div class="page-header-box">
       <div>
-        <h3 class="mb-0">Pengaturan Akun & Keamanan</h3>
-        <p class="text-muted">Kelola informasi profil administrator dan perbarui kata sandi akun Anda.</p>
+        <h1 class="page-title">
+          <i class="bi bi-shield-lock"></i> Pengaturan Akun & Keamanan
+        </h1>
+        <p class="page-subtitle">Kelola informasi profil administrator dan perbarui kata sandi akun Anda.</p>
       </div>
       <div class="page-header-actions">
         <a href="{{ route('admin.dashboard') }}" class="btn btn-light border px-3">
@@ -49,7 +51,7 @@
 
               <div class="mb-4">
                 <label class="form-label">Alamat Email <span class="text-danger">*</span></label>
-                <input type="email" name="email" class="form-control" value="{{ old('email', $user->email) }}" required placeholder="admin@sinarcitralestari.com">
+                <input type="email" name="email" class="form-control" value="{{ old('email', $user->email) }}" required placeholder="admin@kosanjumala.com">
                 <div class="form-text">Email ini digunakan sebagai kredensial masuk ke panel administrasi.</div>
               </div>
 

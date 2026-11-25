@@ -5,19 +5,19 @@
     <div class="container-fluid">
         <div class="page-header-box">
             <div>
-                <div class="d-flex align-items-center gap-2 mb-1">
+                <div class="d-flex align-items-center gap-2 mb-1.5">
                     <a href="{{ route('admin.product.kosan.index') }}" class="btn btn-sm btn-outline-secondary">
-                        <i class="bi bi-arrow-left me-1"></i> Kembali ke Kosan
+                        <i class="bi bi-arrow-left"></i> Kembali ke Kosan
                     </a>
                 </div>
                 <h1 class="page-title">
-                    <i class="bi bi-door-closed text-secondary"></i> Kelola Kamar: {{ $kosan->title }}
+                    <i class="bi bi-door-open"></i> Kelola Kamar: {{ $kosan->title }}
                 </h1>
                 <p class="page-subtitle">Atur unit tipe kamar, galeri foto, kategori tarif sewa, fasilitas kamar, dan riwayat penghuni.</p>
             </div>
-            <div>
+            <div class="page-header-actions">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambahKamar">
-                    <i class="bi bi-plus-lg me-1"></i> Tambah Kamar Baru
+                    <i class="bi bi-plus-lg"></i> Tambah Kamar Baru
                 </button>
             </div>
         </div>
@@ -77,7 +77,7 @@
 
             <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
+                    <table class="table table-hover align-middle mb-0 table-min-lg">
                         <thead>
                             <tr>
                                 <th style="width: 40px" class="text-center">No</th>
@@ -225,23 +225,22 @@
                                         </div>
                                     </td>
                                     <td class="text-center text-nowrap">
-                                        <div class="d-inline-flex align-items-center gap-1.5">
+                                        <div class="action-btn-group">
                                             <!-- Edit Quick Button -->
                                             <button type="button"
-                                                    class="btn btn-sm btn-outline-primary py-1 px-2.5 rounded-2"
-                                                    style="font-size: 0.8rem;"
+                                                    class="btn btn-sm btn-outline-primary"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#modalEditKamar{{ $item->id }}"
                                                     title="Edit Data Kamar">
-                                                <i class="bi bi-pencil me-1"></i>Edit
+                                                <i class="bi bi-pencil"></i> Edit
                                             </button>
 
                                             <!-- Dropdown Menu Opsi -->
                                             <div class="dropdown">
-                                                <button class="btn btn-sm btn-light border py-1 px-2 rounded-2" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Menu Opsi">
+                                                <button class="btn btn-sm btn-light border" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Menu Opsi">
                                                     <i class="bi bi-three-dots-vertical text-secondary"></i>
                                                 </button>
-                                                <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 fs-8" style="border-radius: 10px; min-width: 170px;">
+                                                <ul class="dropdown-menu dropdown-menu-end fs-8" style="min-width: 175px;">
                                                     <li>
                                                         <button type="button" class="dropdown-item py-1.5 d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#modalPriceKamar{{ $item->id }}">
                                                             <i class="bi bi-cash-stack text-secondary"></i> Tarif Sewa
