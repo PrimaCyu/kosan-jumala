@@ -50,8 +50,8 @@
     }
 
     .tab-active {
-      color: #E60049;
-      border-color: #E60049;
+      color: #D99AA8;
+      border-color: #D99AA8;
     }
 
     /* Custom Leaflet Markers */
@@ -63,26 +63,26 @@
       width: 42px;
       height: 42px;
       border-radius: 50% 50% 50% 0;
-      background: #E60049;
+      background: #D99AA8;
       position: absolute;
       transform: rotate(-45deg);
       left: 50%;
       top: 50%;
       margin: -24px 0 0 -21px;
-      box-shadow: 0 4px 15px rgba(230,0,73,0.45);
+      box-shadow: 0 4px 15px rgba(118,92,85,0.45);
       display: flex;
       align-items: center;
       justify-content: center;
     }
     .marker-pin i {
       transform: rotate(45deg);
-      color: #fff;
+      color: #FFFCF8;
       font-size: 16px;
     }
     .marker-pulse {
       width: 14px;
       height: 14px;
-      background: rgba(230,0,73,0.4);
+      background: rgba(118,92,85,0.4);
       border-radius: 50%;
       position: absolute;
       left: 50%;
@@ -109,22 +109,22 @@
       margin-left: 14px !important;
     }
     .leaflet-control-zoom a {
-      background-color: rgba(255, 255, 255, 0.95) !important;
+      background-color: rgba(255,252,248,0.95) !important;
       color: #3B2314 !important;
       border-bottom: 1px solid #E9DDD2 !important;
       transition: all 0.2s ease !important;
     }
     .leaflet-control-zoom a:hover {
       background-color: #FFF8F1 !important;
-      color: #E60049 !important;
+      color: #D99AA8 !important;
     }
   </style>
 </head>
 
-<body class="bg-[#FFF8F1] text-[#3B2314] font-sans antialiased overflow-x-hidden min-h-screen flex flex-col justify-between">
+<body class="bg-[#FFF8F1] text-[#3B2314] font-sans antialiased overflow-x-clip min-h-screen flex flex-col justify-between">
 
   <!-- 1. BAR LOADING -->
-  <div id="page-loader" class="fixed top-0 left-0 w-full h-1 bg-gradient-to-r from-[#F3A833] via-[#E60049] to-[#00A896] z-[100] transition-all duration-500 ease-out"></div>
+  <div id="page-loader" class="fixed top-0 left-0 w-full h-1 bg-gradient-to-r from-[#C9A45C] via-[#D99AA8] to-[#C9A45C] z-[100] transition-all duration-500 ease-out"></div>
 
   <!-- 2. NAVBAR -->
   @include('frontend.navbar')
@@ -325,11 +325,11 @@
 
     <!-- 3. BREADCRUMB & TOP ACTION TOOLBAR -->
     <section class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs mb-2 sm:mb-3">
-      <nav class="flex items-center gap-2 text-[#7B6759] font-medium overflow-x-auto no-scrollbar py-1">
-        <a href="{{ route('home') }}" class="hover:text-[#E60049] transition-colors whitespace-nowrap">Beranda</a>
-        <i class="fa-solid fa-chevron-right text-[9px] text-[#A69383]"></i>
-        <a href="{{ route('kosan.index') }}" class="hover:text-[#E60049] transition-colors whitespace-nowrap">Daftar Kos</a>
-        <i class="fa-solid fa-chevron-right text-[9px] text-[#A69383]"></i>
+      <nav class="flex items-center gap-2 text-[#8E7B6D] font-medium overflow-x-auto no-scrollbar py-1">
+        <a href="{{ route('home') }}" class="hover:text-[#D99AA8] transition-colors whitespace-nowrap">Beranda</a>
+        <i class="fa-solid fa-chevron-right text-[9px] text-[#8E7B6D]"></i>
+        <a href="{{ route('kosan.index') }}" class="hover:text-[#D99AA8] transition-colors whitespace-nowrap">Daftar Kos</a>
+        <i class="fa-solid fa-chevron-right text-[9px] text-[#8E7B6D]"></i>
         <span class="font-bold text-[#3B2314] truncate max-w-[200px] sm:max-w-[320px]">{{ $kosan->title }}</span>
       </nav>
 
@@ -339,10 +339,10 @@
           type="button"
           onclick="toggleBookmark('{{ $kosan->slug }}')"
           id="bookmark-btn"
-          class="flex-1 sm:flex-initial px-3.5 py-2 bg-white hover:bg-[#FFF2E5] text-[#5D483A] border border-[#E9DDD2] rounded-xl font-bold text-xs shadow-sm transition-all flex items-center justify-center gap-1.5 active:scale-95"
+          class="flex-1 sm:flex-initial px-3.5 py-2 bg-[#FFFCF8] hover:bg-[#FFF8F1] text-[#765C55] border border-[#E9DDD2] rounded-xl font-bold text-xs shadow-sm transition-all flex items-center justify-center gap-1.5 active:scale-95"
           title="Simpan Kos ini"
         >
-          <i class="fa-regular fa-heart text-xs text-[#E60049]"></i>
+          <i class="fa-regular fa-heart text-xs text-[#D99AA8]"></i>
           <span id="bookmark-label">Simpan</span>
         </button>
 
@@ -350,10 +350,10 @@
         <button
           type="button"
           onclick="copyKosanLink()"
-          class="flex-1 sm:flex-initial px-3.5 py-2 bg-white hover:bg-[#FFF2E5] text-[#5D483A] border border-[#E9DDD2] rounded-xl font-bold text-xs shadow-sm transition-all flex items-center justify-center gap-1.5 active:scale-95"
+          class="flex-1 sm:flex-initial px-3.5 py-2 bg-[#FFFCF8] hover:bg-[#FFF8F1] text-[#765C55] border border-[#E9DDD2] rounded-xl font-bold text-xs shadow-sm transition-all flex items-center justify-center gap-1.5 active:scale-95"
           title="Bagikan Tautan Kos"
         >
-          <i class="fa-solid fa-share-nodes text-xs text-[#00A896]"></i>
+          <i class="fa-solid fa-share-nodes text-xs text-[#C9A45C]"></i>
           <span>Bagikan</span>
         </button>
 
@@ -362,7 +362,7 @@
           href="{{ $waInquiryUrl }}"
           target="_blank"
           rel="noopener noreferrer"
-          class="flex-1 sm:flex-initial px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs shadow-sm transition-all flex items-center justify-center gap-1.5 active:scale-95 text-center"
+          class="flex-1 sm:flex-initial px-4 py-2 bg-[#C9A45C] hover:bg-[#3B2314] text-[#FFF8F1] rounded-xl font-bold text-xs shadow-sm transition-all flex items-center justify-center gap-1.5 active:scale-95 text-center"
           title="Tanya Pengelola via WhatsApp"
         >
           <i class="fa-brands fa-whatsapp text-sm"></i>
@@ -378,7 +378,7 @@
         <!-- Photo Utama (Hero Item) -->
         <div class="lg:col-span-7">
           <div
-            class="relative h-[260px] sm:h-[360px] lg:h-[420px] rounded-[2rem] overflow-hidden cursor-pointer bg-[#EADFD4] group shadow-lg"
+            class="relative h-[260px] sm:h-[360px] lg:h-[420px] rounded-[2rem] overflow-hidden cursor-pointer bg-[#E9DDD2] group shadow-lg"
             onclick="openGallery(0)"
           >
             <img
@@ -392,23 +392,23 @@
               <button
                 type="button"
                 onclick="event.stopPropagation(); scrollToSection('video-tour')"
-                class="absolute top-4 right-4 sm:top-5 sm:right-5 z-10 inline-flex items-center gap-2 px-3.5 py-2 bg-[#E60049] hover:bg-[#3B2314] text-white rounded-full text-[11px] font-black shadow-lg transition-all active:scale-95"
+                class="absolute top-4 right-4 sm:top-5 sm:right-5 z-10 inline-flex items-center gap-2 px-3.5 py-2 bg-[#D99AA8] hover:bg-[#3B2314] text-[#FFF8F1] rounded-full text-[11px] font-black shadow-lg transition-all active:scale-95"
               >
                 <i class="fa-solid fa-play text-[10px]"></i>
                 <span>Tonton Video Tour</span>
               </button>
             @endif
 
-            <div class="absolute left-4 bottom-4 sm:left-6 sm:bottom-6 right-4 sm:right-6 flex items-end justify-between gap-4 text-white">
+            <div class="absolute left-4 bottom-4 sm:left-6 sm:bottom-6 right-4 sm:right-6 flex items-end justify-between gap-4 text-[#FFF8F1]">
               <div>
-                <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-[#E60049] rounded-full text-[10px] font-black uppercase tracking-wider shadow-md">
+                <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-[#D99AA8] rounded-full text-[10px] font-black uppercase tracking-wider shadow-md">
                   <i class="fa-solid fa-camera"></i>
                   Foto Properti Utama
                 </span>
-                <p class="mt-2 text-xs sm:text-sm font-bold text-white/90">Klik foto untuk perbesar layar penuh</p>
+                <p class="mt-2 text-xs sm:text-sm font-bold text-[#FFF8F1]/90">Klik foto untuk perbesar layar penuh</p>
               </div>
 
-              <span class="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center shrink-0 group-hover:bg-[#E60049] transition-colors">
+              <span class="w-10 h-10 rounded-2xl bg-[#FFFCF8]/20 backdrop-blur-md flex items-center justify-center shrink-0 group-hover:bg-[#D99AA8] transition-colors">
                 <i class="fa-solid fa-expand text-sm"></i>
               </span>
             </div>
@@ -420,7 +420,7 @@
           @for($i = 1; $i <= 4; $i++)
             @if(isset($images[$i]))
               <div
-                class="relative h-[125px] sm:h-[174px] lg:h-[204px] overflow-hidden rounded-[1.5rem] bg-[#EADFD4] cursor-pointer group shadow-sm"
+                class="relative h-[125px] sm:h-[174px] lg:h-[204px] overflow-hidden rounded-[1.5rem] bg-[#E9DDD2] cursor-pointer group shadow-sm"
                 onclick="openGallery({{ $i }})"
               >
                 <img
@@ -430,19 +430,19 @@
                 >
 
                 @if($i === 4)
-                  <div class="absolute inset-0 bg-[#3B2314]/65 backdrop-blur-[2px] flex flex-col items-center justify-center text-white gap-1.5 group-hover:bg-[#3B2314]/75 transition-colors">
-                    <span class="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center">
+                  <div class="absolute inset-0 bg-[#3B2314]/65 backdrop-blur-[2px] flex flex-col items-center justify-center text-[#FFF8F1] gap-1.5 group-hover:bg-[#3B2314]/75 transition-colors">
+                    <span class="w-9 h-9 rounded-xl bg-[#FFFCF8]/20 flex items-center justify-center">
                       <i class="fa-regular fa-images text-base"></i>
                     </span>
                     <span class="text-xs font-black tracking-wide">Lihat Semua Foto</span>
-                    <span class="text-[10px] font-semibold text-white/70">({{ count($images) }} Foto)</span>
+                    <span class="text-[10px] font-semibold text-[#FFF8F1]/70">({{ count($images) }} Foto)</span>
                   </div>
                 @else
-                  <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors"></div>
+                  <div class="absolute inset-0 bg-[#3B2314]/10 group-hover:bg-transparent transition-colors"></div>
                 @endif
               </div>
             @else
-              <div class="h-[125px] sm:h-[174px] lg:h-[204px] rounded-[1.5rem] bg-[#F2E9E1] flex flex-col items-center justify-center text-[#B6A393] gap-1">
+              <div class="h-[125px] sm:h-[174px] lg:h-[204px] rounded-[1.5rem] bg-[#E9DDD2] flex flex-col items-center justify-center text-[#8E7B6D] gap-1">
                 <i class="fa-regular fa-image text-xl"></i>
                 <span class="text-[10px] font-bold">Foto Tambahan</span>
               </div>
@@ -462,21 +462,21 @@
 
           <div class="flex flex-wrap items-center gap-2 mb-2.5">
             @if($kosan->available_rooms_count > 0)
-              <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200/80 rounded-full text-[11px] font-black tracking-wide">
-                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-[#C9A45C]/10 text-[#3B2314] border border-[#C9A45C]/80 rounded-full text-[11px] font-black tracking-wide">
+                <span class="w-2 h-2 rounded-full bg-[#C9A45C] animate-pulse"></span>
                 <span>Tersedia {{ $kosan->available_rooms_count }} Kamar Siap Huni</span>
               </span>
             @else
-              <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-rose-50 text-rose-700 border border-rose-200/80 rounded-full text-[11px] font-black tracking-wide">
-                <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-[#D99AA8]/10 text-[#3B2314] border border-[#D99AA8]/80 rounded-full text-[11px] font-black tracking-wide">
+                <span class="w-2 h-2 rounded-full bg-[#D99AA8]"></span>
                 <span>Kamar Terisi Penuh</span>
               </span>
             @endif
 
             @if($minPrice)
-              <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-[#F3A833]/15 text-[#9A7651] border border-[#F3A833]/30 rounded-full text-[11px] font-black tracking-wide">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-[#C9A45C]/15 text-[#8E7B6D] border border-[#C9A45C]/30 rounded-full text-[11px] font-black tracking-wide">
                 <span>Mulai Rp {{ number_format($minPrice, 0, ',', '.') }}</span>
-                <span class="text-[9px] font-semibold text-[#8F7765]">/bulan</span>
+                <span class="text-[9px] font-semibold text-[#8E7B6D]">/bulan</span>
               </span>
             @endif
           </div>
@@ -486,22 +486,22 @@
           </h1>
 
           <div class="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs mt-4">
-            <span class="flex items-center gap-2 font-bold text-[#6E594A]">
-              <span class="w-8 h-8 rounded-xl bg-[#E60049]/10 text-[#E60049] flex items-center justify-center">
+            <span class="flex items-center gap-2 font-bold text-[#765C55]">
+              <span class="w-8 h-8 rounded-xl bg-[#D99AA8]/10 text-[#D99AA8] flex items-center justify-center">
                 <i class="fa-solid fa-location-dot"></i>
               </span>
               {{ $displayLocation }}
             </span>
 
-            <span class="flex items-center gap-2 font-semibold text-[#8F7765]">
-              <span class="w-8 h-8 rounded-xl bg-[#00A896]/10 text-[#00A896] flex items-center justify-center">
+            <span class="flex items-center gap-2 font-semibold text-[#8E7B6D]">
+              <span class="w-8 h-8 rounded-xl bg-[#C9A45C]/10 text-[#C9A45C] flex items-center justify-center">
                 <i class="fa-solid fa-eye"></i>
               </span>
               {{ number_format($kosan->view ?? 0) }} dilihat
             </span>
 
-            <span class="flex items-center gap-2 font-semibold text-[#8F7765]">
-              <span class="w-8 h-8 rounded-xl bg-[#F3A833]/15 text-[#F3A833] flex items-center justify-center">
+            <span class="flex items-center gap-2 font-semibold text-[#8E7B6D]">
+              <span class="w-8 h-8 rounded-xl bg-[#C9A45C]/15 text-[#C9A45C] flex items-center justify-center">
                 <i class="fa-solid fa-door-open"></i>
               </span>
               {{ $kosan->productKamarKosan->count() }} Tipe Kamar
@@ -518,25 +518,25 @@
               </button>
 
               @if($kosan->has_video)
-              <button type="button" onclick="scrollToSection('video-tour', this)" class="tab-button px-3 sm:px-3.5 py-2.5 rounded-xl text-[#F8EBDD] hover:bg-white/10 text-[10px] sm:text-xs font-extrabold whitespace-nowrap transition-all flex items-center gap-1.5">
-                <i class="fa-solid fa-play text-[#F3A833] text-[9px]"></i>
+              <button type="button" onclick="scrollToSection('video-tour', this)" class="tab-button px-3 sm:px-3.5 py-2.5 rounded-xl text-[#EAD8D7] hover:bg-[#FFFCF8]/10 text-[10px] sm:text-xs font-extrabold whitespace-nowrap transition-all flex items-center gap-1.5">
+                <i class="fa-solid fa-play text-[#C9A45C] text-[9px]"></i>
                 <span>Video</span>
               </button>
               @endif
 
-              <button type="button" onclick="scrollToSection('fasilitas', this)" class="tab-button px-3 sm:px-3.5 py-2.5 rounded-xl text-[#F8EBDD] hover:bg-white/10 text-[10px] sm:text-xs font-extrabold whitespace-nowrap transition-all">
+              <button type="button" onclick="scrollToSection('fasilitas', this)" class="tab-button px-3 sm:px-3.5 py-2.5 rounded-xl text-[#EAD8D7] hover:bg-[#FFFCF8]/10 text-[10px] sm:text-xs font-extrabold whitespace-nowrap transition-all">
                 Fasilitas
               </button>
 
-              <button type="button" onclick="scrollToSection('lokasi', this)" class="tab-button px-3 sm:px-3.5 py-2.5 rounded-xl text-[#F8EBDD] hover:bg-white/10 text-[10px] sm:text-xs font-extrabold whitespace-nowrap transition-all">
+              <button type="button" onclick="scrollToSection('lokasi', this)" class="tab-button px-3 sm:px-3.5 py-2.5 rounded-xl text-[#EAD8D7] hover:bg-[#FFFCF8]/10 text-[10px] sm:text-xs font-extrabold whitespace-nowrap transition-all">
                 Lokasi
               </button>
 
-              <button type="button" onclick="scrollToSection('kamar-tersedia', this)" class="tab-button px-3 sm:px-3.5 py-2.5 rounded-xl text-[#F8EBDD] hover:bg-white/10 text-[10px] sm:text-xs font-extrabold whitespace-nowrap transition-all">
+              <button type="button" onclick="scrollToSection('kamar-tersedia', this)" class="tab-button px-3 sm:px-3.5 py-2.5 rounded-xl text-[#EAD8D7] hover:bg-[#FFFCF8]/10 text-[10px] sm:text-xs font-extrabold whitespace-nowrap transition-all">
                 Kamar ({{ $kosan->productKamarKosan->count() }})
               </button>
 
-              <button type="button" onclick="scrollToSection('faq', this)" class="tab-button px-3 sm:px-3.5 py-2.5 rounded-xl text-[#F8EBDD] hover:bg-white/10 text-[10px] sm:text-xs font-extrabold whitespace-nowrap transition-all">
+              <button type="button" onclick="scrollToSection('faq', this)" class="tab-button px-3 sm:px-3.5 py-2.5 rounded-xl text-[#EAD8D7] hover:bg-[#FFFCF8]/10 text-[10px] sm:text-xs font-extrabold whitespace-nowrap transition-all">
                 FAQ
               </button>
             </div>
@@ -551,20 +551,20 @@
       <div class="grid lg:grid-cols-12 gap-6 items-start">
 
         <div class="lg:col-span-4 lg:sticky lg:top-28">
-          <span class="text-[10px] font-extrabold uppercase tracking-[.2em] text-[#E60049]">01 — Tentang Properti</span>
+          <span class="text-[10px] font-extrabold uppercase tracking-[.2em] text-[#D99AA8]">01 — Tentang Properti</span>
           <h3 class="text-2xl sm:text-3xl font-black text-[#3B2314] mt-2 leading-tight">
             Kenali tempat tinggalmu sebelum memilih.
           </h3>
         </div>
 
         <div class="lg:col-span-8">
-          <div class="relative bg-white p-6 sm:p-8 rounded-[2rem] border border-[#E9DDD2] shadow-sm overflow-hidden">
-            <div class="absolute top-0 right-0 w-24 h-24 rounded-bl-[3rem] bg-[#F3A833]/15"></div>
-            <div class="relative text-xs sm:text-sm text-[#604D3F] leading-[1.9] [&_p]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:my-2 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:my-2 [&_li]:mb-1.5 [&_strong]:font-bold [&_strong]:text-[#3B2314] [&_h1]:text-xl [&_h2]:text-lg [&_h3]:text-base [&_h1]:font-black [&_h2]:font-black [&_h3]:font-bold [&_h1]:text-[#3B2314] [&_h2]:text-[#3B2314] [&_h3]:text-[#3B2314]">
+          <div class="relative bg-[#FFFCF8] p-6 sm:p-8 rounded-[2rem] border border-[#E9DDD2] shadow-sm overflow-hidden">
+            <div class="absolute top-0 right-0 w-24 h-24 rounded-bl-[3rem] bg-[#C9A45C]/15"></div>
+            <div class="relative text-xs sm:text-sm text-[#765C55] leading-[1.9] [&_p]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:my-2 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:my-2 [&_li]:mb-1.5 [&_strong]:font-bold [&_strong]:text-[#3B2314] [&_h1]:text-xl [&_h2]:text-lg [&_h3]:text-base [&_h1]:font-black [&_h2]:font-black [&_h3]:font-bold [&_h1]:text-[#3B2314] [&_h2]:text-[#3B2314] [&_h3]:text-[#3B2314]">
               @if(!empty(trim(strip_tags($kosan->description ?? ''))))
                 {!! \App\Support\HtmlSanitizer::clean($kosan->description) !!}
               @else
-                <p class="text-[#9A8675] italic">Deskripsi kosan belum ditambahkan oleh pemilik.</p>
+                <p class="text-[#8E7B6D] italic">Deskripsi kosan belum ditambahkan oleh pemilik.</p>
               @endif
             </div>
           </div>
@@ -587,13 +587,13 @@
 
     <!-- 6.1 FASILITAS SECTION -->
     <section id="fasilitas" class="reveal">
-      <div class="bg-[#F3A833]/10 rounded-[2rem] p-6 sm:p-8 border border-[#F3A833]/20">
+      <div class="bg-[#C9A45C]/10 rounded-[2rem] p-6 sm:p-8 border border-[#C9A45C]/20">
         <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-6">
           <div>
-            <span class="text-[10px] font-extrabold uppercase tracking-[.2em] text-[#00A896]">02 — Fasilitas</span>
+            <span class="text-[10px] font-extrabold uppercase tracking-[.2em] text-[#C9A45C]">02 — Fasilitas</span>
             <h3 class="text-2xl sm:text-3xl font-black text-[#3B2314] mt-1">Yang tersedia di properti</h3>
           </div>
-          <span class="text-xs font-bold text-[#8F7765]">
+          <span class="text-xs font-bold text-[#8E7B6D]">
             {{ count($fasKosanArr) }} fasilitas
           </span>
         </div>
@@ -603,16 +603,16 @@
             @foreach($fasKosanArr as $fasName)
               @php $iconClass = $iconMap[$fasName] ?? 'fa-check'; @endphp
 
-              <div class="group bg-white p-4 rounded-2xl border border-[#EADFD4] shadow-sm hover:-translate-y-1 hover:shadow-md transition-all duration-300">
-                <div class="w-10 h-10 rounded-xl bg-[#00A896]/10 text-[#00A896] group-hover:bg-[#00A896] group-hover:text-white transition-colors flex items-center justify-center mb-3">
+              <div class="group bg-[#FFFCF8] p-4 rounded-2xl border border-[#E9DDD2] shadow-sm hover:-translate-y-1 hover:shadow-md transition-all duration-300">
+                <div class="w-10 h-10 rounded-xl bg-[#C9A45C]/10 text-[#C9A45C] group-hover:bg-[#C9A45C] group-hover:text-[#FFF8F1] transition-colors flex items-center justify-center mb-3">
                   <i class="fa-solid {{ $iconClass }} text-sm"></i>
                 </div>
-                <span class="text-xs font-extrabold text-[#4C392B] leading-snug">{{ $fasName }}</span>
+                <span class="text-xs font-extrabold text-[#765C55] leading-snug">{{ $fasName }}</span>
               </div>
             @endforeach
           </div>
         @else
-          <div class="bg-white p-6 rounded-2xl border border-[#EADFD4] text-[#9A8675] text-xs">
+          <div class="bg-[#FFFCF8] p-6 rounded-2xl border border-[#E9DDD2] text-[#8E7B6D] text-xs">
             Belum ada rincian fasilitas kosan.
           </div>
         @endif
@@ -623,9 +623,9 @@
     <section id="lokasi" class="reveal space-y-6">
       <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <span class="text-[10px] font-extrabold uppercase tracking-[.2em] text-[#E60049]">03 — Lokasi & Fasilitas Sekitar</span>
+          <span class="text-[10px] font-extrabold uppercase tracking-[.2em] text-[#D99AA8]">03 — Lokasi & Fasilitas Sekitar</span>
           <h3 class="text-2xl sm:text-3xl font-black text-[#3B2314] mt-1">Area strategis & kemudahan akses</h3>
-          <p class="text-xs sm:text-sm text-[#7B6759] mt-1 max-w-xl">
+          <p class="text-xs sm:text-sm text-[#8E7B6D] mt-1 max-w-xl">
             @if(!empty($detectedPlace))
               Berada di sekitar area <strong class="text-[#3B2314]">{{ $detectedPlace }}</strong> ({{ $kosan->wilayah ?? 'Bali' }}) dengan akses cepat ke pusat perkantoran, universitas, minimarket, dan fasilitas kesehatan.
             @else
@@ -635,14 +635,14 @@
         </div>
 
         <div class="flex flex-wrap items-center gap-2">
-          <div class="inline-flex items-center gap-2 px-3.5 py-2 bg-white rounded-xl border border-[#EADFD4] shadow-sm text-xs font-bold text-[#5D493A]">
-            <i class="fa-solid fa-map-pin text-[#E60049]"></i>
+          <div class="inline-flex items-center gap-2 px-3.5 py-2 bg-[#FFFCF8] rounded-xl border border-[#E9DDD2] shadow-sm text-xs font-bold text-[#765C55]">
+            <i class="fa-solid fa-map-pin text-[#D99AA8]"></i>
             <span>{{ $displayLocationShort }}</span>
           </div>
 
           @if($kosan->gmaps)
-            <span class="inline-flex items-center gap-1.5 px-3 py-2 bg-emerald-50 text-emerald-700 border border-emerald-200/80 rounded-xl text-xs font-bold shadow-sm">
-              <i class="fa-solid fa-circle-check text-emerald-500"></i>
+            <span class="inline-flex items-center gap-1.5 px-3 py-2 bg-[#C9A45C]/10 text-[#3B2314] border border-[#C9A45C]/80 rounded-xl text-xs font-bold shadow-sm">
+              <i class="fa-solid fa-circle-check text-[#C9A45C]"></i>
               <span>Tersinkron GMaps</span>
             </span>
           @endif
@@ -651,10 +651,10 @@
             href="{{ $directionsUrl }}"
             target="_blank"
             rel="noopener noreferrer"
-            class="px-3.5 py-2 bg-white hover:bg-[#F3A833] text-[#3B2314] border border-[#EADFD4] text-xs font-bold rounded-xl shadow-sm transition-all flex items-center gap-1.5"
+            class="px-3.5 py-2 bg-[#FFFCF8] hover:bg-[#C9A45C] text-[#3B2314] border border-[#E9DDD2] text-xs font-bold rounded-xl shadow-sm transition-all flex items-center gap-1.5"
             title="Buka Petunjuk Arah Google Maps"
           >
-            <i class="fa-solid fa-route text-[#00A896]"></i>
+            <i class="fa-solid fa-route text-[#C9A45C]"></i>
             <span>Petunjuk Arah</span>
           </a>
 
@@ -662,20 +662,20 @@
             href="{{ $gmapsDirectUrl }}"
             target="_blank"
             rel="noopener noreferrer"
-            class="px-4 py-2 bg-[#3B2314] hover:bg-[#E60049] text-white text-xs font-black rounded-xl shadow-md transition-all flex items-center gap-2"
+            class="px-4 py-2 bg-[#3B2314] hover:bg-[#D99AA8] text-[#FFF8F1] text-xs font-black rounded-xl shadow-md transition-all flex items-center gap-2"
             title="Buka di Google Maps"
           >
-            <i class="fa-solid fa-diamond-turn-right text-[#F3A833]"></i>
+            <i class="fa-solid fa-diamond-turn-right text-[#C9A45C]"></i>
             <span>Buka Google Maps</span>
           </a>
         </div>
       </div>
 
       <!-- Container Peta Interaktif / Embed Google Maps -->
-      <div class="relative rounded-[2rem] overflow-hidden border-4 border-white shadow-xl bg-[#EDE4DC]">
+      <div class="relative rounded-[2rem] overflow-hidden border-4 border-[#FFF8F1] shadow-xl bg-[#E9DDD2]">
         @if($embedSrc)
           <!-- Tampilan Embed Iframe Langsung -->
-          <div class="w-full h-[340px] sm:h-[420px] bg-neutral-100">
+          <div class="w-full h-[340px] sm:h-[420px] bg-[#E9DDD2]">
             <iframe
               src="{{ $embedSrc }}"
               class="w-full h-full border-0"
@@ -689,18 +689,18 @@
           <div id="vicinity-map" class="w-full h-[360px] sm:h-[440px] z-10"></div>
         @endif
 
-        <div class="absolute bottom-3 right-3 z-20 bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-[#E9DDD2] text-[11px] font-bold text-[#5D483A] shadow-md flex items-center gap-2 pointer-events-none">
-          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+        <div class="absolute bottom-3 right-3 z-20 bg-[#FFFCF8]/95 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-[#E9DDD2] text-[11px] font-bold text-[#765C55] shadow-md flex items-center gap-2 pointer-events-none">
+          <span class="w-2.5 h-2.5 rounded-full bg-[#C9A45C] animate-pulse"></span>
           <span>{{ $displayLocationShort }} • {{ $kosan->title }}</span>
         </div>
 
         @if(!$embedSrc)
           <!-- Layer Switcher & Recenter Controls inside Map -->
-          <div class="absolute top-3 right-3 z-20 flex items-center bg-white/95 backdrop-blur-md p-1 rounded-xl border border-[#E9DDD2] shadow-md text-xs font-bold gap-1">
+          <div class="absolute top-3 right-3 z-20 flex items-center bg-[#FFFCF8]/95 backdrop-blur-md p-1 rounded-xl border border-[#E9DDD2] shadow-md text-xs font-bold gap-1">
             <button
               id="map-btn-street"
               type="button"
-              class="px-2.5 py-1.5 rounded-lg bg-[#3B2314] text-white text-[11px] font-extrabold transition-all shadow-sm flex items-center gap-1.5"
+              class="px-2.5 py-1.5 rounded-lg bg-[#3B2314] text-[#FFF8F1] text-[11px] font-extrabold transition-all shadow-sm flex items-center gap-1.5"
             >
               <i class="fa-solid fa-map"></i>
               <span>Peta Jalan</span>
@@ -708,7 +708,7 @@
             <button
               id="map-btn-sat"
               type="button"
-              class="px-2.5 py-1.5 rounded-lg text-[#5D483A] hover:text-[#3B2314] text-[11px] font-extrabold transition-all flex items-center gap-1.5"
+              class="px-2.5 py-1.5 rounded-lg text-[#765C55] hover:text-[#3B2314] text-[11px] font-extrabold transition-all flex items-center gap-1.5"
             >
               <i class="fa-solid fa-earth-americas"></i>
               <span>Satelit</span>
@@ -716,7 +716,7 @@
             <button
               id="map-btn-recenter"
               type="button"
-              class="p-1.5 px-2 text-[#7B6759] hover:text-[#E60049] rounded-lg transition-colors border-l border-[#E9DDD2]"
+              class="p-1.5 px-2 text-[#8E7B6D] hover:text-[#D99AA8] rounded-lg transition-colors border-l border-[#E9DDD2]"
               title="Fokus ke Lokasi Kosan"
             >
               <i class="fa-solid fa-crosshairs"></i>
@@ -727,53 +727,53 @@
 
       <!-- 4 Vicinity Cards (Contextual to Region) -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-        <div class="bg-white p-4 rounded-2xl border border-[#E9DDD2] shadow-sm hover:border-[#0284c7] transition-all flex items-start gap-3.5">
-          <div class="w-10 h-10 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center shrink-0 text-base">
+        <div class="bg-[#FFFCF8] p-4 rounded-2xl border border-[#E9DDD2] shadow-sm hover:border-[#765C55] transition-all flex items-start gap-3.5">
+          <div class="w-10 h-10 rounded-xl bg-[#C9A45C]/10 text-[#C9A45C] flex items-center justify-center shrink-0 text-base">
             <i class="fa-solid fa-graduation-cap"></i>
           </div>
           <div>
             <h4 class="text-xs font-extrabold text-[#3B2314]">Kampus / Pendidikan</h4>
-            <p class="text-[11px] text-[#7B6759] mt-0.5">Area {{ $displayLocationShort }}</p>
-            <span class="inline-block mt-2 text-[10px] font-black text-sky-700 bg-sky-50 px-2 py-0.5 rounded-md">
+            <p class="text-[11px] text-[#8E7B6D] mt-0.5">Area {{ $displayLocationShort }}</p>
+            <span class="inline-block mt-2 text-[10px] font-black text-[#3B2314] bg-[#C9A45C]/10 px-2 py-0.5 rounded-md">
               🚗 Akses Cepat Kendaraan
             </span>
           </div>
         </div>
 
-        <div class="bg-white p-4 rounded-2xl border border-[#E9DDD2] shadow-sm hover:border-emerald-500 transition-all flex items-start gap-3.5">
-          <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 text-base">
+        <div class="bg-[#FFFCF8] p-4 rounded-2xl border border-[#E9DDD2] shadow-sm hover:border-[#C9A45C] transition-all flex items-start gap-3.5">
+          <div class="w-10 h-10 rounded-xl bg-[#C9A45C]/10 text-[#C9A45C] flex items-center justify-center shrink-0 text-base">
             <i class="fa-solid fa-cart-shopping"></i>
           </div>
           <div>
             <h4 class="text-xs font-extrabold text-[#3B2314]">Kebutuhan Harian</h4>
-            <p class="text-[11px] text-[#7B6759] mt-0.5">Minimarket & Pasar {{ $displayLocationShort }}</p>
-            <span class="inline-block mt-2 text-[10px] font-black text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md">
+            <p class="text-[11px] text-[#8E7B6D] mt-0.5">Minimarket & Pasar {{ $displayLocationShort }}</p>
+            <span class="inline-block mt-2 text-[10px] font-black text-[#3B2314] bg-[#C9A45C]/10 px-2 py-0.5 rounded-md">
               🚶 Dekat Jangkauan
             </span>
           </div>
         </div>
 
-        <div class="bg-white p-4 rounded-2xl border border-[#E9DDD2] shadow-sm hover:border-rose-500 transition-all flex items-start gap-3.5">
-          <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center shrink-0 text-base">
+        <div class="bg-[#FFFCF8] p-4 rounded-2xl border border-[#E9DDD2] shadow-sm hover:border-[#D99AA8] transition-all flex items-start gap-3.5">
+          <div class="w-10 h-10 rounded-xl bg-[#D99AA8]/10 text-[#D99AA8] flex items-center justify-center shrink-0 text-base">
             <i class="fa-solid fa-heart-pulse"></i>
           </div>
           <div>
             <h4 class="text-xs font-extrabold text-[#3B2314]">Layanan Kesehatan</h4>
-            <p class="text-[11px] text-[#7B6759] mt-0.5">Faskes & Apotek {{ $displayLocationShort }}</p>
-            <span class="inline-block mt-2 text-[10px] font-black text-rose-700 bg-rose-50 px-2 py-0.5 rounded-md">
+            <p class="text-[11px] text-[#8E7B6D] mt-0.5">Faskes & Apotek {{ $displayLocationShort }}</p>
+            <span class="inline-block mt-2 text-[10px] font-black text-[#3B2314] bg-[#D99AA8]/10 px-2 py-0.5 rounded-md">
               🚗 Fasilitas Lengkap
             </span>
           </div>
         </div>
 
-        <div class="bg-white p-4 rounded-2xl border border-[#E9DDD2] shadow-sm hover:border-amber-500 transition-all flex items-start gap-3.5">
-          <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 text-base">
+        <div class="bg-[#FFFCF8] p-4 rounded-2xl border border-[#E9DDD2] shadow-sm hover:border-[#C9A45C] transition-all flex items-start gap-3.5">
+          <div class="w-10 h-10 rounded-xl bg-[#C9A45C]/10 text-[#C9A45C] flex items-center justify-center shrink-0 text-base">
             <i class="fa-solid fa-mug-hot"></i>
           </div>
           <div>
             <h4 class="text-xs font-extrabold text-[#3B2314]">Kuliner & Laundry</h4>
-            <p class="text-[11px] text-[#7B6759] mt-0.5">Warung Kuliner & Laundry Kiloan</p>
-            <span class="inline-block mt-2 text-[10px] font-black text-amber-700 bg-amber-50 px-2 py-0.5 rounded-md">
+            <p class="text-[11px] text-[#8E7B6D] mt-0.5">Warung Kuliner & Laundry Kiloan</p>
+            <span class="inline-block mt-2 text-[10px] font-black text-[#3B2314] bg-[#C9A45C]/10 px-2 py-0.5 rounded-md">
               🚶 Kemudahan Akses
             </span>
           </div>
@@ -785,12 +785,12 @@
     <section id="kamar-tersedia" class="reveal">
       <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-6">
         <div>
-          <span class="text-[10px] font-extrabold uppercase tracking-[.2em] text-[#00A896]">04 — Pilihan Kamar</span>
+          <span class="text-[10px] font-extrabold uppercase tracking-[.2em] text-[#C9A45C]">04 — Pilihan Kamar</span>
           <h3 class="text-2xl sm:text-3xl font-black text-[#3B2314] mt-1">Pilih unit yang sesuai</h3>
         </div>
 
         <span class="inline-flex self-start sm:self-auto items-center gap-2 px-3 py-2 bg-[#3B2314] text-[#FFF8F1] rounded-xl text-xs font-extrabold">
-          <i class="fa-solid fa-door-open text-[#F3A833]"></i>
+          <i class="fa-solid fa-door-open text-[#C9A45C]"></i>
           {{ $kosan->productKamarKosan->count() }} Tipe Kamar
         </span>
       </div>
@@ -820,10 +820,10 @@
           @endphp
 
           <!-- ROOM CARD -->
-          <div class="room-card bg-white rounded-[2rem] border {{ $isOccupied ? 'border-[#E9DDD2] opacity-95' : 'border-[#E9DDD2]' }} shadow-sm overflow-hidden group hover:border-[#F3A833] transition-all">
+          <div class="room-card bg-[#FFFCF8] rounded-[2rem] border {{ $isOccupied ? 'border-[#E9DDD2] opacity-95' : 'border-[#E9DDD2]' }} shadow-sm overflow-hidden group hover:border-[#C9A45C] transition-all">
             <div class="grid grid-cols-1 sm:grid-cols-5">
 
-              <div class="sm:col-span-2 h-52 sm:h-full min-h-[220px] relative overflow-hidden bg-[#EDE4DC]">
+              <div class="sm:col-span-2 h-52 sm:h-full min-h-[220px] relative overflow-hidden bg-[#E9DDD2]">
                 @if($kamarImg)
                   <img
                     src="{{ asset('storage/' . $kamarImg->image) }}"
@@ -832,7 +832,7 @@
                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   >
                 @else
-                  <div class="w-full h-full flex flex-col items-center justify-center text-[#A99888] text-center p-4">
+                  <div class="w-full h-full flex flex-col items-center justify-center text-[#8E7B6D] text-center p-4">
                     <i class="fa-regular fa-image text-3xl mb-2"></i>
                     <span class="text-[9px] font-bold">Foto Kamar</span>
                   </div>
@@ -841,18 +841,18 @@
                 <!-- Status Badge -->
                 <div class="absolute top-3 left-3">
                   @if($isOccupied)
-                    <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-rose-600/90 backdrop-blur-sm text-white rounded-full text-[10px] font-black shadow-md">
-                      <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-[#D99AA8]/90 backdrop-blur-sm text-[#FFF8F1] rounded-full text-[10px] font-black shadow-md">
+                      <span class="w-1.5 h-1.5 rounded-full bg-[#FFFCF8] animate-pulse"></span>
                       Terisi (Penuh)
                     </span>
                   @elseif($roomStatus === 'pending')
-                    <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-500/90 backdrop-blur-sm text-white rounded-full text-[10px] font-black shadow-md">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-[#C9A45C]/100/90 backdrop-blur-sm text-[#FFF8F1] rounded-full text-[10px] font-black shadow-md">
                       <i class="fa-solid fa-clock text-[9px]"></i>
                       Verifikasi
                     </span>
                   @else
-                    <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-600/90 backdrop-blur-sm text-white rounded-full text-[10px] font-black shadow-md">
-                      <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-[#C9A45C]/90 backdrop-blur-sm text-[#FFF8F1] rounded-full text-[10px] font-black shadow-md">
+                      <span class="w-1.5 h-1.5 rounded-full bg-[#FFFCF8] animate-pulse"></span>
                       Siap Huni
                     </span>
                   @endif
@@ -861,13 +861,13 @@
                 <!-- Total Photo & Video Badges -->
                 <div class="absolute bottom-3 right-3 flex items-center gap-1.5">
                   @if($kamarItem->has_video)
-                    <span class="px-2 py-0.5 bg-[#E60049]/95 backdrop-blur-sm text-white rounded-lg text-[9px] font-black flex items-center gap-1 shadow">
+                    <span class="px-2 py-0.5 bg-[#D99AA8]/95 backdrop-blur-sm text-[#FFF8F1] rounded-lg text-[9px] font-black flex items-center gap-1 shadow">
                       <i class="fa-solid fa-play text-[7px]"></i>
                       <span>Video</span>
                     </span>
                   @endif
                   @if($imgCount > 0)
-                    <div class="px-2 py-0.5 bg-[#24150D]/80 backdrop-blur-sm text-white rounded-lg text-[9px] font-bold flex items-center gap-1">
+                    <div class="px-2 py-0.5 bg-[#3B2314]/80 backdrop-blur-sm text-[#FFF8F1] rounded-lg text-[9px] font-bold flex items-center gap-1">
                       <i class="fa-solid fa-camera text-[8px]"></i>
                       <span>{{ $imgCount }} Foto</span>
                     </div>
@@ -878,12 +878,12 @@
               <div class="sm:col-span-3 p-5 flex flex-col justify-between">
                 <div>
                   <h4 class="font-black text-[#3B2314] text-lg leading-tight">
-                    <a href="{{ route('kamar.detail', $kamarItem->id) }}" class="hover:text-[#E60049] transition-colors">
+                    <a href="{{ route('kamar.detail', $kamarItem->id) }}" class="hover:text-[#D99AA8] transition-colors">
                       {{ $kamarItem->room }}
                     </a>
                   </h4>
 
-                  <p class="text-xs text-[#8F7765] mt-1.5 leading-relaxed line-clamp-2">
+                  <p class="text-xs text-[#8E7B6D] mt-1.5 leading-relaxed line-clamp-2">
                     {{ strip_tags($kamarItem->description ?? 'Fasilitas kamar lengkap, bersih, dan nyaman.') }}
                   </p>
 
@@ -891,13 +891,13 @@
                   @if(count($kamarFasilitas) > 0)
                     <div class="flex flex-wrap gap-1 mt-2.5">
                       @foreach(array_slice($kamarFasilitas, 0, 3) as $kFas)
-                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#FAF4ED] border border-[#EADFD4] text-[#6F5A4B] text-[10px] font-bold">
-                          <i class="fa-solid fa-check text-[8px] text-[#00A896]"></i>
+                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#FFF8F1] border border-[#E9DDD2] text-[#765C55] text-[10px] font-bold">
+                          <i class="fa-solid fa-check text-[8px] text-[#C9A45C]"></i>
                           {{ $kFas }}
                         </span>
                       @endforeach
                       @if(count($kamarFasilitas) > 3)
-                        <span class="px-1.5 py-0.5 rounded-md bg-[#FAF4ED] text-[#8F7765] text-[10px] font-bold">
+                        <span class="px-1.5 py-0.5 rounded-md bg-[#FFF8F1] text-[#8E7B6D] text-[10px] font-bold">
                           +{{ count($kamarFasilitas) - 3 }} lainnya
                         </span>
                       @endif
@@ -905,23 +905,23 @@
                   @endif
 
                   <!-- Pricing Container -->
-                  <div class="mt-4 p-3 rounded-2xl bg-[#F3A833]/10 border border-[#F3A833]/15">
-                    <span class="text-[9px] uppercase font-extrabold tracking-wider text-[#9A7651] block">Tarif Sewa</span>
+                  <div class="mt-4 p-3 rounded-2xl bg-[#C9A45C]/10 border border-[#C9A45C]/15">
+                    <span class="text-[9px] uppercase font-extrabold tracking-wider text-[#8E7B6D] block">Tarif Sewa</span>
 
                     @if($monthlyPrice)
                       <div class="flex items-baseline gap-1 mt-0.5">
-                        <span class="text-xl font-black text-[#E60049]">
+                        <span class="text-xl font-black text-[#D99AA8]">
                           Rp {{ number_format($monthlyPrice, 0, ',', '.') }}
                         </span>
-                        <span class="text-[10px] font-semibold text-[#8F7765]">/bulan</span>
+                        <span class="text-[10px] font-semibold text-[#8E7B6D]">/bulan</span>
                       </div>
                       @if($yearlyPrice)
-                        <div class="text-[10px] text-[#8F7765] font-semibold mt-1">
+                        <div class="text-[10px] text-[#8E7B6D] font-semibold mt-1">
                           Opsi Tahunan: <strong class="text-[#3B2314]">Rp {{ number_format($yearlyPrice, 0, ',', '.') }}</strong>
                         </div>
                       @endif
                     @else
-                      <span class="text-xs font-extrabold text-[#6F5A4B]">Hubungi Admin</span>
+                      <span class="text-xs font-extrabold text-[#765C55]">Hubungi Admin</span>
                     @endif
                   </div>
                 </div>
@@ -929,10 +929,10 @@
                 <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2">
                   <a
                     href="{{ route('kamar.detail', $kamarItem->id) }}"
-                    class="w-full px-3 py-2.5 bg-white hover:bg-[#EDE4DC] text-[#3B2314] border border-[#E9DDD2] text-xs font-black rounded-xl transition-all shadow-sm active:scale-[.98] flex items-center justify-center gap-1.5 text-center"
+                    class="w-full px-3 py-2.5 bg-[#FFFCF8] hover:bg-[#E9DDD2] text-[#3B2314] border border-[#E9DDD2] text-xs font-black rounded-xl transition-all shadow-sm active:scale-[.98] flex items-center justify-center gap-1.5 text-center"
                   >
                     <span>Detail Kamar</span>
-                    <i class="fa-solid fa-arrow-right text-[10px] text-[#7B6759]"></i>
+                    <i class="fa-solid fa-arrow-right text-[10px] text-[#8E7B6D]"></i>
                   </a>
 
                   @if($isOccupied)
@@ -940,18 +940,18 @@
                       href="{{ $kamarWaUrl }}"
                       target="_blank"
                       rel="noopener noreferrer"
-                      class="w-full px-3 py-2.5 bg-[#FAF4ED] hover:bg-[#F3E8DC] text-[#7B6759] border border-[#E9DDD2] text-xs font-bold rounded-xl transition-all active:scale-[.98] flex items-center justify-center gap-1.5 text-center"
+                      class="w-full px-3 py-2.5 bg-[#FFF8F1] hover:bg-[#E9DDD2] text-[#8E7B6D] border border-[#E9DDD2] text-xs font-bold rounded-xl transition-all active:scale-[.98] flex items-center justify-center gap-1.5 text-center"
                       title="Kamar sedang penuh, tanya antrean/jadwal ketersediaan"
                     >
-                      <i class="fa-brands fa-whatsapp text-emerald-600 text-xs"></i>
+                      <i class="fa-brands fa-whatsapp text-[#C9A45C] text-xs"></i>
                       <span>Waiting List</span>
                     </a>
                   @else
                     <a
                       href="{{ route('form.booking.kamar', $kamarItem->id) }}"
-                      class="shine w-full px-3 py-2.5 bg-[#E60049] hover:bg-[#C90040] text-white text-xs font-black rounded-xl transition-all shadow-md active:scale-[.98] flex items-center justify-center gap-1.5"
+                      class="shine w-full px-3 py-2.5 bg-[#D99AA8] hover:bg-[#D99AA8] text-[#FFF8F1] text-xs font-black rounded-xl transition-all shadow-md active:scale-[.98] flex items-center justify-center gap-1.5"
                     >
-                      <i class="fa-solid fa-bolt text-[#F3A833] text-[11px]"></i>
+                      <i class="fa-solid fa-bolt text-[#C9A45C] text-[11px]"></i>
                       <span>Pesan Langsung</span>
                     </a>
                   @endif
@@ -961,8 +961,8 @@
             </div>
           </div>
         @empty
-          <div class="md:col-span-2 p-10 text-center bg-white rounded-[2rem] border border-[#E9DDD2] text-[#9A8675] text-xs">
-            <i class="fa-regular fa-door-closed text-3xl mb-3 text-[#F3A833]"></i>
+          <div class="md:col-span-2 p-10 text-center bg-[#FFFCF8] rounded-[2rem] border border-[#E9DDD2] text-[#8E7B6D] text-xs">
+            <i class="fa-regular fa-door-closed text-3xl mb-3 text-[#C9A45C]"></i>
             <p>Belum ada unit kamar yang terdaftar untuk properti ini.</p>
           </div>
         @endforelse
@@ -972,64 +972,64 @@
     <!-- 8.1 FAQ / PERTANYAAN UMUM -->
     <section id="faq" class="reveal space-y-6">
       <div>
-        <span class="text-[10px] font-extrabold uppercase tracking-[.2em] text-[#00A896]">05 — Bantuan & FAQ</span>
+        <span class="text-[10px] font-extrabold uppercase tracking-[.2em] text-[#C9A45C]">05 — Bantuan & FAQ</span>
         <h3 class="text-2xl sm:text-3xl font-black text-[#3B2314] mt-1">Pertanyaan yang Sering Diajukan</h3>
-        <p class="text-xs sm:text-sm text-[#7B6759] mt-1">Informasi ringkas seputar proses booking, pembayaran, dan survei lokasi kos.</p>
+        <p class="text-xs sm:text-sm text-[#8E7B6D] mt-1">Informasi ringkas seputar proses booking, pembayaran, dan survei lokasi kos.</p>
       </div>
 
       <div class="space-y-3">
         <!-- FAQ 1 -->
-        <div class="bg-white rounded-2xl border border-[#E9DDD2] overflow-hidden shadow-sm">
-          <button type="button" onclick="toggleFaq(1)" class="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 font-black text-sm sm:text-base text-[#3B2314] hover:text-[#E60049] transition-colors">
+        <div class="bg-[#FFFCF8] rounded-2xl border border-[#E9DDD2] overflow-hidden shadow-sm">
+          <button type="button" onclick="toggleFaq(1)" class="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 font-black text-sm sm:text-base text-[#3B2314] hover:text-[#D99AA8] transition-colors">
             <span class="flex items-center gap-3">
-              <span class="w-7 h-7 rounded-lg bg-[#E60049]/10 text-[#E60049] flex items-center justify-center text-xs shrink-0 font-black">1</span>
+              <span class="w-7 h-7 rounded-lg bg-[#D99AA8]/10 text-[#D99AA8] flex items-center justify-center text-xs shrink-0 font-black">1</span>
               <span>Bagaimana cara melakukan survei langsung ke lokasi kos?</span>
             </span>
-            <i id="faq-icon-1" class="fa-solid fa-chevron-down text-xs text-[#8F7765] transition-transform duration-300"></i>
+            <i id="faq-icon-1" class="fa-solid fa-chevron-down text-xs text-[#8E7B6D] transition-transform duration-300"></i>
           </button>
-          <div id="faq-content-1" class="hidden px-5 pb-5 pt-1 text-xs sm:text-sm text-[#6F5A4B] leading-relaxed border-t border-[#F4EBE3]">
+          <div id="faq-content-1" class="hidden px-5 pb-5 pt-1 text-xs sm:text-sm text-[#765C55] leading-relaxed border-t border-[#FFF8F1]">
             Anda dapat langsung menghubungi pengelola via WhatsApp melalui tombol <strong>Tanya Pengelola</strong>. Jadwalkan waktu kunjungan Anda agar penjaga kos dapat mendampingi dan memperlihatkan kondisi unit kamar secara langsung.
           </div>
         </div>
 
         <!-- FAQ 2 -->
-        <div class="bg-white rounded-2xl border border-[#E9DDD2] overflow-hidden shadow-sm">
-          <button type="button" onclick="toggleFaq(2)" class="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 font-black text-sm sm:text-base text-[#3B2314] hover:text-[#E60049] transition-colors">
+        <div class="bg-[#FFFCF8] rounded-2xl border border-[#E9DDD2] overflow-hidden shadow-sm">
+          <button type="button" onclick="toggleFaq(2)" class="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 font-black text-sm sm:text-base text-[#3B2314] hover:text-[#D99AA8] transition-colors">
             <span class="flex items-center gap-3">
-              <span class="w-7 h-7 rounded-lg bg-[#00A896]/10 text-[#00A896] flex items-center justify-center text-xs shrink-0 font-black">2</span>
+              <span class="w-7 h-7 rounded-lg bg-[#C9A45C]/10 text-[#C9A45C] flex items-center justify-center text-xs shrink-0 font-black">2</span>
               <span>Apa saja yang sudah termasuk dalam harga sewa bulanan?</span>
             </span>
-            <i id="faq-icon-2" class="fa-solid fa-chevron-down text-xs text-[#8F7765] transition-transform duration-300"></i>
+            <i id="faq-icon-2" class="fa-solid fa-chevron-down text-xs text-[#8E7B6D] transition-transform duration-300"></i>
           </button>
-          <div id="faq-content-2" class="hidden px-5 pb-5 pt-1 text-xs sm:text-sm text-[#6F5A4B] leading-relaxed border-t border-[#F4EBE3]">
+          <div id="faq-content-2" class="hidden px-5 pb-5 pt-1 text-xs sm:text-sm text-[#765C55] leading-relaxed border-t border-[#FFF8F1]">
             Tarif bulanan telah mencakup biaya kebersihan lingkungan, retribusi sampah, air bersih, serta koneksi internet Wi-Fi gratis. Penggunaan listrik kamar mengikuti fasilitas masing-masing unit (apakah menggunakan token mandiri atau sudah include listrik).
           </div>
         </div>
 
         <!-- FAQ 3 -->
-        <div class="bg-white rounded-2xl border border-[#E9DDD2] overflow-hidden shadow-sm">
-          <button type="button" onclick="toggleFaq(3)" class="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 font-black text-sm sm:text-base text-[#3B2314] hover:text-[#E60049] transition-colors">
+        <div class="bg-[#FFFCF8] rounded-2xl border border-[#E9DDD2] overflow-hidden shadow-sm">
+          <button type="button" onclick="toggleFaq(3)" class="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 font-black text-sm sm:text-base text-[#3B2314] hover:text-[#D99AA8] transition-colors">
             <span class="flex items-center gap-3">
-              <span class="w-7 h-7 rounded-lg bg-[#F3A833]/20 text-[#D97706] flex items-center justify-center text-xs shrink-0 font-black">3</span>
+              <span class="w-7 h-7 rounded-lg bg-[#C9A45C]/20 text-[#C9A45C] flex items-center justify-center text-xs shrink-0 font-black">3</span>
               <span>Bagaimana alur pemesanan (booking) kamar online di Jumala Living?</span>
             </span>
-            <i id="faq-icon-3" class="fa-solid fa-chevron-down text-xs text-[#8F7765] transition-transform duration-300"></i>
+            <i id="faq-icon-3" class="fa-solid fa-chevron-down text-xs text-[#8E7B6D] transition-transform duration-300"></i>
           </button>
-          <div id="faq-content-3" class="hidden px-5 pb-5 pt-1 text-xs sm:text-sm text-[#6F5A4B] leading-relaxed border-t border-[#F4EBE3]">
+          <div id="faq-content-3" class="hidden px-5 pb-5 pt-1 text-xs sm:text-sm text-[#765C55] leading-relaxed border-t border-[#FFF8F1]">
             Pilih unit kamar yang bertanda hijau <em>"Siap Huni"</em>, klik tombol <strong>Pesan Langsung</strong>, pilih tanggal mulai masuk di kalender interaktif, lalu isi formulir biodata serta unggah bukti pembayaran. Admin akan memverifikasi dalam waktu 1x24 jam dan mengirimkan invoice resmi ke email Anda.
           </div>
         </div>
 
         <!-- FAQ 4 -->
-        <div class="bg-white rounded-2xl border border-[#E9DDD2] overflow-hidden shadow-sm">
-          <button type="button" onclick="toggleFaq(4)" class="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 font-black text-sm sm:text-base text-[#3B2314] hover:text-[#E60049] transition-colors">
+        <div class="bg-[#FFFCF8] rounded-2xl border border-[#E9DDD2] overflow-hidden shadow-sm">
+          <button type="button" onclick="toggleFaq(4)" class="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 font-black text-sm sm:text-base text-[#3B2314] hover:text-[#D99AA8] transition-colors">
             <span class="flex items-center gap-3">
-              <span class="w-7 h-7 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center text-xs shrink-0 font-black">4</span>
+              <span class="w-7 h-7 rounded-lg bg-[#C9A45C]/10 text-[#C9A45C] flex items-center justify-center text-xs shrink-0 font-black">4</span>
               <span>Apakah bisa sewa harian atau mingguan?</span>
             </span>
-            <i id="faq-icon-4" class="fa-solid fa-chevron-down text-xs text-[#8F7765] transition-transform duration-300"></i>
+            <i id="faq-icon-4" class="fa-solid fa-chevron-down text-xs text-[#8E7B6D] transition-transform duration-300"></i>
           </button>
-          <div id="faq-content-4" class="hidden px-5 pb-5 pt-1 text-xs sm:text-sm text-[#6F5A4B] leading-relaxed border-t border-[#F4EBE3]">
+          <div id="faq-content-4" class="hidden px-5 pb-5 pt-1 text-xs sm:text-sm text-[#765C55] leading-relaxed border-t border-[#FFF8F1]">
             Sistem utama kami melayani sewa bulanan dan tahunan. Untuk ketersediaan sewa jangka pendek (harian/mingguan), silakan konsultasikan langsung dengan pengelola via WhatsApp.
           </div>
         </div>
@@ -1038,15 +1038,15 @@
 
     <!-- 8.3 REKOMENDASI KOS LAINNYA (CROSS-SELLING) -->
     @if(isset($relatedKosans) && $relatedKosans->count() > 0)
-      <section class="reveal pt-4 border-t border-[#EADFD4]">
+      <section class="reveal pt-4 border-t border-[#E9DDD2]">
         <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-6">
           <div>
-            <span class="text-[10px] font-extrabold uppercase tracking-[.2em] text-[#E60049]">07 — Rekomendasi</span>
+            <span class="text-[10px] font-extrabold uppercase tracking-[.2em] text-[#D99AA8]">07 — Rekomendasi</span>
             <h3 class="text-2xl sm:text-3xl font-black text-[#3B2314] mt-1">Kos Lainnya di Sekitarmu</h3>
-            <p class="text-xs sm:text-sm text-[#7B6759] mt-0.5">Jelajahi pilihan hunian lainnya dari Jumala Living.</p>
+            <p class="text-xs sm:text-sm text-[#8E7B6D] mt-0.5">Jelajahi pilihan hunian lainnya dari Jumala Living.</p>
           </div>
 
-          <a href="{{ route('kosan.index') }}" class="inline-flex items-center gap-1.5 text-xs font-black text-[#E60049] hover:underline">
+          <a href="{{ route('kosan.index') }}" class="inline-flex items-center gap-1.5 text-xs font-black text-[#D99AA8] hover:underline">
             <span>Lihat Semua Kos</span>
             <i class="fa-solid fa-arrow-right text-[10px]"></i>
           </a>
@@ -1067,35 +1067,35 @@
               }
             @endphp
 
-            <div class="bg-white rounded-3xl border border-[#E9DDD2] overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group flex flex-col justify-between">
+            <div class="bg-[#FFFCF8] rounded-3xl border border-[#E9DDD2] overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group flex flex-col justify-between">
               <div>
-                <div class="relative h-44 overflow-hidden bg-[#EADFD4]">
+                <div class="relative h-44 overflow-hidden bg-[#E9DDD2]">
                   <img src="{{ $relImgUrl }}" alt="{{ $relKos->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                  <div class="absolute top-3 left-3 px-2.5 py-1 bg-[#3B2314]/80 backdrop-blur-md rounded-full text-white text-[10px] font-bold">
-                    <i class="fa-solid fa-location-dot text-[#E60049]"></i> {{ $relKos->wilayah ?? 'Bali' }}
+                  <div class="absolute top-3 left-3 px-2.5 py-1 bg-[#3B2314]/80 backdrop-blur-md rounded-full text-[#FFF8F1] text-[10px] font-bold">
+                    <i class="fa-solid fa-location-dot text-[#D99AA8]"></i> {{ $relKos->wilayah ?? 'Bali' }}
                   </div>
                 </div>
 
                 <div class="p-4 sm:p-5">
-                  <h4 class="font-black text-[#3B2314] text-base group-hover:text-[#E60049] transition-colors line-clamp-1">
+                  <h4 class="font-black text-[#3B2314] text-base group-hover:text-[#D99AA8] transition-colors line-clamp-1">
                     {{ $relKos->title }}
                   </h4>
-                  <p class="text-xs text-[#7B6759] mt-1">
-                    <i class="fa-solid fa-door-open text-[#00A896]"></i> {{ $relKos->productKamarKosan->count() }} Tipe Kamar
+                  <p class="text-xs text-[#8E7B6D] mt-1">
+                    <i class="fa-solid fa-door-open text-[#C9A45C]"></i> {{ $relKos->productKamarKosan->count() }} Tipe Kamar
                   </p>
 
-                  <div class="mt-4 pt-3 border-t border-[#F2E7DF] flex items-center justify-between">
+                  <div class="mt-4 pt-3 border-t border-[#E9DDD2] flex items-center justify-between">
                     <div>
                       <span class="text-[9px] uppercase font-bold text-[#8E7B6D] block">Mulai</span>
                       @if($relMinPrice)
-                        <span class="text-sm font-black text-[#E60049]">Rp {{ number_format($relMinPrice, 0, ',', '.') }}</span>
-                        <span class="text-[10px] text-[#8F7765]">/bln</span>
+                        <span class="text-sm font-black text-[#D99AA8]">Rp {{ number_format($relMinPrice, 0, ',', '.') }}</span>
+                        <span class="text-[10px] text-[#8E7B6D]">/bln</span>
                       @else
-                        <span class="text-xs font-bold text-[#6F5A4B]">Hubungi Admin</span>
+                        <span class="text-xs font-bold text-[#765C55]">Hubungi Admin</span>
                       @endif
                     </div>
 
-                    <a href="{{ route('kosan.detail', $relKos->slug) }}" class="px-3 py-1.5 bg-[#3B2314] hover:bg-[#E60049] text-white text-xs font-bold rounded-xl transition-colors shadow-sm flex items-center gap-1">
+                    <a href="{{ route('kosan.detail', $relKos->slug) }}" class="px-3 py-1.5 bg-[#3B2314] hover:bg-[#D99AA8] text-[#FFF8F1] text-xs font-bold rounded-xl transition-colors shadow-sm flex items-center gap-1">
                       <span>Lihat</span>
                       <i class="fa-solid fa-arrow-right text-[9px]"></i>
                     </a>
@@ -1110,24 +1110,24 @@
   </main>
 
   <!-- LIGHTBOX GALERI FOTO (MODAL) -->
-  <div id="gallery-modal" class="fixed inset-0 bg-[#24150D]/95 z-[999] hidden flex-col justify-between p-4 sm:p-6 backdrop-blur-md">
+  <div id="gallery-modal" class="fixed inset-0 bg-[#3B2314]/95 z-[999] hidden flex-col justify-between p-4 sm:p-6 backdrop-blur-md">
 
     <div class="flex items-center justify-between max-w-5xl mx-auto w-full">
       <div>
-        <span class="text-[9px] font-extrabold uppercase tracking-[.2em] text-[#F3A833]">Galeri Properti</span>
-        <h3 class="font-black text-white text-base sm:text-lg mt-0.5">{{ $kosan->title }}</h3>
+        <span class="text-[9px] font-extrabold uppercase tracking-[.2em] text-[#C9A45C]">Galeri Properti</span>
+        <h3 class="font-black text-[#FFF8F1] text-base sm:text-lg mt-0.5">{{ $kosan->title }}</h3>
       </div>
 
       <div class="flex items-center gap-3">
-        <span id="gallery-counter" class="text-xs sm:text-sm font-bold text-[#F1DCC8]">1 / 1</span>
-        <button onclick="closeGallery()" class="w-10 h-10 rounded-xl bg-white/10 text-white hover:bg-[#E60049] transition-all flex items-center justify-center">
+        <span id="gallery-counter" class="text-xs sm:text-sm font-bold text-[#EAD8D7]">1 / 1</span>
+        <button onclick="closeGallery()" class="w-10 h-10 rounded-xl bg-[#FFFCF8]/10 text-[#FFF8F1] hover:bg-[#D99AA8] transition-all flex items-center justify-center">
           <i class="fa-solid fa-xmark text-base"></i>
         </button>
       </div>
     </div>
 
     <div class="relative flex-1 flex items-center justify-center my-4 overflow-hidden max-w-5xl mx-auto w-full">
-      <button onclick="prevImage()" class="absolute left-1 sm:left-4 w-11 h-11 rounded-2xl bg-white/10 text-white hover:bg-[#F3A833] hover:text-[#3B2314] transition-all flex items-center justify-center">
+      <button onclick="prevImage()" class="absolute left-1 sm:left-4 w-11 h-11 rounded-2xl bg-[#FFFCF8]/10 text-[#FFF8F1] hover:bg-[#C9A45C] hover:text-[#3B2314] transition-all flex items-center justify-center">
         <i class="fa-solid fa-chevron-left text-base"></i>
       </button>
 
@@ -1135,7 +1135,7 @@
         <img id="active-gallery-img" src="" alt="Foto Kos" class="max-w-full max-h-full object-contain rounded-2xl shadow-2xl">
       </div>
 
-      <button onclick="nextImage()" class="absolute right-1 sm:right-4 w-11 h-11 rounded-2xl bg-white/10 text-white hover:bg-[#F3A833] hover:text-[#3B2314] transition-all flex items-center justify-center">
+      <button onclick="nextImage()" class="absolute right-1 sm:right-4 w-11 h-11 rounded-2xl bg-[#FFFCF8]/10 text-[#FFF8F1] hover:bg-[#C9A45C] hover:text-[#3B2314] transition-all flex items-center justify-center">
         <i class="fa-solid fa-chevron-right text-base"></i>
       </button>
     </div>
@@ -1147,8 +1147,8 @@
   </div>
 
   <!-- TOAST NOTIFICATION -->
-  <div id="toast-message" class="fixed top-5 right-5 z-[9999] hidden items-center gap-2.5 px-4 py-3 bg-[#3B2314] text-white text-xs font-bold rounded-2xl shadow-2xl transition-all duration-300 border border-white/10">
-    <i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+  <div id="toast-message" class="fixed top-5 right-5 z-[9999] hidden items-center gap-2.5 px-4 py-3 bg-[#3B2314] text-[#FFF8F1] text-xs font-bold rounded-2xl shadow-2xl transition-all duration-300 border border-[#FFF8F1]/10">
+    <i class="fa-solid fa-circle-check text-[#C9A45C] text-base"></i>
     <span id="toast-text">Tautan berhasil disalin!</span>
   </div>
 
@@ -1157,7 +1157,7 @@
     href="{{ $waInquiryUrl }}"
     target="_blank"
     rel="noopener noreferrer"
-    class="fixed bottom-6 right-6 z-40 hidden lg:flex items-center gap-2.5 px-5 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full shadow-[0_8px_25px_rgba(16,185,129,0.35)] hover:scale-105 active:scale-95 transition-all text-xs font-black group"
+    class="fixed bottom-6 right-6 z-40 hidden lg:flex items-center gap-2.5 px-5 py-3.5 bg-[#C9A45C] hover:bg-[#3B2314] text-[#FFF8F1] rounded-full shadow-[0_8px_25px_rgba(142,123,109,0.35)] hover:scale-105 active:scale-95 transition-all text-xs font-black group"
     title="Tanya Pengelola Kosan via WhatsApp"
   >
     <i class="fa-brands fa-whatsapp text-xl"></i>
@@ -1183,12 +1183,12 @@
 
         document.querySelectorAll('.tab-button').forEach(button => {
           button.classList.remove('tab-active', 'bg-[#FFF8F1]');
-          button.classList.add('text-[#F8EBDD]');
+          button.classList.add('text-[#EAD8D7]');
         });
 
         if (btn) {
           btn.classList.add('tab-active', 'bg-[#FFF8F1]');
-          btn.classList.remove('text-[#F8EBDD]');
+          btn.classList.remove('text-[#EAD8D7]');
         }
       }
     }
@@ -1260,12 +1260,12 @@
 
       if (isSaved) {
         localStorage.removeItem(key);
-        if (icon) icon.className = 'fa-regular fa-heart text-xs text-[#E60049]';
+        if (icon) icon.className = 'fa-regular fa-heart text-xs text-[#D99AA8]';
         if (label) label.textContent = 'Simpan';
         showToast("Dihapus dari daftar simpan");
       } else {
         localStorage.setItem(key, 'true');
-        if (icon) icon.className = 'fa-solid fa-heart text-xs text-[#E60049]';
+        if (icon) icon.className = 'fa-solid fa-heart text-xs text-[#D99AA8]';
         if (label) label.textContent = 'Tersimpan';
         showToast("Kosan disimpan ke favorit!");
       }
@@ -1278,7 +1278,7 @@
       const label = document.getElementById('bookmark-label');
       const icon = btn ? btn.querySelector('i') : null;
       if (isSaved) {
-        if (icon) icon.className = 'fa-solid fa-heart text-xs text-[#E60049]';
+        if (icon) icon.className = 'fa-solid fa-heart text-xs text-[#D99AA8]';
         if (label) label.textContent = 'Tersimpan';
       }
     });
@@ -1339,7 +1339,7 @@
           onclick="setGalleryIndex(${idx})"
           class="w-16 h-12 sm:w-20 sm:h-14 rounded-xl overflow-hidden cursor-pointer border-2 transition-all ${
             idx === currentGalleryIndex
-              ? 'border-[#F3A833] scale-105 shadow-lg opacity-100'
+              ? 'border-[#C9A45C] scale-105 shadow-lg opacity-100'
               : 'border-transparent opacity-50 hover:opacity-100'
           }"
         >
@@ -1445,8 +1445,8 @@
             vicinityMap.removeLayer(currentLayer);
             streetLayer.addTo(vicinityMap);
             currentLayer = streetLayer;
-            btnStreet.className = 'px-2.5 py-1.5 rounded-lg bg-[#3B2314] text-white text-[11px] font-extrabold transition-all shadow-sm flex items-center gap-1.5';
-            btnSat.className = 'px-2.5 py-1.5 rounded-lg text-[#5D483A] hover:text-[#3B2314] text-[11px] font-extrabold transition-all flex items-center gap-1.5';
+            btnStreet.className = 'px-2.5 py-1.5 rounded-lg bg-[#3B2314] text-[#FFF8F1] text-[11px] font-extrabold transition-all shadow-sm flex items-center gap-1.5';
+            btnSat.className = 'px-2.5 py-1.5 rounded-lg text-[#765C55] hover:text-[#3B2314] text-[11px] font-extrabold transition-all flex items-center gap-1.5';
           }
         });
 
@@ -1455,8 +1455,8 @@
             vicinityMap.removeLayer(currentLayer);
             satLayer.addTo(vicinityMap);
             currentLayer = satLayer;
-            btnSat.className = 'px-2.5 py-1.5 rounded-lg bg-[#3B2314] text-white text-[11px] font-extrabold transition-all shadow-sm flex items-center gap-1.5';
-            btnStreet.className = 'px-2.5 py-1.5 rounded-lg text-[#5D483A] hover:text-[#3B2314] text-[11px] font-extrabold transition-all flex items-center gap-1.5';
+            btnSat.className = 'px-2.5 py-1.5 rounded-lg bg-[#3B2314] text-[#FFF8F1] text-[11px] font-extrabold transition-all shadow-sm flex items-center gap-1.5';
+            btnStreet.className = 'px-2.5 py-1.5 rounded-lg text-[#765C55] hover:text-[#3B2314] text-[11px] font-extrabold transition-all flex items-center gap-1.5';
           }
         });
       }
@@ -1470,8 +1470,8 @@
 
       // Visual Walking Radius (300m)
       L.circle([kosLat, kosLng], {
-        color: '#E60049',
-        fillColor: '#E60049',
+        color: '#D99AA8',
+        fillColor: '#D99AA8',
         fillOpacity: 0.08,
         weight: 1.5,
         dashArray: '4, 4',
@@ -1489,15 +1489,15 @@
       const kosMarker = L.marker([kosLat, kosLng], { icon: kosIcon }).addTo(vicinityMap);
       kosMarker.bindPopup(`
         <div class="p-2 text-center" style="min-width: 180px;">
-          <div class="inline-block px-2 py-0.5 bg-[#FFF0F3] text-[#E60049] text-[9px] font-extrabold rounded-md uppercase tracking-wider mb-1">
+          <div class="inline-block px-2 py-0.5 bg-[#FFF8F1] text-[#D99AA8] text-[9px] font-extrabold rounded-md uppercase tracking-wider mb-1">
             Lokasi Kosan
           </div>
           <strong class="text-xs font-black text-[#3B2314] block leading-tight">{{ addslashes($kosan->title) }}</strong>
-          <span class="text-[11px] text-[#7B6759] font-semibold block mt-0.5"><i class="fa-solid fa-location-dot text-[#E60049]"></i> {{ addslashes($displayLocationShort) }}</span>
-          <div class="mt-2.5 pt-2 border-t border-[#F2E7DF] flex items-center justify-center gap-1.5">
-            <a href="{{ $gmapsDirectUrl }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 px-3 py-1 bg-[#3B2314] hover:bg-[#E60049] text-white text-[10px] font-bold rounded-lg shadow-sm transition-colors text-decoration-none">
+          <span class="text-[11px] text-[#8E7B6D] font-semibold block mt-0.5"><i class="fa-solid fa-location-dot text-[#D99AA8]"></i> {{ addslashes($displayLocationShort) }}</span>
+          <div class="mt-2.5 pt-2 border-t border-[#E9DDD2] flex items-center justify-center gap-1.5">
+            <a href="{{ $gmapsDirectUrl }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 px-3 py-1 bg-[#3B2314] hover:bg-[#D99AA8] text-[#FFF8F1] text-[10px] font-bold rounded-lg shadow-sm transition-colors text-decoration-none">
               <span>Buka Google Maps</span>
-              <i class="fa-solid fa-arrow-up-right-from-square text-[9px] text-[#F3A833]"></i>
+              <i class="fa-solid fa-arrow-up-right-from-square text-[9px] text-[#C9A45C]"></i>
             </a>
           </div>
         </div>
@@ -1505,22 +1505,22 @@
 
       // Vicinity POI Markers
       const pois = [
-        { title: 'Kampus / Pendidikan', icon: 'fa-graduation-cap', color: '#0284c7', offset: [0.0035, 0.0028], dist: '🚗 Akses Kendaraan' },
-        { title: 'Minimarket & Belanja Harian', icon: 'fa-cart-shopping', color: '#10b981', offset: [-0.002, 0.0022], dist: '🚶 Jarak Dekat' },
-        { title: 'Layanan Kesehatan & Apotek', icon: 'fa-heart-pulse', color: '#ef4444', offset: [0.0022, -0.0032], dist: '🚗 Layanan Medis' },
-        { title: 'Sentra Kuliner & Laundry', icon: 'fa-mug-hot', color: '#f59e0b', offset: [-0.0022, -0.0018], dist: '🚶 Dekat Jangkauan' }
+        { title: 'Kampus / Pendidikan', icon: 'fa-graduation-cap', color: '#765C55', offset: [0.0035, 0.0028], dist: '🚗 Akses Kendaraan' },
+        { title: 'Minimarket & Belanja Harian', icon: 'fa-cart-shopping', color: '#C9A45C', offset: [-0.002, 0.0022], dist: '🚶 Jarak Dekat' },
+        { title: 'Layanan Kesehatan & Apotek', icon: 'fa-heart-pulse', color: '#D99AA8', offset: [0.0022, -0.0032], dist: '🚗 Layanan Medis' },
+        { title: 'Sentra Kuliner & Laundry', icon: 'fa-mug-hot', color: '#C9A45C', offset: [-0.0022, -0.0018], dist: '🚶 Dekat Jangkauan' }
       ];
 
       pois.forEach(p => {
         const poiIcon = L.divIcon({
           className: 'custom-poi-marker',
-          html: `<div style="background:${p.color};width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 3px 10px rgba(0,0,0,0.25);border:2px solid #fff;"><i class="fa-solid ${p.icon}" style="font-size:12px;"></i></div>`,
+          html: `<div style="background:${p.color};width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#FFFCF8;box-shadow:0 3px 10px rgba(59,35,20,0.25);border:2px solid #FFFCF8;"><i class="fa-solid ${p.icon}" style="font-size:12px;"></i></div>`,
           iconSize: [30, 30],
           iconAnchor: [15, 15]
         });
         L.marker([kosLat + p.offset[0], kosLng + p.offset[1]], { icon: poiIcon })
           .addTo(vicinityMap)
-          .bindPopup(`<div class="p-1.5 text-xs text-center"><strong class="font-bold text-[#3B2314] block">${p.title}</strong><span class="text-[10px] text-[#7B6759] font-semibold">${p.dist}</span></div>`);
+          .bindPopup(`<div class="p-1.5 text-xs text-center"><strong class="font-bold text-[#3B2314] block">${p.title}</strong><span class="text-[10px] text-[#8E7B6D] font-semibold">${p.dist}</span></div>`);
       });
     });
   </script>
@@ -1532,19 +1532,19 @@
         <span class="text-[10px] uppercase font-bold text-[#8E7B6D] tracking-wider block">Ketersediaan Unit</span>
         <div class="flex items-center gap-1.5">
           @if($kosan->available_rooms_count > 0)
-            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span class="w-2 h-2 rounded-full bg-[#C9A45C] animate-pulse"></span>
             <span class="text-xs sm:text-sm font-black text-[#3B2314]">Sisa {{ $kosan->available_rooms_count }} Kamar Siap Huni</span>
           @else
-            <span class="w-2 h-2 rounded-full bg-rose-500"></span>
-            <span class="text-xs sm:text-sm font-black text-rose-600">Semua Kamar Terisi</span>
+            <span class="w-2 h-2 rounded-full bg-[#D99AA8]"></span>
+            <span class="text-xs sm:text-sm font-black text-[#D99AA8]">Semua Kamar Terisi</span>
           @endif
         </div>
       </div>
       <div class="flex items-center gap-2">
-        <a href="{{ $waInquiryUrl }}" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center shrink-0 shadow-sm" title="Tanya Pengelola via WhatsApp">
+        <a href="{{ $waInquiryUrl }}" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-xl bg-[#C9A45C] hover:bg-[#3B2314] text-[#FFF8F1] flex items-center justify-center shrink-0 shadow-sm" title="Tanya Pengelola via WhatsApp">
           <i class="fa-brands fa-whatsapp text-lg"></i>
         </a>
-        <button type="button" onclick="scrollToSection('kamar-tersedia')" class="shine px-4 py-2.5 bg-[#E60049] hover:bg-[#C90040] text-white font-black text-xs rounded-xl shadow-md active:scale-95 flex items-center gap-1.5 shrink-0">
+        <button type="button" onclick="scrollToSection('kamar-tersedia')" class="shine px-4 py-2.5 bg-[#D99AA8] hover:bg-[#D99AA8] text-[#FFF8F1] font-black text-xs rounded-xl shadow-md active:scale-95 flex items-center gap-1.5 shrink-0">
           <span>Pilih Kamar</span>
           <i class="fa-solid fa-arrow-down text-[10px]"></i>
         </button>

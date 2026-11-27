@@ -21,7 +21,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="icon" href="{{ asset('logo.jpeg') }}">
@@ -39,8 +39,8 @@
             --jl-muted: #8E7B6D;
             --jl-border: #E9DDD2;
 
-            --jl-serif: "Playfair Display", Georgia, serif;
-            --jl-sans: "DM Sans", Arial, sans-serif;
+            --jl-serif: "Playfair Display", serif;
+            --jl-sans: "DM Sans", sans-serif;
         }
 
         * {
@@ -85,7 +85,7 @@
         }
 
         .jl-navbar-wrapper.scrolled nav {
-            box-shadow: 0 8px 25px rgba(59, 35, 20, .12);
+            box-shadow: 0 8px 25px rgba(59,35,20,.12);
         }
 
         /* HERO */
@@ -131,7 +131,7 @@
             overflow: clip;
             border-radius: 180px 180px 24px 24px;
             border: 5px solid rgba(201,164,92,.65);
-            box-shadow: 0 25px 65px rgba(0,0,0,.25);
+            box-shadow: 0 25px 65px rgba(59,35,20,.25);
         }
 
         .jl-hero-image img {
@@ -311,41 +311,43 @@
         @include('frontend.navbar')
 
     @php
-        $property = isset($kosanList) ? $kosanList->first() : null;
+            $kamarList = collect($kamarList ?? []);
+            $kosanList = collect($kosanList ?? []);
+            $testimonis = collect($testimonis ?? []);
+            $property = $kosanList->first();
 
         $propertyImage = null;
 
-        if ($property) {
-            $propertyImageModel = $property->productImageKosan->first();
-
-            if ($propertyImageModel) {
-                $propertyImage = asset('storage/' . $propertyImageModel->image);
-            }
+            $propertyImageModel = $property?->productImageKosan?->first();
+            $propertyImagePath = trim((string) ($propertyImageModel?->image ?? ''));
+            if ($propertyImagePath !== '') {
+                $propertyImage = asset('storage/' . $propertyImagePath);
         }
 
         $heroImage = $propertyImage ?: asset('logo.jpeg');
 
         $waNumber = '6282146138847';
 
-        if (isset($globalSosmed)) {
-            $waSosmed = $globalSosmed->first(function ($s) {
-                $title = strtolower($s->title ?? $s->name ?? $s->platform ?? '');
+        $waSosmed = collect($globalSosmed ?? [])->first(function ($s) {
+            $title = strtolower((string) ($s->title ?? $s->name ?? $s->platform ?? ''));
+            $url = strtolower((string) ($s->url ?? $s->link ?? ''));
 
-                return str_contains($title, 'whatsapp') || $title === 'wa';
-            });
+            return str_contains($title, 'whatsapp')
+                || $title === 'wa'
+                || str_contains($url, 'wa.me');
+        });
 
-            if ($waSosmed) {
-                $digits = preg_replace('/[^0-9]/', '', $waSosmed->url ?? $waSosmed->link ?? '');
+        if ($waSosmed) {
+            $digits = preg_replace('/[^0-9]/', '', (string) ($waSosmed->url ?? $waSosmed->link ?? ''));
 
-                if ($digits) {
-                    if (str_starts_with($digits, '0')) {
-                        $digits = '62' . substr($digits, 1);
-                    } elseif (str_starts_with($digits, '8')) {
-                        $digits = '62' . $digits;
-                    }
-
-                    $waNumber = $digits;
+            if ($digits) {
+                if (str_starts_with($digits, '0')) {
+                    $digits = '62' . substr($digits, 1);
+                } elseif (str_starts_with($digits, '8')) {
+                    $digits = '62' . $digits;
                 }
+
+                $waNumber = $digits;
             }
         }
 
@@ -353,8 +355,9 @@
             'Halo Admin Jumala Living, saya tertarik untuk menanyakan pilihan kamar dan reservasi.'
         );
 
-        $mapsUrl = ($property && !empty($property->gmaps) && filter_var($property->gmaps, FILTER_VALIDATE_URL))
-            ? $property->gmaps
+        $propertyMapsUrl = (string) ($property?->gmaps ?? '');
+        $mapsUrl = ($propertyMapsUrl !== '' && filter_var($propertyMapsUrl, FILTER_VALIDATE_URL))
+            ? $propertyMapsUrl
             : ('https://www.google.com/maps/search/?api=1&query=' . rawurlencode(
                 'Jumala Living Jl. Kenanga No. 3, Lowokwaru, Malang, Jawa Timur 65141'
             ));
@@ -364,13 +367,13 @@
 
         if ($property) {
             $propertyFacilities = collect(
-                array_filter(array_map('trim', explode(',', $property->fasilitas ?? '')))
+                array_filter(array_map('trim', explode(',', (string) ($property->fasilitas ?? ''))))
             );
         }
 
         foreach ($kamarList as $room) {
             $roomFacilities = $roomFacilities->merge(
-                array_filter(array_map('trim', explode(',', $room->fasilitas ?? '')))
+                array_filter(array_map('trim', explode(',', (string) ($room->fasilitas ?? ''))))
             );
         }
 
@@ -399,7 +402,7 @@
         {{-- =====================================================
              HERO SECTION
         ====================================================== --}}
-        <section class="jl-hero text-white">
+        <section class="jl-hero text-[#FFF8F1]">
 
             <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24">
 
@@ -421,11 +424,11 @@
                             </span>
                         </h1>
 
-                        <p class="mt-7 max-w-xl mx-auto lg:mx-0 text-sm sm:text-base leading-8 text-white/75">
+                        <p class="mt-7 max-w-xl mx-auto lg:mx-0 text-sm sm:text-base leading-8 text-[#FFF8F1]/75">
                             Lebih dari sekadar tempat tinggal. Temukan hunian khusus putri yang menghadirkan kenyamanan, privasi, dan suasana hangat untuk setiap perjalanan hidupmu.
                         </p>
 
-                        <div class="flex flex-wrap justify-center lg:justify-start gap-x-6 gap-y-3 mt-7 text-xs sm:text-sm text-white/85">
+                        <div class="flex flex-wrap justify-center lg:justify-start gap-x-6 gap-y-3 mt-7 text-xs sm:text-sm text-[#FFF8F1]/85">
 
                             <span>
                                 <i class="fa-solid fa-female text-[#C9A45C] mr-2"></i>
@@ -456,7 +459,7 @@
                             <a href="{{ $waUrl }}"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                class="jl-button inline-flex items-center justify-center gap-3 px-7 py-4 rounded-xl border border-[#C9A45C]/60 text-white text-sm font-bold hover:bg-[#FFF8F1]/10">
+                                class="jl-button inline-flex items-center justify-center gap-3 px-7 py-4 rounded-xl border border-[#C9A45C]/60 text-[#FFF8F1] text-sm font-bold hover:bg-[#FFF8F1]/10">
 
                                 <i class="fa-brands fa-whatsapp text-[#C9A45C]"></i>
                                 Konsultasi WhatsApp
@@ -464,7 +467,7 @@
 
                         </div>
 
-                        <div class="flex items-center justify-center lg:justify-start gap-4 mt-10 pt-7 border-t border-white/15">
+                        <div class="flex items-center justify-center lg:justify-start gap-4 mt-10 pt-7 border-t border-[#FFF8F1]/15">
 
                             <div class="flex -space-x-2">
                                 <span class="w-9 h-9 rounded-full bg-[#C9A45C] border-2 border-[#3B2314] flex items-center justify-center text-[#3B2314]">
@@ -480,7 +483,7 @@
                                 </span>
                             </div>
 
-                            <p class="text-xs sm:text-sm text-white/65">
+                            <p class="text-xs sm:text-sm text-[#FFF8F1]/65">
                                 Hunian yang dirancang untuk kenyamanan sehari-hari.
                             </p>
 
@@ -495,7 +498,7 @@
 
                             <img
                                 src="{{ $heroImage }}"
-                                alt="{{ $property ? $property->title : 'Jumala Living' }}"
+                                alt="{{ $property?->title ?? 'Jumala Living' }}"
                                 fetchpriority="high">
 
                         </div>
@@ -582,12 +585,12 @@
                             type="text"
                             value="{{ request('search') }}"
                             placeholder="Contoh: AC, WiFi, kamar mandi"
-                            class="jl-filter w-full mt-1 bg-transparent text-sm font-semibold placeholder:text-[#A99A8F]">
+                            class="jl-filter w-full mt-1 bg-transparent text-sm font-semibold placeholder:text-[#8E7B6D]">
 
                     </div>
 
                     <button type="submit"
-                        class="jl-button min-h-14 px-6 rounded-xl bg-[#3B2314] text-white font-bold text-sm hover:bg-[#C9A45C] hover:text-[#3B2314]">
+                        class="jl-button min-h-14 px-6 rounded-xl bg-[#3B2314] text-[#FFF8F1] font-bold text-sm hover:bg-[#C9A45C] hover:text-[#3B2314]">
 
                         <i class="fa-solid fa-magnifying-glass mr-2 text-[#C9A45C]"></i>
                         Cari Kamar
@@ -664,11 +667,11 @@
 
                     <img
                         src="{{ $heroImage }}"
-                        alt="{{ $property ? $property->title : 'Jumala Living' }}"
+                        alt="{{ $property?->title ?? 'Jumala Living' }}"
                         loading="lazy"
                         class="absolute inset-0 w-full h-full object-cover">
 
-                    <div class="absolute bottom-5 left-5 right-5 bg-[#FFFCF8]/95 backdrop-blur-sm rounded-xl p-4 border border-white/70">
+                    <div class="absolute bottom-5 left-5 right-5 bg-[#FFFCF8]/95 backdrop-blur-sm rounded-xl p-4 border border-[#FFF8F1]/70">
 
                         <p class="text-[10px] uppercase tracking-[.18em] text-[#8E7B6D] font-bold">
                             Lokasi Hunian
@@ -716,7 +719,7 @@
                         <a href="{{ $mapsUrl }}"
                             target="_blank"
                             rel="noopener noreferrer"
-                            class="jl-button inline-flex justify-center items-center gap-2 px-5 py-3.5 rounded-xl border border-[#3B2314] text-sm font-bold hover:bg-[#3B2314] hover:text-white">
+                            class="jl-button inline-flex justify-center items-center gap-2 px-5 py-3.5 rounded-xl border border-[#3B2314] text-sm font-bold hover:bg-[#3B2314] hover:text-[#FFF8F1]">
 
                             <i class="fa-solid fa-map-location-dot"></i>
                             Lihat Lokasi
@@ -726,7 +729,7 @@
                         <a href="{{ $waUrl }}"
                             target="_blank"
                             rel="noopener noreferrer"
-                            class="jl-button inline-flex justify-center items-center gap-2 px-5 py-3.5 rounded-xl bg-[#3B2314] text-white text-sm font-bold hover:bg-[#C9A45C] hover:text-[#3B2314]">
+                            class="jl-button inline-flex justify-center items-center gap-2 px-5 py-3.5 rounded-xl bg-[#3B2314] text-[#FFF8F1] text-sm font-bold hover:bg-[#C9A45C] hover:text-[#3B2314]">
 
                             <i class="fa-brands fa-whatsapp text-[#C9A45C]"></i>
                             Konsultasi WhatsApp
@@ -871,21 +874,18 @@
                     @foreach($kamarList as $kamar)
 
                         @php
-                            $firstImage = $kamar->productKamarImageKosan->first();
-
-                            if ($firstImage) {
-                                $roomImage = asset('storage/' . $firstImage->image);
-                            } elseif ($kamar->productKosan && $kamar->productKosan->productImageKosan->first()) {
-                                $roomImage = asset('storage/' . $kamar->productKosan->productImageKosan->first()->image);
-                            } else {
-                                $roomImage = asset('logo.jpeg');
-                            }
+                            $firstImage = $kamar->productKamarImageKosan?->first();
+                            $propertyImage = $kamar->productKosan?->productImageKosan?->first();
+                            $roomImagePath = trim((string) ($firstImage?->image ?? $propertyImage?->image ?? ''));
+                            $roomImage = $roomImagePath !== ''
+                                ? asset('storage/' . $roomImagePath)
+                                : asset('logo.jpeg');
 
                             $monthly = $kamar->priceKamar->first(
-                                fn($price) => strtolower($price->kategori) === 'bulan'
+                                fn($price) => strtolower((string) ($price->kategori ?? '')) === 'bulan'
                             );
 
-                            $monthlyPrice = $monthly ? (float) $monthly->price : null;
+                            $monthlyPrice = $monthly ? (float) ($monthly->price ?? 0) : null;
 
                             $discount = $monthly && (float) $monthly->discount > 0
                                 ? (float) $monthly->discount
@@ -908,11 +908,11 @@
                                 : 'kosong';
 
                             $facilities = array_filter(
-                                array_map('trim', explode(',', $kamar->fasilitas ?? ''))
+                                array_map('trim', explode(',', (string) ($kamar->fasilitas ?? '')))
                             );
 
                             $propertyFacilitiesRoom = array_filter(
-                                array_map('trim', explode(',', $kamar->productKosan?->fasilitas ?? ''))
+                                array_map('trim', explode(',', (string) ($kamar->productKosan?->fasilitas ?? '')))
                             );
 
                             $facilities = array_slice(
@@ -931,7 +931,7 @@
 
                                 <img
                                     src="{{ $roomImage }}"
-                                    alt="Kamar {{ $kamar->room }}"
+                                    alt="Kamar {{ $kamar->room ?? 'Jumala Living' }}"
                                     loading="lazy"
                                     class="w-full h-full object-cover">
 
@@ -951,7 +951,7 @@
 
                                 @else
 
-                                    <span class="absolute top-3 left-3 bg-[#3B2314] text-white rounded-full px-3 py-1.5 text-[10px] font-bold">
+                                    <span class="absolute top-3 left-3 bg-[#3B2314] text-[#FFF8F1] rounded-full px-3 py-1.5 text-[10px] font-bold">
                                         <span class="inline-block w-1.5 h-1.5 rounded-full bg-[#D99AA8] mr-1.5"></span>
                                         Terisi
                                     </span>
@@ -964,7 +964,7 @@
                             <div class="p-5 flex-1 flex flex-col">
 
                                 <h3 class="jl-serif text-xl font-semibold">
-                                    {{ $kamar->room }}
+                                    {{ $kamar->room ?? 'Kamar' }}
                                 </h3>
 
                                 {{-- FACILITIES --}}
@@ -1029,15 +1029,21 @@
                                             $alternate = $kamar->priceKamar->first();
                                         @endphp
 
+                                        @if($alternate)
                                         <p class="text-lg font-bold mt-1">
 
-                                            Rp {{ number_format($alternate->price, 0, ',', '.') }}
+                                            Rp {{ number_format((float) ($alternate->price ?? 0), 0, ',', '.') }}
 
                                             <span class="text-xs font-normal text-[#8E7B6D]">
-                                                / {{ strtolower($alternate->kategori) }}
+                                                / {{ strtolower((string) ($alternate->kategori ?? '')) }}
                                             </span>
 
                                         </p>
+                                        @else
+                                            <p class="text-sm font-bold mt-1 text-[#8E7B6D]">
+                                                Hubungi untuk mengetahui harga
+                                            </p>
+                                        @endif
 
                                     @else
 
@@ -1058,7 +1064,7 @@
                                         </a>
 
                                         <a href="{{ route('form.booking.kamar', $kamar->id) }}"
-                                            class="jl-button text-center px-3 py-3.5 rounded-xl bg-[#3B2314] text-white text-xs font-bold hover:bg-[#C9A45C] hover:text-[#3B2314]">
+                                            class="jl-button text-center px-3 py-3.5 rounded-xl bg-[#3B2314] text-[#FFF8F1] text-xs font-bold hover:bg-[#C9A45C] hover:text-[#3B2314]">
 
                                             {{ $status === 'terisi' ? 'Booking Periode Nanti' : 'Pesan' }}
 
@@ -1277,7 +1283,7 @@
         {{-- =====================================================
              TESTIMONIALS
         ====================================================== --}}
-        <section class="bg-[#3B2314] text-white py-16 sm:py-20 jl-reveal">
+        <section class="bg-[#3B2314] text-[#FFF8F1] py-16 sm:py-20 jl-reveal">
 
             <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
 
@@ -1295,14 +1301,15 @@
 
                 </div>
 
-                @if(isset($testimonis) && $testimonis->count() > 0)
+                @if($testimonis->isNotEmpty())
 
                     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-10">
 
                         @foreach($testimonis as $review)
 
                             @php
-                                $rating = max(1, min(5, (int)($review->rating ?? 5)));
+                                $rating = max(1, min(5, (int) ($review->rating ?? 5)));
+                                $profileImage = trim((string) ($review->image_profile ?? ''));
                             @endphp
 
                             <article class="jl-card bg-[#FFF8F1] text-[#3B2314] border border-[#C9A45C]/20 rounded-2xl p-6">
@@ -1320,16 +1327,16 @@
                                 </div>
 
                                 <p class="text-sm leading-7 text-[#8E7B6D] mt-5">
-                                    "{{ $review->review }}"
+                                    "{{ $review->review ?? '' }}"
                                 </p>
 
                                 <div class="flex items-center gap-3 mt-6 pt-4 border-t border-[#E9DDD2]">
 
-                                    @if($review->image_profile)
+                                    @if($profileImage !== '')
 
                                         <img
-                                            src="{{ asset('storage/' . $review->image_profile) }}"
-                                            alt="{{ $review->name }}"
+                                            src="{{ asset('storage/' . $profileImage) }}"
+                                            alt="{{ $review->name ?? 'Penghuni Jumala Living' }}"
                                             loading="lazy"
                                             class="w-11 h-11 rounded-full object-cover">
 
@@ -1342,7 +1349,7 @@
                                     <div>
 
                                         <p class="text-sm font-bold">
-                                            {{ $review->name }}
+                                            {{ $review->name ?? 'Penghuni Jumala Living' }}
                                         </p>
 
                                         <p class="text-[10px] text-[#8E7B6D] mt-1">
@@ -1365,11 +1372,11 @@
 
                         <i class="fa-regular fa-comment-dots text-3xl text-[#C9A45C]"></i>
 
-                        <p class="mt-4 text-sm text-white/80">
+                        <p class="mt-4 text-sm text-[#FFF8F1]/80">
                             Pengalaman dan cerita penghuni Jumala Living.
                         </p>
 
-                        <p class="mt-2 text-xs text-white/50">
+                        <p class="mt-2 text-xs text-[#FFF8F1]/50">
                             Belum ada ulasan. Jadilah salah satu penghuni pertama yang berbagi pengalaman.
                         </p>
 
@@ -1410,7 +1417,7 @@
                         <a href="{{ $mapsUrl }}"
                             target="_blank"
                             rel="noopener noreferrer"
-                            class="jl-button inline-flex justify-center items-center gap-2 px-5 py-3.5 rounded-xl bg-[#3B2314] text-white text-sm font-bold hover:bg-[#C9A45C] hover:text-[#3B2314]">
+                            class="jl-button inline-flex justify-center items-center gap-2 px-5 py-3.5 rounded-xl bg-[#3B2314] text-[#FFF8F1] text-sm font-bold hover:bg-[#C9A45C] hover:text-[#3B2314]">
 
                             <i class="fa-solid fa-map-location-dot text-[#C9A45C]"></i>
                             Google Maps
@@ -1456,7 +1463,7 @@
 
             <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
 
-                <div class="relative overflow-hidden rounded-[1.75rem] bg-[#3B2314] px-7 py-12 sm:px-12 sm:py-16 text-white border border-[#C9A45C]/30">
+                <div class="relative overflow-hidden rounded-[1.75rem] bg-[#3B2314] px-7 py-12 sm:px-12 sm:py-16 text-[#FFF8F1] border border-[#C9A45C]/30">
 
                     <div class="absolute right-0 top-0 h-full w-1/3 bg-[#D99AA8]/10 pointer-events-none"></div>
 
@@ -1480,7 +1487,7 @@
 
                         </h2>
 
-                        <p class="text-sm leading-7 text-white/70 mt-5">
+                        <p class="text-sm leading-7 text-[#FFF8F1]/70 mt-5">
                             Mulai perjalanan tinggal yang lebih nyaman bersama Jumala Living.
                         </p>
 
@@ -1497,7 +1504,7 @@
                             <a href="{{ $waUrl }}"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                class="jl-button inline-flex justify-center items-center gap-2 px-6 py-4 rounded-xl border border-white/25 text-white text-sm font-bold hover:bg-white/10">
+                                class="jl-button inline-flex justify-center items-center gap-2 px-6 py-4 rounded-xl border border-[#FFF8F1]/25 text-[#FFF8F1] text-sm font-bold hover:bg-[#FFFCF8]/10">
 
                                 <i class="fa-brands fa-whatsapp text-[#C9A45C]"></i>
                                 Hubungi WhatsApp

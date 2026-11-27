@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use App\Models\SosialMedia;
+use App\Models\ProductKamarKosan;
+use App\Models\ProductKosan;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -99,6 +101,25 @@ class SosialMediaIntegrationTest extends TestCase
 
         // Check navbar & CTA dynamically uses WhatsApp number
         $response->assertSee('628999888777');
+    }
+
+    public function test_room_detail_renders_without_optional_images_prices_or_social_links(): void
+    {
+        $property = ProductKosan::create([
+            'title' => 'Jumala Living',
+            'slug' => 'jumala-living',
+        ]);
+        $room = ProductKamarKosan::create([
+            'product_kosan_id' => $property->id,
+            'room' => 'Kamar Tanpa Foto',
+        ]);
+
+        $response = $this->get(route('kamar.detail', $room->id));
+
+        $response->assertOk();
+        $response->assertSee('Kamar Tanpa Foto');
+        $response->assertSee('Hubungi Kami');
+        $response->assertSee(asset('logo.jpeg'));
     }
 }
 

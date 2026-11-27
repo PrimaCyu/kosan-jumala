@@ -1,3 +1,9 @@
+@php
+    $footerSocialLinks = collect($globalSosmed ?? [])
+        ->filter(fn ($sm) => filled($sm->url ?? $sm->link ?? null))
+        ->values();
+@endphp
+
 <footer class="jl-footer">
 
     <div class="jl-footer-container">
@@ -86,12 +92,13 @@
                         ];
                     @endphp
 
-                    @if(isset($globalSosmed) && $globalSosmed->count() > 0)
+                    @if($footerSocialLinks->isNotEmpty())
 
-                        @foreach($globalSosmed as $sm)
+                        @foreach($footerSocialLinks as $sm)
 
                             @php
-                                $titleLower = strtolower(trim($sm->title ?? ''));
+                                $title = (string) ($sm->title ?? $sm->name ?? $sm->platform ?? 'Situs web');
+                                $titleLower = strtolower(trim($title));
 
                                 $iconClass = 'fa-globe';
                                 $iconPrefix = 'fa-solid';
@@ -106,11 +113,11 @@
                             @endphp
 
                             <a
-                                href="{{ $sm->url }}"
+                                href="{{ $sm->url ?? $sm->link ?? '#' }}"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                aria-label="{{ $sm->title }}"
-                                title="{{ $sm->title }}"
+                                aria-label="{{ $title }}"
+                                title="{{ $title }}"
                                 class="jl-social-link"
                             >
                                 <i class="{{ $iconPrefix }} {{ $iconClass }}"></i>
@@ -165,13 +172,13 @@
 <style>
 
     :root {
-        --jl-footer-brown: #2D170F;
-        --jl-footer-brown-light: #3B1D12;
-        --jl-footer-gold: #C6A15B;
-        --jl-footer-gold-light: #E1C98E;
-        --jl-footer-ivory: #FFF8EF;
-        --jl-footer-muted: #BBAA98;
-        --jl-footer-border: rgba(198, 161, 91, .25);
+        --jl-footer-brown: #3B2314;
+        --jl-footer-brown-light: #3B2314;
+        --jl-footer-gold: #C9A45C;
+        --jl-footer-gold-light: #C9A45C;
+        --jl-footer-ivory: #FFF8F1;
+        --jl-footer-muted: #8E7B6D;
+        --jl-footer-border: rgba(201,164,92,.25);
     }
 
 
@@ -180,6 +187,7 @@
     .jl-footer {
         position: relative;
         width: 100%;
+        font-family: "DM Sans", "Plus Jakarta Sans", sans-serif;
         background: var(--jl-footer-brown);
         color: var(--jl-footer-ivory);
         border-top: 1px solid var(--jl-footer-border);
@@ -228,7 +236,7 @@
         background: var(--jl-footer-ivory);
         border: 1px solid var(--jl-footer-gold);
         border-radius: 13px;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, .2);
+        box-shadow: 0 4px 14px rgba(59,35,20,.2);
     }
 
     .jl-footer-logo img {
@@ -245,7 +253,7 @@
     }
 
     .jl-footer-brand-name {
-        font-family: Georgia, 'Times New Roman', serif;
+        font-family: "Playfair Display", serif;
         font-size: 23px;
         font-weight: 700;
         letter-spacing: 1.3px;
@@ -316,7 +324,7 @@
         justify-content: center;
         border: 1px solid var(--jl-footer-border);
         border-radius: 11px;
-        background: rgba(255, 248, 239, .05);
+        background: rgba(255,248,241,.05);
         color: var(--jl-footer-gold-light);
         font-size: 16px;
         text-decoration: none;
@@ -328,7 +336,7 @@
         border-color: var(--jl-footer-gold);
         color: var(--jl-footer-brown);
         transform: translateY(-4px);
-        box-shadow: 0 5px 14px rgba(198, 161, 91, .18);
+        box-shadow: 0 5px 14px rgba(201,164,92,.18);
     }
 
     .jl-social-link:active {

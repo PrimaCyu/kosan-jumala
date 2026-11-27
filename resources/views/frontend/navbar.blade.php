@@ -1,28 +1,29 @@
 @php
     $waNumber = '6282146138847';
+    $socialLinks = collect($globalSosmed ?? []);
 
-    if (isset($globalSosmed)) {
-        $waSosmed = $globalSosmed->first(function ($s) {
-            $t = strtolower($s->title ?? $s->name ?? $s->platform ?? '');
+    $waSosmed = $socialLinks->first(function ($s) {
+        $title = strtolower((string) ($s->title ?? $s->name ?? $s->platform ?? ''));
+        $url = strtolower((string) ($s->url ?? $s->link ?? ''));
 
-            return str_contains($t, 'whatsapp')
-                || $t === 'wa'
-                || str_contains($t, 'wa ');
-        });
+        return str_contains($title, 'whatsapp')
+            || $title === 'wa'
+            || str_contains($title, 'wa ')
+            || str_contains($url, 'wa.me');
+    });
 
-        if ($waSosmed && !empty($waSosmed->url ?? $waSosmed->link ?? '')) {
-            $link = $waSosmed->url ?? $waSosmed->link ?? '';
-            $extracted = preg_replace('/[^0-9]/', '', $link);
+    if ($waSosmed) {
+        $link = (string) ($waSosmed->url ?? $waSosmed->link ?? '');
+        $extracted = preg_replace('/[^0-9]/', '', $link);
 
-            if (!empty($extracted)) {
-                if (str_starts_with($extracted, '0')) {
-                    $extracted = '62' . substr($extracted, 1);
-                } elseif (str_starts_with($extracted, '8')) {
-                    $extracted = '62' . $extracted;
-                }
-
-                $waNumber = $extracted;
+        if (!empty($extracted)) {
+            if (str_starts_with($extracted, '0')) {
+                $extracted = '62' . substr($extracted, 1);
+            } elseif (str_starts_with($extracted, '8')) {
+                $extracted = '62' . $extracted;
             }
+
+            $waNumber = $extracted;
         }
     }
 @endphp
@@ -33,13 +34,13 @@
     ===================================================== */
 
     :root {
-        --jl-brown: #3B1D12;
-        --jl-brown-dark: #29130C;
-        --jl-gold: #C6A15B;
-        --jl-gold-light: #E1C98E;
-        --jl-ivory: #FFF8EF;
-        --jl-beige: #E9DDCD;
-        --jl-muted: #8E7968;
+        --jl-brown: #3B2314;
+        --jl-brown-dark: #3B2314;
+        --jl-gold: #C9A45C;
+        --jl-gold-light: #C9A45C;
+        --jl-ivory: #FFF8F1;
+        --jl-beige: #E9DDD2;
+        --jl-muted: #8E7B6D;
     }
 
     /* =====================================================
@@ -51,9 +52,10 @@
         top: 0;
         z-index: 999;
         width: 100%;
+        font-family: "DM Sans", "Plus Jakarta Sans", sans-serif;
         background: var(--jl-ivory);
         border-bottom: 1px solid var(--jl-beige);
-        box-shadow: 0 4px 20px rgba(59, 29, 18, 0.07);
+        box-shadow: 0 4px 20px rgba(59,35,20,0.07);
     }
 
     .jl-navbar-inner {
@@ -98,7 +100,7 @@
         background: var(--jl-brown);
         border: 1px solid var(--jl-gold);
         border-radius: 13px;
-        box-shadow: 0 3px 10px rgba(59, 29, 18, .13);
+        box-shadow: 0 3px 10px rgba(59,35,20,.13);
     }
 
     .jl-logo-wrapper img {
@@ -116,7 +118,7 @@
     }
 
     .jl-brand-name {
-        font-family: Georgia, 'Times New Roman', serif;
+        font-family: "Playfair Display", serif;
         font-size: 23px;
         font-weight: 700;
         letter-spacing: .5px;
@@ -125,7 +127,7 @@
     }
 
     .jl-brand-name span {
-        color: #A9823F;
+        color: var(--jl-gold);
     }
 
     .jl-brand-subtitle {
@@ -165,14 +167,14 @@
     }
 
     .jl-nav-link:hover {
-        background: #F0E5D5;
-        color: #96713B;
+        background: #E9DDD2;
+        color: #C9A45C;
     }
 
     .jl-nav-link.active {
         background: var(--jl-brown);
         color: var(--jl-gold-light);
-        box-shadow: 0 3px 9px rgba(59, 29, 18, .13);
+        box-shadow: 0 3px 9px rgba(59,35,20,.13);
     }
 
     /* =====================================================
@@ -195,7 +197,7 @@
         font-weight: 800;
         letter-spacing: .4px;
         white-space: nowrap;
-        box-shadow: 0 4px 10px rgba(59, 29, 18, .12);
+        box-shadow: 0 4px 10px rgba(59,35,20,.12);
         transition: all .25s ease;
     }
 
@@ -208,8 +210,8 @@
         background: var(--jl-brown-dark);
         border-color: var(--jl-gold-light);
         transform: translateY(-2px);
-        box-shadow: 0 6px 15px rgba(59, 29, 18, .19);
-        color: white;
+        box-shadow: 0 6px 15px rgba(59,35,20,.19);
+        color: var(--jl-ivory);
     }
 
     /* =====================================================
@@ -279,12 +281,12 @@
     .jl-mobile-link i {
         width: 19px;
         text-align: center;
-        color: #A9823F;
+        color: var(--jl-gold);
         font-size: 15px;
     }
 
     .jl-mobile-link:hover {
-        background: #F0E5D5;
+        background: #E9DDD2;
     }
 
     .jl-mobile-link.active {
@@ -320,7 +322,7 @@
 
     .jl-mobile-contact:hover {
         background: var(--jl-brown-dark);
-        color: white;
+        color: var(--jl-ivory);
     }
 
     /* =====================================================
@@ -416,7 +418,7 @@
     align-self: flex-start;
 }
 
-/* Pastikan navbar tidak terpotong */
+/* Clip horizontal overflow without creating a scroll container for sticky. */
 body {
     overflow-x: clip;
 }
@@ -427,7 +429,7 @@ body {
      NAVBAR HTML
 ========================================================= --}}
 
-<header class="jl-navbar">
+<header id="jl-navbar-wrapper" class="jl-navbar-wrapper jl-navbar">
     <div class="jl-navbar-inner">
 
         <div class="jl-navbar-content">

@@ -3,8 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jumala Living - {{ $kamar->room ?? 'Detail Kamar' }}</title>
+  <title>Jumala Living - {{ $kamar?->room ?? 'Detail Kamar' }}</title>
   @vite(['resources/css/app.css', 'resources/js/app.js'])
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="icon" href="{{ asset('logo.jpeg') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
@@ -14,9 +17,9 @@
       --gold: #C9A45C;
       --ivory: #FFF8F1;
       --rose: #D99AA8;
-      --rose-dark: #C78394;
-      --line: #E9DDD2;
-      --muted: #7B6759;
+      --rose-dark: #D99AA8;
+      --line: #EAD8D7;
+      --muted: #765C55;
     }
 
     body {
@@ -38,7 +41,7 @@
     }
 
     .scl-card {
-      background: rgba(255,255,255,.92);
+      background: rgba(255,252,248,.92);
       border: 1px solid rgba(233,221,210,.9);
       box-shadow: 0 18px 45px rgba(59,35,20,.06);
     }
@@ -66,7 +69,7 @@
       background: linear-gradient(
         110deg,
         transparent 35%,
-        rgba(255,255,255,.25),
+        rgba(255,252,248,.25),
         transparent 65%
       );
       transition: transform .7s ease;
@@ -93,48 +96,262 @@
         transition: none;
       }
     }
+
+    /* =========================================================
+       JUMALA LIVING — SOFT ROSE EDITION
+       Palette: Dusty Rose, Chocolate Brown, Champagne Gold, Warm Ivory
+       ========================================================= */
+    :root {
+      --jl-rose: #D99AA8;
+      --jl-brown: #3B2314;
+      --jl-gold: #C9A45C;
+      --jl-ivory: #FFF8F1;
+      --jl-rose-soft: rgba(217,154,168,.12);
+      --jl-line: #EAD8D7;
+      --jl-muted: #765C55;
+      --jl-shadow: 0 18px 48px rgba(59,35,20,.075);
+    }
+
+    html { scroll-padding-top: 88px; }
+    body {
+      color: var(--jl-brown);
+      font-family: "DM Sans", "Plus Jakarta Sans", sans-serif;
+      background:
+        radial-gradient(ellipse at 5% 10%, rgba(217,154,168,.17), transparent 32rem),
+        radial-gradient(ellipse at 96% 35%, rgba(201,164,92,.10), transparent 28rem),
+        var(--jl-ivory);
+    }
+
+    a, button { -webkit-tap-highlight-color: transparent; }
+    button, a { touch-action: manipulation; }
+    :focus-visible {
+      outline: 3px solid rgba(201,164,92,.8);
+      outline-offset: 3px;
+    }
+
+    /* Navigation and page rhythm */
+    main { isolation: isolate; }
+    main > section { scroll-margin-top: 92px; }
+    main > section:first-child { padding: .35rem .15rem; }
+    .scl-card {
+      background: rgba(255,252,248,.88);
+      border: 1px solid rgba(234,216,215,.85);
+      box-shadow: var(--jl-shadow);
+      backdrop-filter: blur(12px);
+    }
+    .scl-hover {
+      transition: transform .28s ease, box-shadow .28s ease, border-color .28s ease;
+    }
+    .scl-hover:hover {
+      transform: translateY(-3px);
+      border-color: rgba(217,154,168,.75);
+      box-shadow: 0 24px 55px rgba(59,35,20,.10);
+    }
+
+    /* Hero: softer pink panel, balanced text alignment */
+    main > section:nth-of-type(2) > aside:first-child {
+      min-height: 100%;
+      border: 1px solid rgba(255,248,241,.65);
+      border-radius: 2rem;
+      background:
+        radial-gradient(circle at 90% 8%, rgba(255,248,241,.38), transparent 13rem),
+        linear-gradient(145deg, #D99AA8 0%, var(--jl-rose) 58%, #D99AA8 100%);
+      box-shadow: 0 22px 52px rgba(142,123,109,.17);
+    }
+    main > section:nth-of-type(2) > aside:first-child h1 {
+      max-width: 12ch;
+      letter-spacing: -.045em;
+      line-height: 1.08;
+      text-wrap: balance;
+    }
+    main > section:nth-of-type(2) > aside:first-child .relative > a {
+      flex-wrap: wrap;
+      line-height: 1.6;
+    }
+    main > section:nth-of-type(2) > aside:first-child .grid > div {
+      backdrop-filter: blur(8px);
+      transition: transform .25s ease, background .25s ease;
+    }
+    main > section:nth-of-type(2) > aside:first-child .grid > div:hover {
+      transform: translateY(-3px);
+      background: rgba(255,252,248,.48);
+    }
+
+    /* Gallery frame */
+    main > section:nth-of-type(2) > div:last-child {
+      border-radius: 2rem;
+      box-shadow: var(--jl-shadow);
+    }
+    main > section:nth-of-type(2) > div:last-child > div {
+      border-radius: 1.55rem;
+    }
+
+    /* Information and pricing cards */
+    main > section:nth-of-type(3) > div > .scl-card {
+      border-radius: 1.8rem;
+    }
+    main > section:nth-of-type(3) > div > .scl-card h2 {
+      max-width: 17ch;
+      letter-spacing: -.035em;
+      line-height: 1.15;
+      text-wrap: balance;
+    }
+    main > section:nth-of-type(3) > aside > div {
+      border-radius: 1.9rem;
+      background: linear-gradient(145deg, #D99AA8, var(--jl-rose));
+      box-shadow: 0 20px 48px rgba(142,123,109,.16);
+    }
+    main > section:nth-of-type(3) > aside > div > div {
+      border-radius: 1.55rem;
+    }
+
+    /* CTA banner */
+    main > section:nth-of-type(4) {
+      border: 1px solid rgba(255,248,241,.55);
+      background:
+        radial-gradient(circle at 90% 15%, rgba(255,248,241,.42), transparent 15rem),
+        linear-gradient(120deg, #D99AA8, var(--jl-rose) 60%, #D99AA8);
+      box-shadow: 0 20px 48px rgba(142,123,109,.14);
+    }
+    main > section:nth-of-type(4) h2 {
+      letter-spacing: -.035em;
+      line-height: 1.12;
+      text-wrap: balance;
+    }
+
+    /* Recommendation cards */
+    #sibling-rooms-section > div:last-child > div {
+      border-radius: 1.45rem;
+      border-color: var(--jl-line);
+      box-shadow: 0 10px 28px rgba(59,35,20,.055);
+    }
+    #sibling-rooms-section img {
+      transition: transform .55s cubic-bezier(.2,.75,.25,1);
+    }
+    #sibling-rooms-section a:focus-visible,
+    #sibling-rooms-section button:focus-visible { outline-offset: 4px; }
+
+    /* Consistent interaction states */
+    button, a {
+      transition-property: color, background-color, border-color, box-shadow, transform, opacity;
+      transition-duration: .22s;
+      transition-timing-function: ease;
+    }
+    button:active, a:active { transform: scale(.985); }
+    .shine:after { opacity: .75; }
+    .reveal { will-change: opacity, transform; }
+
+    /* Toast and mobile booking bar */
+    #toast-message {
+      max-width: min( calc(100vw - 2rem), 390px );
+      padding: .85rem 1rem;
+      border: 1px solid rgba(255,248,241,.16);
+      backdrop-filter: blur(14px);
+    }
+    body { padding-bottom: env(safe-area-inset-bottom); }
+    @media (max-width: 1023px) {
+      main { padding-bottom: 1.75rem; }
+      main > section:nth-of-type(2) { gap: 1rem; }
+      main > section:nth-of-type(2) > aside:first-child { min-height: auto; }
+      main > section:nth-of-type(3) { gap: 1.15rem; }
+      main > section:nth-of-type(3) > aside { position: static; }
+      #sibling-rooms-section { scroll-margin-bottom: 6rem; }
+    }
+    @media (max-width: 640px) {
+      main { padding-top: 1.1rem; }
+      main > section:nth-of-type(2) > aside:first-child {
+        padding: 1.35rem;
+        border-radius: 1.55rem;
+      }
+      main > section:nth-of-type(2) > aside:first-child h1 {
+        font-size: clamp(1.8rem, 8vw, 2.35rem);
+      }
+      main > section:nth-of-type(2) > div:last-child {
+        padding: .55rem;
+        border-radius: 1.45rem;
+      }
+      main > section:nth-of-type(2) > div:last-child > div {
+        padding: .5rem;
+        border-radius: 1.1rem;
+      }
+      main > section:nth-of-type(3) > div > .scl-card {
+        padding: 1.25rem;
+        border-radius: 1.45rem;
+      }
+      main > section:nth-of-type(4) {
+        margin-top: 2rem;
+        padding: 1.35rem;
+        border-radius: 1.55rem;
+      }
+      #toast-message {
+        top: 1rem;
+        right: 1rem;
+        left: 1rem;
+        width: auto;
+      }
+    }
+    @media (hover: none) {
+      .scl-hover:hover { transform: none; }
+      .shine:hover:after { transform: translateX(-110%); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+      .reveal {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
+
   </style>
 </head>
 
-<body class="bg-[#FFF8F1] text-[#3B2314] font-sans antialiased overflow-x-hidden min-h-screen flex flex-col justify-between">
+<body class="bg-[#FFF8F1] text-[#3B2314] font-sans antialiased overflow-x-clip min-h-screen flex flex-col justify-between">
 
   <!-- 1. BAR LOADING -->
   <div id="page-loader"
-    class="fixed top-0 left-0 w-full h-1 bg-gradient-to-r from-[#D99AA8] via-[#C78394] to-[#C9A45C] z-[100] transition-all duration-500 ease-out">
+    class="fixed top-0 left-0 w-full h-1 bg-gradient-to-r from-[#D99AA8] via-[#D99AA8] to-[#C9A45C] z-[100] transition-all duration-500 ease-out">
   </div>
 
   <!-- 2. NAVBAR -->
   @include('frontend.navbar')
 
   @php
-    $namaKosan = $kamar->productKosan->title ?? 'Jumala Living';
-    $namaKamar = $kamar->room ?? 'Kamar Exclusive';
-    $wilayahKosan = $kamar->productKosan ? $kamar->productKosan->full_location : 'Lowokwaru, Malang';
+    $productKosan = $kamar?->productKosan;
+    $namaKosan = $productKosan?->title ?? 'Jumala Living';
+    $namaKamar = $kamar?->room ?? 'Kamar Exclusive';
+    $wilayahKosan = $productKosan?->full_location ?? 'Lowokwaru, Malang';
+    $kosanUrl = $productKosan
+        ? route('kosan.detail', $productKosan->slug ?? $productKosan->getKey())
+        : url('/#tentang');
 
     $images = [];
 
-    if ($kamar && $kamar->productKamarImageKosan && $kamar->productKamarImageKosan->count() > 0) {
-        foreach ($kamar->productKamarImageKosan as $imgObj) {
-            $images[] = asset('storage/' . $imgObj->image);
+    foreach ($kamar?->productKamarImageKosan ?? [] as $imgObj) {
+        $imagePath = trim((string) ($imgObj?->image ?? ''));
+        if ($imagePath !== '') {
+            $images[] = asset('storage/' . $imagePath);
         }
     }
 
     if (empty($images)) {
-        if ($kamar && $kamar->productKosan && $kamar->productKosan->productImageKosan && $kamar->productKosan->productImageKosan->count() > 0) {
-            foreach ($kamar->productKosan->productImageKosan as $kosImg) {
-                $images[] = asset('storage/' . $kosImg->image);
+        foreach ($productKosan?->productImageKosan ?? [] as $kosImg) {
+            $imagePath = trim((string) ($kosImg?->image ?? ''));
+            if ($imagePath !== '') {
+                $images[] = asset('storage/' . $imagePath);
             }
-        } else {
-            $images = [
-                'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=1200&q=80'
-            ];
         }
     }
+    $images = $images ?: [asset('logo.jpeg')];
 
     // Status ketersediaan kamar
-    $roomStatus = $kamar->room_status ?? 'kosong';
+    $roomStatus = $kamar?->room_status ?? 'kosong';
     $isOccupied = ($roomStatus === 'terisi');
-    $activeTenant = $kamar->active_tenant;
+    $activeTenant = $kamar?->active_tenant;
 
     $endDateFormatted = null;
 
@@ -149,15 +366,16 @@
     // Resolusi nomor WhatsApp
     $waNumber = '6282146138847';
 
-    if (isset($globalSosmed)) {
-        foreach ($globalSosmed as $sm) {
-            if (str_contains(strtolower($sm->title), 'whatsapp') || str_contains($sm->url, 'wa.me')) {
-                preg_match('/[0-9]{9,15}/', $sm->url, $waMatch);
+    foreach (collect($globalSosmed ?? []) as $sm) {
+        $socialTitle = strtolower((string) ($sm->title ?? $sm->name ?? $sm->platform ?? ''));
+        $socialUrl = (string) ($sm->url ?? $sm->link ?? '');
 
-                if (!empty($waMatch[0])) {
-                    $waNumber = $waMatch[0];
-                    break;
-                }
+        if (str_contains($socialTitle, 'whatsapp') || str_contains(strtolower($socialUrl), 'wa.me')) {
+            preg_match('/[0-9]{9,15}/', $socialUrl, $waMatch);
+
+            if (!empty($waMatch[0])) {
+                $waNumber = $waMatch[0];
+                break;
             }
         }
     }
@@ -167,12 +385,13 @@
     $waUrl = "https://wa.me/" . $waNumber . "?text=" . urlencode($kamarWaMsg);
 
     // Sibling rooms in the same kos
-    $siblingRooms = $kamar->productKosan->productKamarKosan ?? collect();
+    $siblingRooms = collect($productKosan?->productKamarKosan ?? []);
 
     // Monthly price
-    $monthlyPriceObj = $kamar->monthly_price;
-    $monthlyPriceVal = $monthlyPriceObj ? $monthlyPriceObj->price : null;
+    $monthlyPriceObj = $kamar?->monthly_price;
+    $monthlyPriceVal = $monthlyPriceObj?->price;
   @endphp
+
 
 
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-7 sm:py-8 space-y-8 sm:space-y-10 flex-grow w-full">
@@ -180,24 +399,24 @@
     <!-- 3. BREADCRUMB & TOOLBAR -->
     <section class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs mb-6">
 
-      <nav class="flex items-center gap-2 text-[#7B6759] font-medium overflow-x-auto no-scrollbar py-1">
+      <nav class="flex items-center gap-2 text-[#765C55] font-medium overflow-x-auto no-scrollbar py-1">
 
         <a href="{{ route('home') }}"
-          class="hover:text-[#C78394] transition-colors whitespace-nowrap">
+          class="hover:text-[#D99AA8] transition-colors whitespace-nowrap">
           Beranda
         </a>
 
         <i class="fa-solid fa-chevron-right text-[9px] text-[#C9A45C]"></i>
 
         <a href="{{ route('kosan.index') }}"
-          class="hover:text-[#C78394] transition-colors whitespace-nowrap">
+          class="hover:text-[#D99AA8] transition-colors whitespace-nowrap">
           Daftar Kos
         </a>
 
         <i class="fa-solid fa-chevron-right text-[9px] text-[#C9A45C]"></i>
 
-        <a href="{{ route('kosan.detail', $kamar->productKosan->slug ?? '#') }}"
-          class="hover:text-[#C78394] font-bold text-[#C78394] transition-colors whitespace-nowrap truncate max-w-[160px] sm:max-w-[220px]">
+        <a href="{{ $kosanUrl }}"
+          class="hover:text-[#D99AA8] font-bold text-[#D99AA8] transition-colors whitespace-nowrap truncate max-w-[160px] sm:max-w-[220px]">
           {{ $namaKosan }}
         </a>
 
@@ -210,14 +429,14 @@
       </nav>
 
 
-      <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end shrink-0">
+      <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-between sm:justify-end shrink-0">
 
         <!-- Bookmark -->
         <button
           type="button"
           onclick="toggleBookmarkKamar({{ $kamar->id }})"
           id="bookmark-kamar-btn"
-          class="flex-1 sm:flex-initial px-3.5 py-2 bg-white hover:bg-[#FBE9ED] text-[#5D483A] border border-[#E9DDD2] rounded-xl font-bold text-xs shadow-sm transition-all flex items-center justify-center gap-1.5 active:scale-95"
+          class="flex-1 min-w-[90px] sm:min-w-0 sm:flex-initial px-3.5 py-2 bg-[#FFFCF8] hover:bg-[#D99AA8] text-[#765C55] border border-[#EAD8D7] rounded-xl font-bold text-xs shadow-sm transition-all flex items-center justify-center gap-1.5 active:scale-95"
           title="Simpan Kamar ini">
 
           <i class="fa-regular fa-heart text-xs text-[#D99AA8]"></i>
@@ -230,27 +449,13 @@
         <button
           type="button"
           onclick="copyKamarLink()"
-          class="flex-1 sm:flex-initial px-3.5 py-2 bg-white hover:bg-[#FBE9ED] text-[#5D483A] border border-[#E9DDD2] rounded-xl font-bold text-xs shadow-sm transition-all flex items-center justify-center gap-1.5 active:scale-95"
+          class="flex-1 min-w-[90px] sm:min-w-0 sm:flex-initial px-3.5 py-2 bg-[#FFFCF8] hover:bg-[#D99AA8] text-[#765C55] border border-[#EAD8D7] rounded-xl font-bold text-xs shadow-sm transition-all flex items-center justify-center gap-1.5 active:scale-95"
           title="Bagikan Tautan Kamar">
 
           <i class="fa-solid fa-share-nodes text-xs text-[#C9A45C]"></i>
           <span>Bagikan</span>
 
         </button>
-
-
-        <!-- WhatsApp -->
-        <a
-          href="{{ $waUrl }}"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="flex-1 sm:flex-initial px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs shadow-sm transition-all flex items-center justify-center gap-1.5 active:scale-95 text-center"
-          title="Tanya Pengelola via WhatsApp">
-
-          <i class="fa-brands fa-whatsapp text-sm"></i>
-          <span>Tanya Pengelola</span>
-
-        </a>
 
       </div>
     </section>
@@ -262,18 +467,13 @@
       <!-- ROOM INFORMATION -->
       <aside class="lg:col-span-4 order-2 lg:order-1 rounded-[2rem] bg-[#D99AA8] text-[#3B2314] p-6 sm:p-8 flex flex-col justify-between min-h-[440px] relative overflow-hidden">
 
-        <div class="absolute -right-16 -top-16 w-48 h-48 rounded-full bg-white/20"></div>
-        <div class="absolute -left-10 bottom-10 w-32 h-32 rounded-full bg-[#C9A45C]/30"></div>
-        <div class="absolute right-10 bottom-20 w-16 h-16 rounded-full bg-white/10"></div>
-
-
         <div class="relative">
 
-          <div class="flex items-center justify-between gap-2 mb-4">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
 
             <div class="flex items-center gap-2">
 
-              <span class="w-9 h-9 rounded-xl bg-[#FFF8F1] text-[#C78394] flex items-center justify-center font-bold text-sm shadow-sm">
+              <span class="w-9 h-9 rounded-xl bg-[#FFF8F1] text-[#D99AA8] flex items-center justify-center font-bold text-sm shadow-sm">
                 <i class="fa-solid fa-door-open"></i>
               </span>
 
@@ -287,22 +487,22 @@
             <!-- Status -->
             @if($isOccupied)
 
-              <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-[#3B2314] text-white rounded-full text-[10px] font-black shadow-md">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-[#3B2314] text-[#FFF8F1] rounded-full text-[9px] sm:text-[10px] font-black shadow-md whitespace-nowrap">
                 <span class="w-1.5 h-1.5 rounded-full bg-[#D99AA8] animate-pulse"></span>
                 Terisi (Penuh)
               </span>
 
             @elseif($roomStatus === 'pending')
 
-              <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-[#C9A45C] text-[#3B2314] rounded-full text-[10px] font-black shadow-md">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-[#C9A45C] text-[#3B2314] rounded-full text-[9px] sm:text-[10px] font-black shadow-md whitespace-nowrap">
                 <i class="fa-solid fa-clock text-[9px]"></i>
                 Verifikasi
               </span>
 
             @else
 
-              <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-[#FFF8F1] text-[#3B2314] rounded-full text-[10px] font-black shadow-md">
-                <span class="w-1.5 h-1.5 rounded-full bg-[#C78394] animate-pulse"></span>
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-[#FFF8F1] text-[#3B2314] rounded-full text-[9px] sm:text-[10px] font-black shadow-md whitespace-nowrap">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#D99AA8] animate-pulse"></span>
                 Siap Huni
               </span>
 
@@ -311,8 +511,8 @@
           </div>
 
 
-          <a href="{{ route('kosan.detail', $kamar->productKosan->slug ?? '#') }}"
-            class="text-xs font-semibold text-[#3B2314]/75 hover:text-white transition-colors flex items-center gap-1.5 mb-1.5">
+          <a href="{{ $kosanUrl }}"
+            class="text-xs font-semibold text-[#3B2314]/75 hover:text-[#FFF8F1] transition-colors flex items-center gap-1.5 mb-1.5">
 
             <i class="fa-solid fa-house text-[#FFF8F1]"></i>
 
@@ -327,12 +527,9 @@
             {{ $namaKamar }}
           </h1>
 
-          <div class="h-1 w-14 bg-[#C9A45C] rounded-full my-4"></div>
-
-
           @if($isOccupied)
 
-            <div class="p-3 rounded-xl bg-white/30 border border-white/30 text-xs text-[#3B2314]/90 leading-relaxed mb-4">
+            <div class="p-3 rounded-xl bg-[#FFFCF8]/30 border border-[#FFF8F1]/30 text-xs text-[#3B2314]/90 leading-relaxed mb-4">
 
               <i class="fa-solid fa-calendar-xmark text-[#3B2314] mr-1"></i>
 
@@ -370,7 +567,7 @@
             <button
               type="button"
               onclick="scrollToVideoKamar()"
-              class="w-full py-2.5 px-4 rounded-2xl bg-[#3B2314] hover:bg-[#C9A45C] hover:text-[#3B2314] text-white font-black text-xs transition-all flex items-center justify-center gap-2 shadow-lg active:scale-95">
+              class="w-full py-2.5 px-4 rounded-2xl bg-[#3B2314] hover:bg-[#C9A45C] hover:text-[#3B2314] text-[#FFF8F1] font-black text-xs transition-all flex items-center justify-center gap-2 shadow-lg active:scale-95">
 
               <i class="fa-solid fa-play text-[11px]"></i>
               <span>Tonton Video Tour Kamar</span>
@@ -382,7 +579,7 @@
 
           <div class="grid grid-cols-2 gap-2.5">
 
-            <div class="rounded-2xl bg-white/30 border border-white/30 p-3">
+            <div class="rounded-2xl bg-[#FFFCF8]/30 border border-[#FFF8F1]/30 p-3">
 
               <i class="fa-solid fa-camera text-[#3B2314] mb-1 block"></i>
 
@@ -397,7 +594,7 @@
             </div>
 
 
-            <div class="rounded-2xl bg-white/30 border border-white/30 p-3">
+            <div class="rounded-2xl bg-[#FFFCF8]/30 border border-[#FFF8F1]/30 p-3">
 
               <i class="fa-solid fa-eye text-[#3B2314] mb-1 block"></i>
 
@@ -419,9 +616,9 @@
 
 
       <!-- GALLERY -->
-      <div class="lg:col-span-8 order-1 lg:order-2 rounded-[2rem] bg-white p-3 sm:p-4 border border-[#E9DDD2] shadow-[0_20px_55px_rgba(59,35,20,.07)]">
+      <div class="lg:col-span-8 order-1 lg:order-2 rounded-[2rem] bg-[#FFFCF8] p-3 sm:p-4 border border-[#EAD8D7] shadow-[0_20px_55px_rgba(59,35,20,.07)]">
 
-        <div class="rounded-[1.5rem] bg-[#FBE9ED] p-3 sm:p-4 h-full">
+        <div class="rounded-[1.5rem] bg-[#D99AA8] p-3 sm:p-4 h-full">
 
           @include('frontend.kosan.kamar.partials._gallery')
 
@@ -462,7 +659,7 @@
 
             <div>
 
-              <span class="inline-flex items-center gap-2 text-[10px] uppercase tracking-[.18em] font-black text-[#C78394]">
+              <span class="inline-flex items-center gap-2 text-[10px] uppercase tracking-[.18em] font-black text-[#D99AA8]">
 
                 <span class="w-7 h-7 rounded-full bg-[#D99AA8]/20 flex items-center justify-center">
                   <i class="fa-solid fa-circle-info"></i>
@@ -480,7 +677,7 @@
             </div>
 
 
-            <div class="hidden sm:flex w-12 h-12 rounded-2xl bg-[#D99AA8]/20 text-[#C78394] items-center justify-center shrink-0">
+            <div class="hidden sm:flex w-12 h-12 rounded-2xl bg-[#D99AA8]/20 text-[#D99AA8] items-center justify-center shrink-0">
 
               <i class="fa-solid fa-house-circle-check text-lg"></i>
 
@@ -489,7 +686,7 @@
           </div>
 
 
-          <div class="rounded-2xl bg-[#FFF8F1] border border-[#E9DDD2] p-4 sm:p-6">
+          <div class="rounded-2xl bg-[#FFF8F1] border border-[#EAD8D7] p-4 sm:p-6">
 
             @include('frontend.kosan.kamar.partials._description_facilities')
 
@@ -505,13 +702,13 @@
 
         <div class="rounded-[2rem] bg-[#D99AA8] p-1.5 shadow-[0_22px_50px_rgba(59,35,20,.10)]">
 
-          <div class="rounded-[1.7rem] bg-white p-5 sm:p-7">
+          <div class="rounded-[1.7rem] bg-[#FFFCF8] p-5 sm:p-7">
 
             <div class="flex items-center justify-between gap-4 mb-6">
 
               <div>
 
-                <p class="text-[10px] uppercase tracking-[.18em] font-black text-[#C78394]">
+                <p class="text-[10px] uppercase tracking-[.18em] font-black text-[#D99AA8]">
                   Pilihan Paket
                 </p>
 
@@ -522,7 +719,7 @@
               </div>
 
 
-              <span class="w-11 h-11 rounded-2xl bg-[#D99AA8]/20 text-[#C78394] flex items-center justify-center">
+              <span class="w-11 h-11 rounded-2xl bg-[#D99AA8]/20 text-[#D99AA8] flex items-center justify-center">
 
                 <i class="fa-solid fa-receipt"></i>
 
@@ -544,13 +741,6 @@
 
     <!-- 6. BOTTOM ACTION BANNER -->
     <section class="reveal mt-12 rounded-[2rem] bg-[#D99AA8] p-5 sm:p-7 lg:p-8 overflow-hidden relative">
-
-      <div class="absolute right-0 top-0 w-64 h-64 rounded-full bg-white/20 translate-x-1/3 -translate-y-1/3"></div>
-
-      <div class="absolute left-1/2 bottom-0 w-44 h-44 rounded-full bg-[#C9A45C]/25"></div>
-
-      <div class="absolute right-1/3 top-1/2 w-24 h-24 rounded-full bg-[#C78394]/20"></div>
-
 
       <div class="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
 
@@ -604,7 +794,7 @@
               href="{{ $waUrl }}"
               target="_blank"
               rel="noopener noreferrer"
-              class="shine w-full sm:min-w-[210px] py-4 px-6 bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-extrabold rounded-2xl transition-all shadow-lg text-center flex items-center justify-center gap-2.5 active:scale-[.98]">
+              class="shine w-full sm:min-w-[210px] py-4 px-6 bg-[#C9A45C] hover:bg-[#3B2314] text-[#FFF8F1] text-xs sm:text-sm font-extrabold rounded-2xl transition-all shadow-lg text-center flex items-center justify-center gap-2.5 active:scale-[.98]">
 
               <i class="fa-brands fa-whatsapp text-lg"></i>
               <span>Daftar Waiting List via WA</span>
@@ -617,9 +807,9 @@
               <button
                 type="button"
                 onclick="scrollToSiblingRooms()"
-                class="w-full sm:min-w-[190px] py-4 px-6 bg-[#FFF8F1] hover:bg-white text-[#3B2314] text-xs sm:text-sm font-extrabold rounded-2xl transition-all shadow-lg text-center flex items-center justify-center gap-2.5 active:scale-[.98]">
+                class="w-full sm:min-w-[190px] py-4 px-6 bg-[#FFF8F1] hover:bg-[#FFFCF8] text-[#3B2314] text-xs sm:text-sm font-extrabold rounded-2xl transition-all shadow-lg text-center flex items-center justify-center gap-2.5 active:scale-[.98]">
 
-                <i class="fa-solid fa-door-open text-[#C78394]"></i>
+                <i class="fa-solid fa-door-open text-[#D99AA8]"></i>
                 <span>Cek Kamar Lain</span>
 
               </button>
@@ -630,23 +820,11 @@
 
             <a
               href="{{ route('form.booking.kamar', $kamar->id) }}"
-              class="shine w-full sm:min-w-[230px] py-4 px-6 bg-[#3B2314] hover:bg-[#C78394] hover:text-[#3B2314] text-white text-xs sm:text-sm font-extrabold rounded-2xl transition-all shadow-lg text-center flex items-center justify-center gap-2.5 active:scale-[.98]">
+              class="shine w-full sm:min-w-[230px] py-4 px-6 bg-[#3B2314] hover:bg-[#D99AA8] hover:text-[#3B2314] text-[#FFF8F1] text-xs sm:text-sm font-extrabold rounded-2xl transition-all shadow-lg text-center flex items-center justify-center gap-2.5 active:scale-[.98]">
 
               <i class="fa-solid fa-bolt text-[#C9A45C]"></i>
               <span>Pesan Kamar Ini Sekarang</span>
               <i class="fa-solid fa-arrow-right text-xs"></i>
-
-            </a>
-
-
-            <a
-              href="{{ $waUrl }}"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="w-full sm:min-w-[190px] py-4 px-6 bg-[#FFF8F1] hover:bg-white text-[#3B2314] text-xs sm:text-sm font-extrabold rounded-2xl transition-all shadow-lg text-center flex items-center justify-center gap-2.5 active:scale-[.98]">
-
-              <i class="fa-brands fa-whatsapp text-emerald-600 text-lg"></i>
-              <span>Tanya Pengelola</span>
 
             </a>
 
@@ -662,13 +840,13 @@
     <!-- 6.1 REKOMENDASI KAMAR LAIN -->
     @if($siblingRooms->count() > 0)
 
-      <section id="sibling-rooms-section" class="reveal mt-12 pt-8 border-t border-[#E9DDD2] space-y-6">
+      <section id="sibling-rooms-section" class="reveal mt-12 pt-8 border-t border-[#EAD8D7] space-y-6">
 
         <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
 
           <div>
 
-            <span class="text-[10px] font-extrabold uppercase tracking-[.2em] text-[#C78394]">
+            <span class="text-[10px] font-extrabold uppercase tracking-[.2em] text-[#D99AA8]">
               Pilihan Unit Lainnya
             </span>
 
@@ -676,7 +854,7 @@
               Kamar Lain di {{ $namaKosan }}
             </h3>
 
-            <p class="text-xs sm:text-sm text-[#7B6759] mt-0.5">
+            <p class="text-xs sm:text-sm text-[#765C55] mt-0.5">
               Bandingkan ukuran dan fasilitas unit lainnya dalam properti ini.
             </p>
 
@@ -684,8 +862,8 @@
 
 
           <a
-            href="{{ route('kosan.detail', $kamar->productKosan->slug ?? '#') }}"
-            class="inline-flex items-center gap-1.5 text-xs font-black text-[#C78394] hover:underline">
+            href="{{ $kosanUrl }}"
+            class="inline-flex items-center gap-1.5 text-xs font-black text-[#D99AA8] hover:underline">
 
             <span>Lihat Profil Lengkap Kos</span>
             <i class="fa-solid fa-arrow-right text-[10px]"></i>
@@ -701,33 +879,33 @@
 
             @php
 
-              $sibImg = $sibKamar->productKamarImageKosan->first();
-
-              $sibImgUrl = $sibImg
-                ? asset('storage/' . $sibImg->image)
-                : 'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=600&q=80';
+              $sibImg = $sibKamar->productKamarImageKosan?->first();
+              $sibImagePath = trim((string) ($sibImg?->image ?? ''));
+              $sibImgUrl = $sibImagePath !== ''
+                ? asset('storage/' . $sibImagePath)
+                : asset('logo.jpeg');
 
               $sibStatus = $sibKamar->room_status ?? 'kosong';
 
               $sibIsOccupied = ($sibStatus === 'terisi');
 
-              $sibPriceObj = $sibKamar->priceKamar->first(fn($p) => strtolower($p->kategori) === 'bulan');
+              $sibPriceObj = $sibKamar->priceKamar->first(fn($p) => strtolower((string) ($p->kategori ?? '')) === 'bulan');
 
               $sibPriceVal = $sibPriceObj ? $sibPriceObj->price : null;
 
             @endphp
 
 
-            <div class="bg-white rounded-3xl border border-[#E9DDD2] overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 hover:border-[#D99AA8] transition-all duration-300 group flex flex-col justify-between">
+            <div class="bg-[#FFFCF8] rounded-3xl border border-[#EAD8D7] overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 hover:border-[#D99AA8] transition-all duration-300 group flex flex-col justify-between">
 
               <div>
 
                 <!-- IMAGE -->
-                <div class="relative h-44 overflow-hidden bg-[#FBE9ED]">
+                <div class="relative h-44 overflow-hidden bg-[#D99AA8]">
 
                   <img
                     src="{{ $sibImgUrl }}"
-                    alt="{{ $sibKamar->room }}"
+                    alt="{{ $sibKamar->room ?? 'Kamar' }}"
                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
 
 
@@ -735,7 +913,7 @@
 
                     @if($sibIsOccupied)
 
-                      <span class="px-2.5 py-0.5 bg-[#3B2314]/90 text-white rounded-full text-[9px] font-black shadow-md flex items-center gap-1">
+                      <span class="px-2.5 py-0.5 bg-[#3B2314]/90 text-[#FFF8F1] rounded-full text-[9px] font-black shadow-md flex items-center gap-1">
 
                         <span class="w-1.5 h-1.5 rounded-full bg-[#D99AA8] animate-pulse"></span>
 
@@ -763,21 +941,21 @@
                 <!-- CARD CONTENT -->
                 <div class="p-4 sm:p-5">
 
-                  <h4 class="font-black text-[#3B2314] text-base group-hover:text-[#C78394] transition-colors line-clamp-1">
+                  <h4 class="font-black text-[#3B2314] text-base group-hover:text-[#D99AA8] transition-colors line-clamp-1">
 
-                    {{ $sibKamar->room }}
+                    {{ $sibKamar->room ?? 'Kamar' }}
 
                   </h4>
 
 
-                  <p class="text-xs text-[#7B6759] mt-1 line-clamp-1">
+                  <p class="text-xs text-[#765C55] mt-1 line-clamp-1">
 
                     {{ strip_tags($sibKamar->description ?? 'Fasilitas lengkap dan nyaman.') }}
 
                   </p>
 
 
-                  <div class="mt-4 pt-3 border-t border-[#F2E7DF] flex items-center justify-between">
+                  <div class="mt-4 pt-3 border-t border-[#E9DDD2] flex items-center justify-between">
 
                     <div>
 
@@ -787,17 +965,17 @@
 
                       @if($sibPriceVal)
 
-                        <span class="text-sm font-black text-[#C78394]">
+                        <span class="text-sm font-black text-[#D99AA8]">
                           Rp {{ number_format($sibPriceVal, 0, ',', '.') }}
                         </span>
 
-                        <span class="text-[10px] text-[#8F7765]">
+                        <span class="text-[10px] text-[#8E7B6D]">
                           /bln
                         </span>
 
                       @else
 
-                        <span class="text-xs font-bold text-[#6F5A4B]">
+                        <span class="text-xs font-bold text-[#3B2314]">
                           Hubungi Kami
                         </span>
 
@@ -808,7 +986,7 @@
 
                     <a
                       href="{{ route('kamar.detail', $sibKamar->id) }}"
-                      class="px-3 py-1.5 bg-[#D99AA8] hover:bg-[#3B2314] text-[#3B2314] hover:text-white text-xs font-bold rounded-xl transition-colors shadow-sm flex items-center gap-1">
+                      class="px-3 py-1.5 bg-[#D99AA8] hover:bg-[#3B2314] text-[#3B2314] hover:text-[#FFF8F1] text-xs font-bold rounded-xl transition-colors shadow-sm flex items-center gap-1">
 
                       <span>Detail</span>
                       <i class="fa-solid fa-arrow-right text-[9px]"></i>
@@ -841,7 +1019,7 @@
   <!-- TOAST NOTIFICATION -->
   <div
     id="toast-message"
-    class="fixed top-5 right-5 z-[9999] hidden items-center gap-2.5 px-4 py-3 bg-[#3B2314] text-white text-xs font-bold rounded-2xl shadow-2xl transition-all duration-300 border border-white/10">
+    class="fixed top-5 right-5 z-[9999] hidden items-center gap-2.5 px-4 py-3 bg-[#3B2314] text-[#FFF8F1] text-xs font-bold rounded-2xl shadow-2xl transition-all duration-300 border border-[#FFF8F1]/10">
 
     <i class="fa-solid fa-circle-check text-[#D99AA8] text-base"></i>
 
@@ -852,26 +1030,12 @@
   </div>
 
 
-  <!-- FLOATING WHATSAPP BUTTON DESKTOP -->
-  <a
-    href="{{ $waUrl }}"
-    target="_blank"
-    rel="noopener noreferrer"
-    class="fixed bottom-6 right-6 z-40 hidden lg:flex items-center gap-2.5 px-5 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full shadow-[0_8px_25px_rgba(16,185,129,0.35)] hover:scale-105 active:scale-95 transition-all text-xs font-black group"
-    title="Tanya Pengelola via WhatsApp">
-
-    <i class="fa-brands fa-whatsapp text-xl"></i>
-    <span>Tanya Pengelola</span>
-
-  </a>
-
-
   <!-- 8. FOOTER -->
   @include('frontend.footer')
 
 
   <!-- 9. MOBILE FLOATING STICKY BOOKING BAR -->
-  <div class="fixed bottom-0 left-0 right-0 z-40 bg-[#FFF8F1]/95 backdrop-blur-md border-t border-[#E9DDD2] p-3 px-4 shadow-[0_-6px_25px_rgba(59,35,20,0.1)] block lg:hidden">
+  <div class="fixed bottom-0 left-0 right-0 z-40 bg-[#FFF8F1]/95 backdrop-blur-md border-t border-[#EAD8D7] p-3 px-4 shadow-[0_-6px_25px_rgba(59,35,20,0.1)] block lg:hidden">
 
     <div class="max-w-md mx-auto flex items-center justify-between gap-2.5">
 
@@ -891,7 +1055,7 @@
 
             <span class="w-2 h-2 rounded-full bg-[#D99AA8] animate-pulse"></span>
 
-            <span class="text-[10px] font-bold text-[#C78394] uppercase tracking-wider">
+            <span class="text-[10px] font-bold text-[#D99AA8] uppercase tracking-wider">
               Siap Huni
             </span>
 
@@ -902,7 +1066,7 @@
 
         <div class="flex items-baseline gap-1">
 
-          <span class="text-base sm:text-lg font-black text-[#C78394]">
+          <span class="text-base sm:text-lg font-black text-[#D99AA8]">
 
             {{ $monthlyPriceVal ? 'Rp ' . number_format($monthlyPriceVal, 0, ',', '.') : 'Hubungi Kami' }}
 
@@ -923,17 +1087,6 @@
 
       <div class="flex items-center gap-2">
 
-        <a
-          href="{{ $waUrl }}"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="w-10 h-10 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center shrink-0 shadow-sm"
-          title="Tanya Pengelola via WhatsApp">
-
-          <i class="fa-brands fa-whatsapp text-lg"></i>
-
-        </a>
-
 
         @if($isOccupied)
 
@@ -941,7 +1094,7 @@
             href="{{ $waUrl }}"
             target="_blank"
             rel="noopener noreferrer"
-            class="shine px-4 py-2.5 bg-[#3B2314] hover:bg-[#D99AA8] hover:text-[#3B2314] text-white font-black text-xs rounded-xl shadow-md active:scale-95 flex items-center gap-1.5 shrink-0">
+            class="shine px-4 py-2.5 bg-[#3B2314] hover:bg-[#D99AA8] hover:text-[#3B2314] text-[#FFF8F1] font-black text-xs rounded-xl shadow-md active:scale-95 flex items-center gap-1.5 shrink-0">
 
             <span>Waiting List</span>
             <i class="fa-solid fa-arrow-right text-[10px]"></i>
@@ -952,7 +1105,7 @@
 
           <a
             href="{{ route('form.booking.kamar', $kamar->id) }}"
-            class="shine px-5 py-2.5 bg-[#D99AA8] hover:bg-[#C78394] text-[#3B2314] font-black text-xs rounded-xl shadow-md active:scale-95 flex items-center gap-1.5 shrink-0">
+            class="shine px-5 py-2.5 bg-[#D99AA8] hover:bg-[#D99AA8] text-[#3B2314] font-black text-xs rounded-xl shadow-md active:scale-95 flex items-center gap-1.5 shrink-0">
 
             <span>Booking</span>
             <i class="fa-solid fa-arrow-right text-[10px]"></i>
@@ -989,30 +1142,27 @@
     });
 
 
-    // SCROLL REVEAL
+    // SCROLL REVEAL — graceful fallback and reduced-motion support
     const revealElements = document.querySelectorAll('.reveal');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    const revealOnScroll = () => {
-
-      const windowHeight = window.innerHeight;
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      revealElements.forEach(el => el.classList.add('active'));
+    } else {
+      const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -45px 0px' });
 
       revealElements.forEach((el, index) => {
-
-        if (el.getBoundingClientRect().top < windowHeight - 70) {
-
-          el.style.transitionDelay = `${Math.min(index * 45, 250)}ms`;
-
-          el.classList.add('active');
-
-        }
-
+        el.style.transitionDelay = `${Math.min(index * 45, 225)}ms`;
+        revealObserver.observe(el);
       });
-
-    };
-
-    window.addEventListener('scroll', revealOnScroll, { passive: true });
-
-    window.addEventListener('load', revealOnScroll);
+    }
 
 
     // SCROLL TO SIBLING ROOMS
@@ -1137,12 +1287,19 @@
 
       const icon = btn ? btn.querySelector('i') : null;
 
-      const isSaved = localStorage.getItem(key) === 'true';
+      let isSaved = false;
+      try { isSaved = localStorage.getItem(key) === 'true'; } catch (error) {
+        showToast('Penyimpanan favorit tidak tersedia di browser ini.');
+        return;
+      }
 
 
       if (isSaved) {
 
-        localStorage.removeItem(key);
+        try { localStorage.removeItem(key); } catch (error) {
+          showToast('Favorit tidak dapat diperbarui di browser ini.');
+          return;
+        }
 
         if (icon) {
           icon.className = 'fa-regular fa-heart text-xs text-[#D99AA8]';
@@ -1156,7 +1313,10 @@
 
       } else {
 
-        localStorage.setItem(key, 'true');
+        try { localStorage.setItem(key, 'true'); } catch (error) {
+          showToast('Favorit tidak dapat disimpan di browser ini.');
+          return;
+        }
 
         if (icon) {
           icon.className = 'fa-solid fa-heart text-xs text-[#D99AA8]';
@@ -1178,7 +1338,10 @@
 
       const id = {{ $kamar->id }};
 
-      const isSaved = localStorage.getItem('scl_fav_kamar_' + id) === 'true';
+      let isSaved = false;
+      try { isSaved = localStorage.getItem('scl_fav_kamar_' + id) === 'true'; } catch (error) {
+        // Favorit tetap dapat digunakan saat localStorage tersedia kembali.
+      }
 
       const btn = document.getElementById('bookmark-kamar-btn');
 
